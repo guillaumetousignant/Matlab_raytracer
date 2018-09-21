@@ -101,8 +101,6 @@ end
 %           % Could probably work, as u and v when getitng coord are always the same, relative to v1v2 and v1v2.
 % - Maybe, for motion blur, have two transformation matrices, and switch them on update?
 %           % Sounds slower, but would fix normal mapping and motion blur, and sphere texture lookup with motion blur.
-% - Have nothing on the rendering side access transform matrices, which won't be on the gpu. 
-%           % This includes shphere texture lookup and possible normal map solution.
 % - Add refractive portal.
 %
 %% KNOWN ISSUES
@@ -122,9 +120,6 @@ end
 % - Due to the way spheres handle texture "rotation", they can't have motion blur on rotation. Should maybe have an orientation vector.
 % - Scene should have list of meshes, not uber-list of triangles.
 % - New issue with light-emitting absorbers, easy to see in goo06, where near the ground there's a bright spot.
-% - Sphere texture lookup doesn't work with motion blur.
-% - Have spheres have a rotation angle instead oh a transformation matrix.
-%           % Will help avoid getting transform matrix, and work with motion blur.
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
@@ -211,10 +206,16 @@ end
 %           % Now has a different curve than absorbtion, that goes sqrt instead of exp. Maybe causes new bright spot issue.
 %           % If causing issues go back to linear or something.
 % - Portal can give all black results.
-%           % Portal was setting noew ray origin as ray origin translated, not as hitpoint translated as it should have.
+%           % Portal was setting new ray origin as ray origin translated, not as hitpoint translated as it should have.
 % - Portal, when going around, sometimes has black spots.
 %           % Related to issue above.
 % - Add portal scatterer.
 %           % Added, works well but should be tested with non-infinite stuff.
 % - Add fresnel mix / random mix as medium, defaults to one entry when coming out.
 %           % Both exist now, and only mix if comint into the material.
+% - Have nothing on the rendering side access transform matrices, which won't be on the gpu. 
+%           % Sphere normal lookup uses an orientation vector and a lot of slow math. Watch out when making normal maps.
+% - Sphere texture lookup doesn't work with motion blur.
+%           % Now does, interpolates a rotation vector.
+% - Have spheres have a rotation angle instead or a transformation matrix.
+%           % Now does, helps with motion blur and no transform matrix reference.
