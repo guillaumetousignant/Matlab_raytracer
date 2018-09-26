@@ -56,15 +56,10 @@ methods
     function [normalvec, tuv] = normaluv(obj, uv, aray) %%% CHECK this is sketchy
         sph = [1, (1 - uv(2)) * pi, (uv(1) - 0.5) * 2 * pi];
         normalvec = to_xyz(sph);
-
-        %%% CHECK this is so slow
-        %direction_int = to_xyz(obj.direction_sph) * aray.time + to_xyz(obj.direction_sphlast) * (1 - aray.time);
-        %disp(direction_int);
         
         offset = [1, obj.direction_sph(2) * aray.time + obj.direction_sphlast(2) * (1 - aray.time), ...
                     slerp(obj.direction_sph(3), obj.direction_sphlast(3), aray.time)];
 
-        %offset = to_sph(direction_int);
         sph = sph - offset; %%% CHECK -
         sph(1) = 1; %%% CHECK
 
@@ -83,9 +78,6 @@ methods
         elseif sph(3) > pi
             sph(3) = sph(3) - 2*pi;
         end
-
-        %sph = sph + (sph < [-1; pi; -pi]) .* [1; pi; 2*pi] ...
-        %    - (sph > [1; pi; pi]) .* [1; pi; 2*pi]; %%% CHECK if sph(2) is over pi, should rotate sph(3)
 
         tuv = [sph(3)/(2 * pi) + 0.5, 1 - sph(2)/pi]; 
     end

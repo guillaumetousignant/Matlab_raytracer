@@ -83,9 +83,6 @@ methods
             sph(3) = sph(3) - 2*pi;
         end
 
-        %sph = sph + (sph < [-1; pi; -pi]) .* [1; pi; 2*pi] ...
-        %    - (sph > [1; pi; pi]) .* [1; pi; 2*pi]; %%% CHECK if sph(2) is over pi, should rotate sph(3)
-
         tuv = [sph(3)/(2 * pi) + 0.5, 1 - sph(2)/pi];
     end
 
