@@ -56,7 +56,7 @@ methods
             end
         end
         intersected = 1;
-        sph = to_sph(aray.direction * t - to_center); % t was aray.dist
+        sph = to_sph(aray.direction * t - to_center);
         uv = [sph(3)/(2 * pi) + 0.5, 1 - sph(2)/pi]; 
     end
 
@@ -64,8 +64,7 @@ methods
         sph = [1, (1 - uv(2)) * pi, (uv(1) - 0.5) * 2 * pi];
         normalvec = to_xyz(sph);
 
-        sph = to_sph(normalvec) - obj.direction_sph; %%% CHECK -
-        sph(1) = 1; %%% CHECK
+        sph = to_sph(normalvec) - obj.direction_sph;
 
         %%% CHECK change
         if sph(2) < 0

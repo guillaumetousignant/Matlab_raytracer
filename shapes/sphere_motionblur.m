@@ -60,8 +60,7 @@ methods
         offset = [1, obj.direction_sph(2) * aray.time + obj.direction_sphlast(2) * (1 - aray.time), ...
                     slerp(obj.direction_sph(3), obj.direction_sphlast(3), aray.time)];
 
-        sph = sph - offset; %%% CHECK -
-        sph(1) = 1; %%% CHECK
+        sph = sph - offset;
 
         %%% CHECK change
         if sph(2) < 0
