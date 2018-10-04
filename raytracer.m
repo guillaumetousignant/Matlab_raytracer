@@ -58,9 +58,6 @@ switch lower(render_mode)
             earth.transformation.rotatez(thetastep);
             earth.update;
             
-            disp(earth.direction_sph);
-            disp(earth.direction_sphlast);
-            
 %             cube.transformation.rotatez(thetastep);
 %             cube.update;
             
