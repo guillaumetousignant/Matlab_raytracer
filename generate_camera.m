@@ -61,11 +61,4 @@ camera = cam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, ask
 %camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces);
 %camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
 
-%camera.transformation.rotatez(-pi/6);
-%camera.transformation.translate([-1, -2, 0]);
-%camera.transformation.rotatex(-pi/8);
-
-camera.update;
-camera.update; % second time to kill blur
-
 %save camera.mat camera
