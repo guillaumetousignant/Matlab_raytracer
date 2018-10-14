@@ -1,4 +1,4 @@
-classdef grid < accstruct
+classdef acc_grid < accstruct
 
 properties
     cells %%% CHECK make an array of handles, not a cell array
@@ -10,7 +10,7 @@ properties
 end
 
 methods
-    function obj = grid(items)
+    function obj = acc_grid(items)
         coord =[inf, inf, inf; -inf, -inf, -inf];
         for i = 1:length(items)
             coord(1, :) = min(items{i}.mincoord, coord(1, :));

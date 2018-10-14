@@ -54,7 +54,7 @@ methods
     end
 
     function buildacc(obj)
-        obj.acc = grid(obj.geometry);
+        obj.acc = acc_grid(obj.geometry);
     end
 
     function [hit_obj, t, uv] = intersect_brute(obj, ray) % Useless for non-trivial scenes
