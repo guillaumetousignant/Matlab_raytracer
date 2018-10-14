@@ -16,8 +16,8 @@ res_y_ds = round(res_y/factor);
 image_ds = zeros(res_y, res_x, res_z);
 step = res_x /res_x_ds;
 
-%parfor i = 1:res_y
-for i = 1:res_y
+parfor i = 1:res_y
+%for i = 1:res_y
     previous = 0;
     temp = zeros(1, res_x, res_z);
     slice = image(i, :, :);
@@ -30,8 +30,8 @@ end
 
 step = res_y/res_y_ds;
 
-%parfor j = 1:res_x_ds
-for j = 1:res_x_ds
+parfor j = 1:res_x_ds
+%for j = 1:res_x_ds
     previous = 0;
     temp = zeros(res_y, 1, res_z);
     slice = image_ds(:, j, :);
