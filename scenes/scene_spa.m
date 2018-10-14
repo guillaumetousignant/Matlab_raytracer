@@ -36,21 +36,21 @@ wood_mat = diffuse(black, wood_colour, 0);
 metal1 = reflective_fuzz(black, grey2, 2, 1);
 metal = fresnelmix(metal1, coating, 1.5);
 
-light1_mat = diffuse(white * 2, white, 1);
-light2_mat = diffuse(yellow * 2, yellow, 1);
+light1_mat = diffuse(white * 1, white, 1);
+light2_mat = diffuse(yellow * 5, yellow, 1);
 
 tile_mat1 = diffuse(black, gemcolor, 1);
-tile_mat = fresnelmix(tile_mat1, coating, 1.5);
+tile_mat = fresnelmix(tile_mat1, coating, 1.1);
 
 spa_mats = struct('lambert4SG', light1_mat, 'lambert5SG', light2_mat, ...
                 'blinn2SG', metal, 'blinn1SG', tile_mat, 'lambert3SG', wood_mat);
 
 % Objects
 roommesh = mesh(mesh_geometry('.\assets\Room.obj'), spa_mats, transformmatrix());
-%tiemesh.transformation.rotatex(-pi/2);
-%tiemesh.transformation.rotatez(pi/16);
-roommesh.transformation.uniformscale(0.005);
-%tiemesh.transformation.translate([0, 3, -0.3]); 
+roommesh.transformation.rotatex(-pi/2);
+%roommesh.transformation.rotatez(pi/16);
+%roommesh.transformation.uniformscale(0.005);
+roommesh.transformation.translate([0, 5.5, 2]); 
 roommesh.update;
 
 ascene = scene();
@@ -71,6 +71,8 @@ toc
 %save scene.mat ascene
 
 %% Camera
+
+camera.material = air;
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);

@@ -7,7 +7,7 @@
 
 %% Render
 
-render_mode = 'motion';
+render_mode = 'accumulation';
 
 figure();
 
