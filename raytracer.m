@@ -25,8 +25,8 @@ switch lower(render_mode)
     case 'accumulation'
         % Accumulation render
 
-        accum_L = imgbuffer(camera.image_L.sizex, camera.image_L.sizey);
-        accum_R = imgbuffer(camera.image_R.sizex, camera.image_R.sizey);
+        %accum_L = imgbuffer(camera.image_L.sizex, camera.image_L.sizey);
+        %accum_R = imgbuffer(camera.image_R.sizex, camera.image_R.sizey);
         i = 0;
         while 1 
             i = i + 1;
@@ -35,16 +35,16 @@ switch lower(render_mode)
             fprintf('\nIteration %i done.\n', i);
             toc
 
-            accum_L.update(camera.image_L.img);
-            accum_R.update(camera.image_R.img);
+            %accum_L.update(camera.image_L.img);
+            %accum_R.update(camera.image_R.img);
             figure(1);
-            imshow(accum_L.img);
+            imshow(camera.image_L.img);
             figure(2);
-            imshow(accum_R.img)
+            imshow(camera.image_R.img)
             drawnow;
             
-            imwrite16(accum_L.img, '.\images\output_L.png');
-            imwrite16(accum_R.img, '.\images\output_R.png');
+            imwrite16(camera.image_L.img, '.\images\output_L.png');
+            imwrite16(camera.image_R.img, '.\images\output_R.png');
         end
 
     case 'motion'
