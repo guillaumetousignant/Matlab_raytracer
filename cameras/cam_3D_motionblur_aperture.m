@@ -11,7 +11,8 @@ properties
     pixel_span
     subpix
     resolution
-    image
+    image_L
+    image_R
     material % what is the camera in? must be refractive
     skybox
     transformation
@@ -32,10 +33,11 @@ methods
         obj.camera_R = cam_motionblur_aperture(transform, fov, subpix, image_R, material, skybox, max_bounces, focal_length, aperture, time);
         
         obj.fov = fov;        
-        obj.resolution = [image.sizey, image.sizex];
+        obj.resolution = [(image_L.sizey + image_R.sizey)/2, (image_L.sizex + image_R.sizex)/2];
         obj.pixel_span = [fov(1)/obj.resolution(1), fov(2)/obj.resolution(2)];
         obj.subpix = subpix;
-        obj.image = image;
+        obj.image_L = image_L;
+        obj.image_R = image_R;
         obj.material = material;
         obj.skybox = skybox;
         obj.transformation = transform;
