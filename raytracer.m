@@ -25,8 +25,6 @@ switch lower(render_mode)
     case 'accumulation'
         % Accumulation render
 
-        %accum_L = imgbuffer(camera.image_L.sizex, camera.image_L.sizey);
-        %accum_R = imgbuffer(camera.image_R.sizex, camera.image_R.sizey);
         i = 0;
         while 1 
             i = i + 1;
@@ -35,8 +33,6 @@ switch lower(render_mode)
             fprintf('\nIteration %i done.\n', i);
             toc
 
-            %accum_L.update(camera.image_L.img);
-            %accum_R.update(camera.image_R.img);
             figure(1);
             imshow(camera.image_L.img);
             figure(2);
