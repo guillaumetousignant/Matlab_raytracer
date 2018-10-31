@@ -87,5 +87,12 @@ methods
         imwrite16(obj.image.img, filename_L);
         imwrite16(obj.image_R.img, filename_R);
     end
+
+    function show(obj, fignumber)
+        figure(fignumber);
+        imshow(obj.image.img);
+        figure(fignumber+1);
+        imshow(obj.image_R.img);
+    end
 end
 end

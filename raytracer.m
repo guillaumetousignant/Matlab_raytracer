@@ -9,9 +9,6 @@
 
 render_mode = 'accumulation';
 
-figure(1);
-figure(2);
-
 switch lower(render_mode)
     case 'normal'
         % Normal render
@@ -19,7 +16,8 @@ switch lower(render_mode)
         tic
         camera.raytrace(ascene);
         toc
-        imshow(camera.image.img);
+
+        camera.show(1);
         camera.write('.\images\output.png');
     
     case 'accumulation'
@@ -33,12 +31,7 @@ switch lower(render_mode)
             fprintf('\nIteration %i done.\n', i);
             toc
 
-            figure(1);
-            imshow(camera.image.img);
-            figure(2);
-            imshow(camera.image_R.img)
-            drawnow;
-            
+            camera.show(1);
             camera.write('.\images\output.png');
         end
 
@@ -74,12 +67,11 @@ switch lower(render_mode)
 
             tic
             camera.raytrace(ascene);
-            imshow(camera.image.img);
-            camera.write(['.\images\move\earth_mb\earth_mb', num2str(i, '%2.2u'), '.png']);
-            drawnow
-
             fprintf('\nImage %i done.\n', i);
             toc
+
+            camera.show(1);
+            camera.write(['.\images\move\earth_mb\earth_mb', num2str(i, '%2.2u'), '.png']);
         end
         fprintf('\nAll done.\n');
 end

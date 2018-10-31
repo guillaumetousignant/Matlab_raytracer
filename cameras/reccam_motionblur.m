@@ -92,5 +92,10 @@ methods
     function write(obj, filename)
         imwrite16(obj.image.img, filename);
     end
+
+    function show(obj, fignumber)
+        figure(fignumber);
+        imshow(obj.image.img);
+    end
 end
 end
