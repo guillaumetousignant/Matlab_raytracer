@@ -14,7 +14,7 @@ resolutions = [ 2560, 3840; ... % 1
                 10, 15; ...     % 13
                 8, 12];         % 14
 
-res = resolutions(7, :);
+res = resolutions(9, :);
 
 aspect_ratio = res(2) / res(1);
 fov(2) = 80 * pi /180; % was 80

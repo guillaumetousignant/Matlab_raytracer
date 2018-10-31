@@ -29,7 +29,8 @@ tic
 
 % Materials
 difgrey = diffuse(black, grey1, 1);
-zombiemat = diffuse_tex(black, texture('.\assets\Zombie beast_texture5.jpg'), 1);
+%zombiemat = diffuse_tex(black, texture('.\assets\Zombie beast_texture5.jpg'), 1);
+zombiemat = reflective_refractive(black, white, 1.5, air, scatterer(black, green, 0.5, 0.5, 0.01));
 
 % Objects 
 planegrey1 = triangle(difgrey, [-2, 4, -0.5; -2, -4, -0.5; 2, -4, -0.5], [], [], neutralmatrix);

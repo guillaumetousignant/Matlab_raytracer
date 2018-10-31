@@ -25,8 +25,8 @@ switch lower(render_mode)
     case 'accumulation'
         % Accumulation render
 
-        accum_L = imgbuffer(camera.image.sizex, camera.image.sizey);
-        accum_R = imgbuffer(camera.image.sizex, camera.image.sizey);
+        accum_L = imgbuffer(camera.image_L.sizex, camera.image_L.sizey);
+        accum_R = imgbuffer(camera.image_R.sizex, camera.image_R.sizey);
         i = 0;
         while 1 
             i = i + 1;
