@@ -59,7 +59,7 @@ switch lower(environment)
 end
 
 %image = imgbuffer(res(2), res(1));
-image_L = imgbuffer(res(2), res(1));
+image = imgbuffer(res(2), res(1));
 image_R = imgbuffer(res(2), res(1));
 
 %camera = cam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, 3, 0.01);
@@ -67,6 +67,6 @@ image_R = imgbuffer(res(2), res(1));
 %camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces);
 %camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
 
-camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image_L, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec);
+camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec);
 
 %save camera.mat camera

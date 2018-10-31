@@ -34,12 +34,12 @@ switch lower(render_mode)
             toc
 
             figure(1);
-            imshow(camera.image_L.img);
+            imshow(camera.image.img);
             figure(2);
             imshow(camera.image_R.img)
             drawnow;
             
-            imwrite16(camera.image_L.img, '.\images\output_L.png');
+            imwrite16(camera.image.img, '.\images\output_L.png');
             imwrite16(camera.image_R.img, '.\images\output_R.png');
         end
 
