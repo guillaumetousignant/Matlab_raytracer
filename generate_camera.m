@@ -14,15 +14,15 @@ resolutions = [ 2560, 3840; ... % 1
                 10, 15; ...     % 13
                 8, 12];         % 14
 
-res = resolutions(8, :);
+res = resolutions(6, :);
 
 aspect_ratio = res(2) / res(1);
-fov(2) = 60 * pi /180; % was 80
+fov(2) = 80 * pi /180; % was 80
 fov(1) = fov(2)/aspect_ratio;
 fov_iso(2) = 4;
 fov_iso(1) = fov_iso(2)/aspect_ratio;
-subpix = [1, 1] .* 2; % 8
-max_bounces = 8; % was 8
+subpix = [1, 1] .* 2; % 2
+max_bounces = 12; % was 8
 
 air = refractive([0, 0, 0], [1, 1, 1], 1.001, struct('ind', 0), nonabsorber()); %%% CHECK remove this when merging with generate_scene
 
