@@ -14,6 +14,8 @@
 % - Maybe, for motion blur, have two transformation matrices, and switch them on update?
 %           % Sounds slower, but would fix normal mapping and motion blur, and sphere texture lookup with motion blur.
 % - Add refractive portal.
+% - Make cameras have a save function.
+% - Make camera fov, aperture and focal length tied to scale.
 %
 %% KNOWN ISSUES
 %
