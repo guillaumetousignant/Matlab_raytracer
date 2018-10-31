@@ -92,5 +92,19 @@ methods
         obj.camera.raytrace(scene);
         obj.camera_R.raytrace(scene);
     end 
+
+    function write(obj, filename)
+        point = strfind(filename, '.');
+        if ~isempty(point)
+            point = point(end);
+            filename_L = [filename(1:point-1), '_L', filename(point:end)];
+            filename_R = [filename(1:point-1), '_R', filename(point:end)];
+        else
+            filename_L = [filename, '_L.png'];
+            filename_R = [filename, '_R.png'];
+        end
+        imwrite16(obj.image.img, filename_L);
+        imwrite16(obj.image_R.img, filename_R);
+    end
 end
 end

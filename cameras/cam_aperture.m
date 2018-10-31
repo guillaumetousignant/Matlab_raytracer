@@ -70,5 +70,9 @@ methods
         %obj.image.set(output); %%% for parfor normal rendering
         obj.image.update(output);
     end  
+
+    function write(obj, filename)
+        imwrite16(obj.image.img, filename);
+    end
 end
 end

@@ -20,7 +20,7 @@ switch lower(render_mode)
         camera.raytrace(ascene);
         toc
         imshow(camera.image.img);
-        imwrite16(camera.image.img, '.\images\output.png');
+        camera.write('.\images\output.png');
     
     case 'accumulation'
         % Accumulation render
@@ -39,8 +39,7 @@ switch lower(render_mode)
             imshow(camera.image_R.img)
             drawnow;
             
-            imwrite16(camera.image.img, '.\images\output_L.png');
-            imwrite16(camera.image_R.img, '.\images\output_R.png');
+            camera.write('.\images\output.png');
         end
 
     case 'motion'
@@ -76,7 +75,7 @@ switch lower(render_mode)
             tic
             camera.raytrace(ascene);
             imshow(camera.image.img);
-            imwrite16(camera.image.img, ['.\images\move\earth_mb\earth_mb', num2str(i, '%2.2u'), '.png']);
+            camera.write(['.\images\move\earth_mb\earth_mb', num2str(i, '%2.2u'), '.png']);
             drawnow
 
             fprintf('\nImage %i done.\n', i);
