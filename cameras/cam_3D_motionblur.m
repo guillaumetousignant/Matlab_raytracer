@@ -1,4 +1,4 @@
-classdef cam_3D < handle
+classdef cam_3D_motionblur < handle
 
 properties
     camera_L
@@ -24,7 +24,7 @@ properties
 end
 
 methods
-    function obj = cam_3D(transform, fov, subpix, image_L, image_R, eye_dist, material, skybox, max_bounces, focal_length, time)
+    function obj = cam_3D_motionblur(transform, fov, subpix, image_L, image_R, eye_dist, material, skybox, max_bounces, focal_length, time)
         obj = obj@handle();      
         
         obj.camera_L = cam_motionblur(transform, fov, subpix, image_L, material, skybox, max_bounces, time);
