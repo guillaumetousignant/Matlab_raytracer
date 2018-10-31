@@ -1,10 +1,11 @@
-classdef cam_3D < handle
+classdef cam_3D_aperture < handle
 
 properties
     camera_L
     camera_R
     focal_length
     eye_dist
+    aperture
 
     fov
     pixel_span
@@ -20,12 +21,12 @@ properties
 end
 
 methods
-    function obj = cam_3D(transform, fov, subpix, image_L, image_R, eye_dist, material, skybox, max_bounces, focal_length)
+    function obj = cam_3D_aperture(transform, fov, subpix, image_L, image_R, eye_dist, material, skybox, max_bounces, focal_length, aperture)
         obj = obj@handle();      
         
-        obj.camera_L = cam(transform, fov, subpix, image_L, material, skybox, max_bounces);
-        obj.camera_R = cam(transform, fov, subpix, image_R, material, skybox, max_bounces);
-
+        obj.camera_L = cam_aperture(transform, fov, subpix, image_L, material, skybox, max_bounces, focal_length, aperture);
+        obj.camera_R = cam_aperture(transform, fov, subpix, image_R, material, skybox, max_bounces, focal_length, aperture);
+        
         obj.fov = fov;        
         obj.resolution = [image.sizey, image.sizex];
         obj.pixel_span = [fov(1)/obj.resolution(1), fov(2)/obj.resolution(2)];
@@ -40,6 +41,7 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.focal_length = focal_length;
         obj.eye_dist = eye_dist;
+        obj.aperture = aperture;
 
         obj.camera_L.origin = obj.transformation.multVec([-eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([eye_dist/2, 0, 0]);
