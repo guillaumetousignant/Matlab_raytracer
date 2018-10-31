@@ -15,6 +15,7 @@
 %           % Sounds slower, but would fix normal mapping and motion blur, and sphere texture lookup with motion blur.
 % - Add refractive portal.
 % - Make cameras have a save function.
+%           % Won't work, maybe change imgbuffer and add save (and add 3D imgbuffer).
 % - Make camera fov, aperture and focal length tied to scale.
 %
 %% KNOWN ISSUES
