@@ -96,12 +96,16 @@ methods
             point = point(end);
             filename_L = [filename(1:point-1), '_L', filename(point:end)];
             filename_R = [filename(1:point-1), '_R', filename(point:end)];
+            filename_S = [filename(1:point-1), '_S', filename(point:end)];
         else
             filename_L = [filename, '_L.png'];
             filename_R = [filename, '_R.png'];
+            filename_S = [filename, '_S.png'];
         end
         imwrite16(obj.image.img, filename_L);
         imwrite16(obj.image_R.img, filename_R);
+        
+        imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S);
     end
 
     function show(obj, fignumber)

@@ -27,7 +27,14 @@ zombie.transformation.rotatex(pi/2);
 zombie.transformation.rotatez(-pi/16);
 zombie.transformation.uniformscale(0.025);
 zombie.transformation.translate([0, 2, -0.53]);
+
+%%% CHECK
+zombie.transformation.rotatezaxis(pi);
+planegrey1.transformation.rotatezaxis(pi);
+planegrey2.transformation.rotatezaxis(pi);
 zombie.update;
+planegrey1.update;
+planegrey2.update;
 
 %zombie.transformation.rotatez(pi/16);
 
@@ -50,7 +57,7 @@ toc
 
 %% Camera
 
-%camera.transformation.rotatez(-pi/6);
+camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
 %camera.transformation.rotatex(-pi/8);
 
