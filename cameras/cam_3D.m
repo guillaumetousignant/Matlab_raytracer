@@ -7,7 +7,6 @@ properties
     eye_dist
 
     fov
-    pixel_span
     subpix
     resolution
     image
@@ -29,7 +28,6 @@ methods
 
         obj.fov = fov;        
         obj.resolution = [(image.sizey + image_R.sizey)/2, (image.sizex + image_R.sizex)/2];
-        obj.pixel_span = [fov(1)/obj.resolution(1), fov(2)/obj.resolution(2)];
         obj.subpix = subpix;
         obj.image = image;
         obj.image_R = image_R;

@@ -23,8 +23,8 @@ fov_iso(2) = 4;
 fov_iso(1) = fov_iso(2)/aspect_ratio;
 subpix = [1, 1] .* 2; % 2
 max_bounces = 8; % was 8
-eye_dist = 0.065;
-focal_length = 3;
+eye_dist = 0.065/2; % 0.065
+focal_length = 2;
 aperture = 0.01;
 time_vec = [0, 1];
 
