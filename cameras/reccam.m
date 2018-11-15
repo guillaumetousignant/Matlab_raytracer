@@ -3,7 +3,6 @@ classdef reccam < handle
 properties
     fov
     subpix
-    resolution
     image
     material % what is the camera in? must be refractive
     skybox
@@ -17,7 +16,6 @@ methods
     function obj = reccam(transform, fov, subpix, image, material, skybox, max_bounces)
         obj = obj@handle();        
         obj.fov = fov;        
-        obj.resolution = [image.sizey, image.sizex];
         obj.subpix = subpix;
         obj.image = image;
         obj.material = material;
@@ -40,8 +38,8 @@ methods
         tot_subpix = obj.subpix(1) * obj.subpix(2);
         fov_y = obj.fov(1);
         fov_x = obj.fov(2);
-        res_y = obj.resolution(1);
-        res_x = obj.resolution(2);
+        res_y = obj.image.sizey;
+        res_x = obj.image.sizex;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;

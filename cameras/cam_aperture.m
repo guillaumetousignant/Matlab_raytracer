@@ -15,10 +15,10 @@ methods
     function raytrace(obj, scene)
         
         tot_subpix = obj.subpix(1) * obj.subpix(2);
-        pixel_span_y = obj.fov(1)/obj.resolution(1);
-        pixel_span_x = obj.fov(2)/obj.resolution(2);
-        res_y = obj.resolution(1);
-        res_x = obj.resolution(2);
+        res_y = obj.image.sizey;
+        res_x = obj.image.sizex;
+        pixel_span_y = obj.fov(1)/res_y;
+        pixel_span_x = obj.fov(2)/res_x;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;

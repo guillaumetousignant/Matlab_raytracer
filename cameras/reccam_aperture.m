@@ -17,8 +17,8 @@ methods
         tot_subpix = obj.subpix(1) * obj.subpix(2);
         fov_y = obj.fov(1);
         fov_x = obj.fov(2);
-        res_y = obj.resolution(1);
-        res_x = obj.resolution(2);
+        res_y = obj.image.sizey;
+        res_x = obj.image.sizex;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;

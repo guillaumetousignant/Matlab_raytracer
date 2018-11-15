@@ -9,7 +9,6 @@ properties
 
     fov
     subpix
-    resolution
     image
     image_R
     material % what is the camera in? must be refractive
@@ -32,7 +31,6 @@ methods
         obj.camera_R = cam_motionblur_aperture(transform, fov, subpix, image_R, material, skybox, max_bounces, focal_length, aperture, time);
         
         obj.fov = fov;        
-        obj.resolution = [(image.sizey + image_R.sizey)/2, (image.sizex + image_R.sizex)/2];
         obj.subpix = subpix;
         obj.image = image;
         obj.image_R = image_R;
