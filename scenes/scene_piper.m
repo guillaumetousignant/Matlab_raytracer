@@ -16,7 +16,7 @@ tic
 
 % Materials
 %difgrey = diffuse(colours.black, colours.grey1, 1);
-plane_mat = diffuse_tex(colours.black, texture('.\assets\piper_diffuse.jpg'), 1);
+plane_mat = diffuse_tex(colours.black, texture('.\assets\piper_pa18_obj\piper_diffuse.jpg'), 1);
 
 % Objects 
 %planegrey1 = triangle(difgrey, [-2, 4, -0.5; -2, -4, -0.5; 2, -4, -0.5], [], [], neutralmatrix);
@@ -52,6 +52,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
+camera = generate_camera([150, 100]);
 
 camera.transformation.rotatez(pi);
 camera.transformation.translate([0, 0, 0]);
