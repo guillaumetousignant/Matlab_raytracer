@@ -2,9 +2,7 @@ classdef isocam < handle
 
 properties
     fov % here should be x and y lengths
-    pixel_span
     subpix
-    resolution
     image
     material % what is the camera in? must be refractive
     skybox
@@ -19,8 +17,6 @@ methods
     function obj = isocam(transform, fov, subpix, image, material, skybox, max_bounces)
         obj = obj@handle();        
         obj.fov = fov;        
-        obj.resolution = [image.sizey, image.sizex];
-        obj.pixel_span = [fov(1)/obj.resolution(1), fov(2)/obj.resolution(2)];
         obj.subpix = subpix;
         obj.image = image;
         obj.material = material;
@@ -43,10 +39,10 @@ methods
     function raytrace(obj, scene)
         
         tot_subpix = obj.subpix(1) * obj.subpix(2);
-        pixel_span_y = obj.pixel_span(1);
-        pixel_span_x = obj.pixel_span(2);
-        res_y = obj.resolution(1);
-        res_x = obj.resolution(2);
+        res_y = obj.image.sizey;
+        res_x = obj.image.sizex;
+        pixel_span_y = obj.fov(1)/res_y;
+        pixel_span_x = obj.fov(2)/res_x;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;
@@ -86,7 +82,17 @@ methods
             %%% REMOVE
             %fprintf([num2str(round(100*j/res_y)), '%% done!\n']);
         end
-        obj.image.set(output); %%% for parfor normal rendering
+        %obj.image.set(output); %%% for parfor normal rendering
+        obj.image.update(output);
     end  
+
+    function write(obj, filename)
+        imwrite16(obj.image.img, filename);
+    end
+
+    function show(obj, fignumber)
+        figure(fignumber);
+        imshow(obj.image.img);
+    end
 end
 end

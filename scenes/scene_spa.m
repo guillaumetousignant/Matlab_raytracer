@@ -19,8 +19,8 @@ wood_colour = [0.8549, 0.7882, 0.5882];
 
 % General stuff
 neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(black, white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
-
+%air = refractive(black, white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+air = refractive(black, white, 1.001, struct('ind', 0), scatterer(black, white, 1000, 50, 4));
 
 scenename = 'spa';
 
@@ -36,21 +36,23 @@ wood_mat = diffuse(black, wood_colour, 0);
 metal1 = reflective_fuzz(black, grey2, 2, 1);
 metal = fresnelmix(metal1, coating, 1.5);
 
-light1_mat = diffuse(white * 1, white, 1);
-light2_mat = diffuse(yellow * 5, yellow, 1);
+light1_mat = diffuse(white * 8, white, 1); % exterior
+light2_mat = diffuse(yellow * 16, yellow, 1);
 
-tile_mat1 = diffuse(black, gemcolor, 1);
-tile_mat = fresnelmix(tile_mat1, coating, 1.1);
+%tile_mat1 = diffuse(black, gemcolor, 0.8);
+%tile_mat = fresnelmix(tile_mat1, coating, 1.1);
+tile_mat1 = diffuse(black,grey2, 0.33);
+tile_mat = tile_mat1;
 
 spa_mats = struct('lambert4SG', light1_mat, 'lambert5SG', light2_mat, ...
                 'blinn2SG', metal, 'blinn1SG', tile_mat, 'lambert3SG', wood_mat);
 
 % Objects
 roommesh = mesh(mesh_geometry('.\assets\Room.obj'), spa_mats, transformmatrix());
-roommesh.transformation.rotatex(-pi/2);
+roommesh.transformation.rotatex(pi/2);
 %roommesh.transformation.rotatez(pi/16);
 %roommesh.transformation.uniformscale(0.005);
-roommesh.transformation.translate([0, 5.5, 2]); 
+roommesh.transformation.translate([0, 0, 0]); % [0, 5.5, 2]
 roommesh.update;
 
 ascene = scene();
@@ -75,7 +77,7 @@ toc
 camera.material = air;
 
 %camera.transformation.rotatez(-pi/6);
-%camera.transformation.translate([-1, -2, 0]);
+camera.transformation.translate([0, -5, 2]);
 %camera.transformation.rotatex(-pi/8);
 
 camera.update;
