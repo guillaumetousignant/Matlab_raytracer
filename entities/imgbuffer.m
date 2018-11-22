@@ -47,5 +47,9 @@ methods
             obj.img = obj.img * (1 - 1/max(obj.updates(:))) + image./max(obj.updates(:));
         end
     end
+
+    function reset(obj)
+        obj.updates = zeros(obj.sizey, 1);
+    end
 end
 end
