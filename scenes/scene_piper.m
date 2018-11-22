@@ -23,10 +23,10 @@ plane_mat = diffuse_tex(colours.black, texture('.\assets\piper_pa18_obj\piper_di
 %planegrey2 = triangle(difgrey, [-2, 4, -0.5; 2, -4, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
 
 plane = mesh(mesh_geometry('.\assets\piper_pa18_obj\piper_pa18.obj'), plane_mat, transformmatrix());
-plane.transformation.rotatex(0);
-plane.transformation.rotatez(0);
-plane.transformation.uniformscale(1);
-plane.transformation.translate([0, 0, 0]);
+plane.transformation.rotatex(pi/2);
+plane.transformation.rotatez(pi/8);
+plane.transformation.uniformscale(0.2);
+plane.transformation.translate([0, 2, 0]);
 
 %%% CHECK
 plane.transformation.rotatezaxis(pi);
