@@ -123,7 +123,7 @@ image = imgbuffer(res(2), res(1));
 
 switch lower(cam_type)
     case 'cam'
-        camera = cam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
+        camera = cam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
     case 'aperture'
         camera = cam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture);
     case 'motionblur'
