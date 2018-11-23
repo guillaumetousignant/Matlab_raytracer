@@ -20,6 +20,7 @@ properties
 
     directionlast
     originlast
+    focal_lengthlast
     time
 end
 
@@ -43,6 +44,7 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
+        obj.focal_lengthlast = focal_length;
         obj.eye_dist = eye_dist;
         obj.time = time;
         obj.directionlast = obj.direction;
@@ -64,16 +66,23 @@ methods
     function update(obj)
         obj.originlast = obj.origin;
         obj.directionlast = obj.direction;
+        obj.focal_lengthlast = obj.focal_length;
 
         obj.origin = obj.transformation.multVec([0, 0, 0]);
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
+        obj.focal_length = obj.focal_length_buffer;
 
         obj.camera.originlast = obj.camera.origin;
         obj.camera_R.originlast = obj.camera_R.origin;
         obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
+
+        obj.camera.focal_lengthlast = obj.camera.focal_length;
+        obj.camera_R.focal_lengthlast = obj.camera.focal_length;
+        obj.camera.focal_length = obj.focal_length;
+        obj.camera_R.focal_length = obj.focal_length;        
 
         obj.camera.directionlast = obj.camera.direction;
         obj.camera_R.directionlast = obj.camera_R.direction;

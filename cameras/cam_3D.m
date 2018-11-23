@@ -55,9 +55,12 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
+        obj.focal_length = obj.focal_length_buffer;
 
         obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
+        obj.camera.focal_length = obj.focal_length;
+        obj.camera_R.focal_length = obj.focal_length;
 
         L_vec = [0, obj.focal_length, 0] - [-obj.eye_dist/2, 0, 0];
         R_vec = [0, obj.focal_length, 0] - [obj.eye_dist/2, 0, 0];
