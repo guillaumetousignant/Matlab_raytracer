@@ -13,6 +13,7 @@ methods
         obj.time = time; 
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
+        obj.focal_lengthlast = focal_length;
         obj.aperture = aperture;
     end
     

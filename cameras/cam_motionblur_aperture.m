@@ -12,6 +12,7 @@ methods
         obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time);  
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
+        obj.focal_lengthlast = focal_length;
         obj.aperture = aperture;
     end
     
