@@ -44,8 +44,8 @@ methods
         obj.camera.origin = obj.transformation.multVec([-eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([eye_dist/2, 0, 0]);
 
-        L_vec = [0, 1, 0] - [-eye_dist/2, 0, 0];
-        R_vec = [0, 1, 0] - [eye_dist/2, 0, 0];
+        L_vec = [0, focal_length, 0] - [-eye_dist/2, 0, 0];
+        R_vec = [0, focal_length, 0] - [eye_dist/2, 0, 0];
         obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
         obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
     end
@@ -59,8 +59,8 @@ methods
         obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
 
-        L_vec = [0, 1, 0] - [-obj.eye_dist/2, 0, 0];
-        R_vec = [0, 1, 0] - [obj.eye_dist/2, 0, 0];
+        L_vec = [0, obj.focal_length, 0] - [-obj.eye_dist/2, 0, 0];
+        R_vec = [0, obj.focal_length, 0] - [obj.eye_dist/2, 0, 0];
         obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
         obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
     end
