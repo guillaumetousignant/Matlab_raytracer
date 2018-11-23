@@ -117,5 +117,20 @@ methods
     function focus(obj, foc_dist)
         obj.focal_length_buffer = foc_dist;
     end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        ray_direction_sph = to_sph(obj.direction) + [0, (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*-obj.fov(2)]; % 0, y, x
+
+        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
+    end
 end
 end
