@@ -11,6 +11,7 @@ methods
     function obj = cam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time)
         obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time);  
         obj.focal_length = focal_length;
+        obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
     end
     
