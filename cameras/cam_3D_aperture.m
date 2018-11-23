@@ -4,6 +4,7 @@ properties
     camera
     camera_R
     focal_length
+    focal_length_buffer
     eye_dist
     aperture
 
@@ -38,6 +39,7 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.focal_length = focal_length;
+        obj.focal_length_buffer = focal_length;
         obj.eye_dist = eye_dist;
         obj.aperture = aperture;
 
