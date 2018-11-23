@@ -2,7 +2,9 @@ classdef cam_motionblur_aperture < cam_motionblur
 
 properties
     focal_length
+    focal_lengthlast
     aperture
+    focal_length_buffer
 end
 
 methods
@@ -10,6 +12,18 @@ methods
         obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time);  
         obj.focal_length = focal_length;
         obj.aperture = aperture;
+    end
+    
+    function update(obj)
+        obj.originlast = obj.origin;
+        obj.origin = obj.transformation.multVec([0, 0, 0]);
+        transform_norm = obj.transformation.transformDir;
+        obj.directionlast = obj.direction;
+        obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
+        %obj.direction_sphlast = obj.direction_sph;
+        %obj.direction_sph = to_sph(obj.direction);
+        obj.focal_lengthlast = obj.focal_length;
+        obj.focal_length = obj.focal_length_buffer;
     end
 
     function raytrace(obj, scene)
@@ -31,7 +45,8 @@ methods
         time1 = obj.time(1);
         time2 = obj.time(2);
         apert = obj.aperture;
-        focal = obj.focal_length;
+        focal1 = obj.focal_lengthlast;
+        focal2 = obj.focal_length;
 
         horizontal1 = cross(direction1, [0, 0, 1]);
         horizontal2 = cross(direction2, [0, 0, 1]);
@@ -54,6 +69,8 @@ methods
 
                         direction_int = direction2 * randtime + direction1 * (1 - randtime);
                         direction_sph_int = to_sph(direction_int);
+                        
+                        focal_int = focal2 * randtime + focal1 * (1 - randtime);
 
                         origin_int = origin2 * randtime + origin1 * (1 - randtime);
                         horizontal = horizontal2 * randtime + horizontal1 * (1 - randtime);
@@ -62,7 +79,7 @@ methods
                         subpix_vec_sph = pix_vec_sph + direction_sph_int + [0, pixel_span_y*(k/subpix_y-0.5), -pixel_span_x*(l/subpix_x-0.5)];
 
                         origin2_int = origin_int + cos(rand_theta) * rand_r * vertical + sin(rand_theta) * rand_r * horizontal;
-                        ray_vec = origin_int + to_xyz(subpix_vec_sph) * focal - origin2_int;
+                        ray_vec = origin_int + to_xyz(subpix_vec_sph) * focal_int - origin2_int;
                         ray_vec = ray_vec/norm(ray_vec);
 
                         aray = ray_motionblur(origin2_int, ray_vec, [0, 0, 0], [1, 1, 1], is_in, randtime);
@@ -93,6 +110,10 @@ methods
     function show(obj, fignumber)
         figure(fignumber);
         imshow(obj.image.img);
+    end
+    
+    function focus(obj, foc_dist)
+        obj.focal_length_buffer = foc_dist;
     end
 end
 end

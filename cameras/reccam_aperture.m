@@ -3,6 +3,7 @@ classdef reccam_aperture < reccam
 properties
     focal_length
     aperture
+    focal_length_buffer
 end
 
 methods
@@ -10,6 +11,13 @@ methods
         obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces);        
         obj.focal_length = focal_length;
         obj.aperture = aperture;
+    end
+    
+    function update(obj)
+        obj.origin = obj.transformation.multVec([0, 0, 0]);
+        transform_norm = obj.transformation.transformDir;
+        obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
+        obj.focal_length = obj.focal_length_buffer;
     end
 
     function raytrace(obj, scene)
@@ -80,6 +88,10 @@ methods
     function show(obj, fignumber)
         figure(fignumber);
         imshow(obj.image.img);
+    end
+    
+    function focus(obj, foc_dist)
+        obj.focal_length_buffer = foc_dist;
     end
 end
 end

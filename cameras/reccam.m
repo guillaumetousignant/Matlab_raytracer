@@ -94,5 +94,9 @@ methods
         figure(fignumber);
         imshow(obj.image.img);
     end
+    
+    function focus(obj, foc_dist)
+        
+    end
 end
 end
