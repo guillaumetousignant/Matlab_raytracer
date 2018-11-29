@@ -56,13 +56,12 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([150, 100], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach');
-
-camera.autofocus(ascene, [0.5 0.5]);
+camera = generate_camera([1800, 1200], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach');
 
 camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
 %camera.transformation.rotatex(-pi/8);
 
 camera.update;
+camera.autofocus(ascene, [0.5 0.5]);
 camera.update; % second time to kill blur
