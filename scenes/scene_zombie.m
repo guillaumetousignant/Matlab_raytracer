@@ -56,6 +56,9 @@ toc
 %save scene.mat ascene
 
 %% Camera
+camera = generate_camera([150, 100], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach');
+
+camera.autofocus(ascene, [0.5 0.5]);
 
 camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
