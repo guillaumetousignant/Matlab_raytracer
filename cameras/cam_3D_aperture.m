@@ -111,7 +111,7 @@ methods
         focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
 
         [~, t, ~] = scene.intersect(focusray);
-
+        
         if t == inf
             t = 10000;
         end
