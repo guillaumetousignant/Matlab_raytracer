@@ -1,6 +1,5 @@
 classdef ray_motionblur < ray
 properties 
-    time
 end
 
 methods
