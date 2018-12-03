@@ -16,11 +16,17 @@ tic
 
 % Materials
 difgrey = diffuse(colours.black, colours.grey1, 1);
+difgrey2 = diffuse(colours.black, colours.grey2, 1);
+diflight = diffuse(white * 3, white, 1);
 zombiemat = diffuse_tex(colours.black, texture('.\assets\Zombie beast_texture5.jpg'), 1);
 
 % Objects 
 planegrey1 = triangle(difgrey, [-2, 4, -0.5; -2, -4, -0.5; 2, -4, -0.5], [], [], neutralmatrix);
 planegrey2 = triangle(difgrey, [-2, 4, -0.5; 2, -4, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
+
+spheregrey = sphere(diflight, transformmatrix());
+spheregrey.transformation.translate([-0.3, 0.8, 0.2]);
+spheregrey.transformation.uniformscale(0.1);
 
 zombie = mesh(mesh_geometry('.\assets\Zombie_Beast4_test.obj'), zombiemat, transformmatrix());
 zombie.transformation.rotatex(pi/2);
@@ -32,13 +38,14 @@ zombie.transformation.translate([0, 2, -0.53]);
 zombie.transformation.rotatezaxis(pi);
 planegrey1.transformation.rotatezaxis(pi);
 planegrey2.transformation.rotatezaxis(pi);
+spheregrey.transformation.rotatezaxis(pi);
 zombie.update;
 planegrey1.update;
 planegrey2.update;
 
 %zombie.transformation.rotatez(pi/16);
 
-ascene = scene(planegrey1, planegrey2);
+ascene = scene(planegrey1, planegrey2, spheregrey);
 ascene.addmesh(zombie);
 
 toc
@@ -56,7 +63,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([1800, 1200], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach');
+camera = generate_camera([180, 120], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach', 'aperture', 0.04);
 
 camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
