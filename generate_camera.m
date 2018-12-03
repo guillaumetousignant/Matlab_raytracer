@@ -117,6 +117,16 @@ switch lower(environment)
     case 'beach'
 
         askybox = skybox_texture_sun(texture('.\assets\Ocean from horn.jpg'), [0.6209296, 1-0.2292542], [0.996, 0.941, 0.918] * 1.586010 * 8, 0.035);
+    
+    case 'grey'
+
+        sun = directional_light([2.5, 2.5, 2] * 2, transformmatrix());
+        sun.transformation.uniformscale(0.95); % will never intersect over 1 (and 1 is basically impossible)
+        sun.transformation.rotatez(-pi/4);
+        sun.transformation.rotatex(-3 * pi/8);
+        sun.update;
+
+        askybox = skybox_flat_sun([0.75, 0.75, 0.75], sun);
 end
 
 image = imgbuffer(res(2), res(1));
