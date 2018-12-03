@@ -17,7 +17,7 @@ tic
 % Materials
 difgrey = diffuse(colours.black, colours.grey1, 1);
 difgrey2 = diffuse(colours.black, colours.grey2, 1);
-diflight = diffuse(white * 3, white, 1);
+diflight = diffuse(colours.white * 3, colours.white, 1);
 zombiemat = diffuse_tex(colours.black, texture('.\assets\Zombie beast_texture5.jpg'), 1);
 
 % Objects 
