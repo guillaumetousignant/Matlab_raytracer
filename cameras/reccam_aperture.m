@@ -109,7 +109,7 @@ methods
         span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
         span_y = vertical * obj.focal_length * tan(fov_y/2)*2; % was *2
 
-        ray_point = focuspoint - (position(2)-0.5) * pixel_span_y + (position(1)-0.5) * pixel_span_x; % y, x
+        ray_point = focuspoint - (position(2)-0.5) * span_y + (position(1)-0.5) * span_x; % y, x
         ray_vec = ray_point - obj.origin;
         ray_vec = ray_vec/norm(ray_vec);
 
