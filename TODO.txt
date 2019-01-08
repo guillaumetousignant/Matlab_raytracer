@@ -2,7 +2,6 @@
 %
 % - Chromatic aberration.
 %           % Maybe refraction angle could be relative to ray color? Problem: doesn't work with reverse path tracing.
-% - Automatic aperture: trace a ray in the middle, use t as focal length.
 % - Scene should maybe just have meshes and split them when building the acc structure.
 % - Pre-multiply the rotation and translation matrices, so it has only one matrix multiply to do.
 % - Shear.
@@ -14,11 +13,10 @@
 % - Maybe, for motion blur, have two transformation matrices, and switch them on update?
 %           % Sounds slower, but would fix normal mapping and motion blur, and sphere texture lookup with motion blur.
 % - Add refractive portal.
-% - Make cameras have a save function.
-%           % Won't work, maybe change imgbuffer and add save (and add 3D imgbuffer).
 % - Make camera fov, aperture and focal length tied to scale.
 % - Add aperture isocams
 % - Add gamma correction
+% - Add camera UP
 %
 %% KNOWN ISSUES
 %
@@ -138,3 +136,7 @@
 %           % Now does, helps with motion blur and no transform matrix reference.
 % - Add colour structure.
 %           % Now a structure with all colours in it, to be loaded.
+% - Make cameras have a save function.
+%           % Now all cameras have a universal save function.
+% - Automatic aperture: trace a ray in the middle, use t as focal length.
+%           % Now have two focus methods.
