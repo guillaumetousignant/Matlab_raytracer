@@ -18,6 +18,7 @@ properties
     max_bounces
     direction
     origin
+    gammaind
 
     directionlast
     originlast
@@ -26,7 +27,7 @@ properties
 end
 
 methods
-    function obj = cam_3D_motionblur_aperture(transform, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, aperture, time)
+    function obj = cam_3D_motionblur_aperture(transform, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
         obj = obj@handle();      
         
         obj.camera = cam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time);
@@ -49,6 +50,7 @@ methods
         obj.eye_dist = eye_dist;
         obj.time = time;
         obj.aperture = aperture;
+        obj.gammaind = gammaind;
 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
@@ -112,17 +114,17 @@ methods
             filename_R = [filename, '_R.png'];
             filename_S = [filename, '_S.png'];
         end
-        imwrite16(obj.image.img, filename_L);
-        imwrite16(obj.image_R.img, filename_R);
+        imwrite16(obj.image.img, filename_L, obj.gammaind);
+        imwrite16(obj.image_R.img, filename_R, obj.gammaind);
         
-        imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S);
+        imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
         figure(fignumber+1);
-        imshow(obj.image_R.img);
+        imshow(obj.image_R.img.^(1/obj.gammaind));
     end
 
     function focus(obj, foc_dist)
