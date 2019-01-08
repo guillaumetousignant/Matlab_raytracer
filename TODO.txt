@@ -16,6 +16,7 @@
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
 % - Add camera UP
+% - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
 %
 %% KNOWN ISSUES
 %
