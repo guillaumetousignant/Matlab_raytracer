@@ -154,8 +154,12 @@ switch lower(cam_type)
         camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec);
     case 'iso'
         camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces);
+    case 'isoaperture'
+        camera = isocam_aperture(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture);
     case 'isomotionblur'
         camera = isocam_motionblur(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, time_vec);
+    case 'isomotionbluraperture'
+        camera = isocam_motionblur_aperture(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec);
     case 'rec'
         camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
     case 'recaperture'
