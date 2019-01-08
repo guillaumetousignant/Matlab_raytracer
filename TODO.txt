@@ -17,7 +17,8 @@
 % - Make cameras have a save function.
 %           % Won't work, maybe change imgbuffer and add save (and add 3D imgbuffer).
 % - Make camera fov, aperture and focal length tied to scale.
-% - Add colour structure.
+% - Add aperture isocams
+% - Add gamma correction
 %
 %% KNOWN ISSUES
 %
@@ -135,3 +136,5 @@
 %           % Now does, interpolates a rotation vector.
 % - Have spheres have a rotation angle instead or a transformation matrix.
 %           % Now does, helps with motion blur and no transform matrix reference.
+% - Add colour structure.
+%           % Now a structure with all colours in it, to be loaded.
