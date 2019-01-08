@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = reccam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time)
-        obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces);        
+    function obj = reccam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.time = time; 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
@@ -95,42 +95,20 @@ methods
     end  
 
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
-        obj.focal_length_buffer = foc_dist;
+        
     end
 
     function autofocus(obj, scene, position)
-        % position is [x, y]
-        fov_y = obj.fov(1);
-        fov_x = obj.fov(2);
-
-        horizontal = cross(obj.direction, [0, 0, 1]);
-        vertical = cross(horizontal, obj.direction);
-        focuspoint = obj.origin + obj.focal_length * obj.direction;
-        span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
-        span_y = vertical * obj.focal_length * tan(fov_y/2)*2; % was *2
-
-        ray_point = focuspoint - (position(2)-0.5) * span_y + (position(1)-0.5) * span_x; % y, x
-        ray_vec = ray_point - obj.origin;
-        ray_vec = ray_vec/norm(ray_vec);
-
-        focusray = ray(obj.origin, ray_vec, [0, 0, 0], [1, 1, 1], obj.material);
-
-        [~, t, ~] = scene.intersect(focusray);
-
-        if t == inf
-            t = 10000;
-        end
-
-        obj.focus(t);
+        
     end
 end
 end

@@ -8,8 +8,8 @@ properties
 end
 
 methods
-    function obj = cam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time)
-        obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time);  
+    function obj = cam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
+        obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind);  
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.focal_lengthlast = focal_length;
@@ -110,12 +110,12 @@ methods
     end  
 
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)

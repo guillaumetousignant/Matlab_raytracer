@@ -14,8 +14,7 @@
 %           % Sounds slower, but would fix normal mapping and motion blur, and sphere texture lookup with motion blur.
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
-% - Add aperture isocams
-% - Add gamma correction
+%           % Can't really work, scale breaks seperation of 3D cameras
 % - Add camera UP
 %
 %% KNOWN ISSUES
@@ -140,3 +139,9 @@
 %           % Now all cameras have a universal save function.
 % - Automatic aperture: trace a ray in the middle, use t as focal length.
 %           % Now have two focus methods.
+% - Add aperture isocams
+%           % Now have aperture versions, and have autofocus etc.
+% - Add gamma correction
+%           % Added, now a camera parameter and input fot the write function.
+% - Add autofocus to all cameras
+%           % Now all cameras have the method.

@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = isocam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time)
-        obj = obj@isocam(transform, fov, subpix, image, material, skybox, max_bounces);        
+    function obj = isocam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@isocam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.time = time; 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
@@ -90,15 +90,19 @@ methods
     end 
     
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
+        
+    end
+
+    function autofocus(obj, scene, position)
         
     end
 end

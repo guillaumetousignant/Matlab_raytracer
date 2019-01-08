@@ -8,8 +8,8 @@ properties
 end
 
 methods
-    function obj = cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time)
-        obj = obj@cam(transform, fov, subpix, image, material, skybox, max_bounces);  
+    function obj = cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@cam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);  
         obj.time = time; 
         obj.directionlast = obj.direction;
         %obj.direction_sphlast = obj.direction_sph;
@@ -89,15 +89,19 @@ methods
     end  
 
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename,obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
+        
+    end
+
+    function autofocus(obj, scene, position)
         
     end
 end

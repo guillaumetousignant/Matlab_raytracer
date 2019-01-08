@@ -11,10 +11,11 @@ properties
     direction
     %direction_sph
     origin
+    gammaind
 end
 
 methods
-    function obj = cam(transform, fov, subpix, image, material, skybox, max_bounces)
+    function obj = cam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind)
         obj = obj@handle();        
         obj.fov = fov;        
         obj.subpix = subpix;
@@ -27,6 +28,7 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
+        obj.gammaind = gammaind;
     end
 
     function update(obj)
@@ -88,15 +90,19 @@ methods
     end 
     
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
+        
+    end
+
+    function autofocus(obj, scene, position)
         
     end
 end
