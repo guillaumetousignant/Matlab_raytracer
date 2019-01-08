@@ -42,7 +42,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([3840, 2160], 'bg', 'grey'); 
+camera = generate_camera([300, 200], 'bg', 'grey'); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
