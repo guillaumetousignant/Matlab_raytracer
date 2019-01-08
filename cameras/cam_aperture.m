@@ -31,6 +31,8 @@ methods
         pixel_span_x = obj.fov(2)/res_x;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
         is_in = obj.material;
         origin1 = obj.origin;
         direction1 = obj.direction;
@@ -53,8 +55,10 @@ methods
                     for l = 1:subpix_x
                         rand_theta = rand * 2 * pi;
                         rand_r = rand * apert;
-
-                        subpix_vec_sph = pix_vec_sph + [0, pixel_span_y*(k/subpix_y-0.5), -pixel_span_x*(l/subpix_x-0.5)];
+                        jitter_x = rand;
+                        jitter_y = rand;
+                        
+                        subpix_vec_sph = pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x];
                         origin2 = origin1 + cos(rand_theta) * rand_r * vertical + sin(rand_theta) * rand_r * horizontal;
 
                         ray_vec = (origin1 + to_xyz(subpix_vec_sph) * focal) - origin2;

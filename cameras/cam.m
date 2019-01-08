@@ -63,6 +63,7 @@ methods
                     for l = 1:subpix_x
                         jitter_x = rand;
                         jitter_y = rand;
+                        
                         ray_vec = to_xyz(pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x]);
                         
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);

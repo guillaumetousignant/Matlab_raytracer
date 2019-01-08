@@ -51,6 +51,8 @@ methods
         focuspoint = origin1 + direction1;
         pixel_span_x = horizontal * tan(fov_x/2)*2/res_x; % maybe have those cached?
         pixel_span_y = vertical * tan(fov_y/2)*2/res_y;
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
@@ -62,7 +64,10 @@ methods
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
-                        ray_point = pix_point - pixel_span_y*(k/subpix_y-0.5) - pixel_span_x*(l/subpix_x-0.5);
+                        jitter_x = rand;
+                        jitter_y = rand;
+
+                        ray_point = pix_point - (k - subpix_y/2 - jitter_y)*subpix_span_y - (l - subpix_x/2 - jitter_x)*subpix_span_x;
                         ray_vec = ray_point - origin1;
                         ray_vec = ray_vec/norm(ray_vec);
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
