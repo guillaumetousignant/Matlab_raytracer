@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = isocam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture)
-        obj = obj@isocam(transform, fov, subpix, image, material, skybox, max_bounces);        
+    function obj = isocam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@isocam(transform, fov, subpix, image, material, skybox, max_bounces,maind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -85,16 +85,37 @@ methods
     end  
 
     function write(obj, filename)
-        imwrite16(obj.image.img, filename);
+        imwrite16(obj.image.img, filename, obj.gammaind);
     end
 
     function show(obj, fignumber)
         figure(fignumber);
-        imshow(obj.image.img);
+        imshow(obj.image.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
-        
+        obj.focal_length_buffer = foc_dist;
+    end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        fov_y = obj.fov(1);
+        fov_x = obj.fov(2);
+
+        horizontal = cross(obj.direction, [0, 0, 1]);
+        vertical = cross(horizontal, obj.direction);
+
+        pix_origin = obj.origin - vertical * (position(2)-0.5) * fov_y - horizontal * (position(1)-0.5) * fov_x;
+
+        focusray = ray(pix_origin, obj.direction, [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
     end
 end
 end
