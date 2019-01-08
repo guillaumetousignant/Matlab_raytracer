@@ -72,6 +72,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
+camera = generate_camera([300, 200], 'bg', 'day', 'subpix', 1, 'type', 'isomotionbluraperture', 'aperture', 0.5, 'focallength', 3); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
