@@ -107,7 +107,7 @@ switch lower(environment)
     case 'night'
 
         moon = directional_light([0.9, 0.9, 1] * 5, transformmatrix());
-        moon.transformation.uniformscale(0.95); % will never intersect over 1 (and 1 is basically impossible) was 0.8
+        moon.transformation.uniformscale(0.92); % will never intersect over 1 (and 1 is basically impossible) was 0.8
         moon.transformation.rotatez(-pi/4);
         moon.transformation.rotatex(pi/4);
         moon.update;
