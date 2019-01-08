@@ -31,6 +31,8 @@ methods
         pixel_span_x = obj.fov(2)/res_x;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
         is_in = obj.material;
         origin1 = obj.originlast;
         origin2 = obj.origin;
@@ -54,6 +56,8 @@ methods
                 for k = 1:subpix_y
                     for l = 1:subpix_x
                         randtime = rand * (time2 - time1) + time1;
+                        itter_x = rand;
+                        jitter_y = rand;
                         
                         direction_int = direction2 * randtime + direction1 * (1 - randtime);
                         origin_int = origin2 * randtime + origin1 * (1 - randtime);
@@ -61,7 +65,8 @@ methods
                         vertical_int = vertical2 * randtime + vertical1 * (1 - randtime);
 
                         pix_origin = -vertical_int * (j-res_y/2-0.5) * pixel_span_y - horizontal_int * (i-res_x/2-0.5)*-pixel_span_x;
-                        ray_origin = pix_origin + origin_int - vertical_int * pixel_span_y*(k/subpix_y-0.5) - horizontal_int * -pixel_span_x*(l/subpix_x-0.5);
+
+                        ray_origin = pix_origin + origin_int - vertical_int * (k - subpix_y/2 - jitter_y)*subpix_span_y - horizontal_int * (l - subpix_x/2 - jitter_x)*-subpix_span_x;
 
                         aray = ray_motionblur(ray_origin, direction_int, [0, 0, 0], [1, 1, 1], is_in, randtime);
                         aray.raycast(scene, obj);

@@ -51,6 +51,8 @@ methods
         focuspoint = origin1 + direction1;
         pixel_span_x = horizontal * tan(fov_x/2)*2/res_x; % maybe have those cached?
         pixel_span_y = vertical * tan(fov_y/2)*2/res_y;
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
@@ -62,7 +64,10 @@ methods
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
-                        ray_point = pix_point - pixel_span_y*(k/subpix_y-0.5) - pixel_span_x*(l/subpix_x-0.5);
+                        jitter_x = rand;
+                        jitter_y = rand;
+
+                        ray_point = pix_point - (k - subpix_y/2 - jitter_y)*subpix_span_y - (l - subpix_x/2 - jitter_x)*subpix_span_x;
                         ray_vec = ray_point - origin1;
                         ray_vec = ray_vec/norm(ray_vec);
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
@@ -96,7 +101,33 @@ methods
     end
     
     function focus(obj, foc_dist)
-        
+        obj.focal_length_buffer = foc_dist;
+    end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        fov_y = obj.fov(1);
+        fov_x = obj.fov(2);
+
+        horizontal = cross(obj.direction, [0, 0, 1]);
+        vertical = cross(horizontal, obj.direction);
+        focuspoint = obj.origin + obj.focal_length * obj.direction;
+        span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
+        span_y = vertical * obj.focal_length * tan(fov_y/2)*2; % was *2
+
+        ray_point = focuspoint - (position(2)-0.5) * span_y + (position(1)-0.5) * span_x; % y, x
+        ray_vec = ray_point - obj.origin;
+        ray_vec = ray_vec/norm(ray_vec);
+
+        focusray = ray(obj.origin, ray_vec, [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
     end
 end
 end

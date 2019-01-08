@@ -45,6 +45,8 @@ methods
         pixel_span_x = obj.fov(2)/res_x;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
         is_in = obj.material;
         origin1 = obj.origin;
         direction_sph1 = to_sph(obj.direction);
@@ -55,11 +57,14 @@ methods
             outline = zeros(1, res_x, 3);
             for i = 1:res_x
                 col = [0, 0, 0];
-                pix_vec_sph = direction_sph1 + [0, (j-res_y/2-0.5)*pixel_span_y, (i-res_x/2-0.5)*-pixel_span_x]; 
+                pix_vec_sph = direction_sph1 + [0, (j - res_y/2 - 0.5)*pixel_span_y, (i - res_x/2 - 0.5)*-pixel_span_x]; % pixel_span_x should be +?? Maybe not because spherical, don't remember.
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
-                        ray_vec = to_xyz(pix_vec_sph + [0, pixel_span_y*(k/subpix_y-0.5), -pixel_span_x*(l/subpix_x-0.5)]);
+                        jitter_x = rand;
+                        jitter_y = rand;
+                        
+                        ray_vec = to_xyz(pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x]);
                         
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
                         aray.raycast(scene, obj);

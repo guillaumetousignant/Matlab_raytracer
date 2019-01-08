@@ -41,6 +41,8 @@ methods
         focuspoint = origin1 + focal * direction1;
         pixel_span_x = horizontal * focal * tan(fov_x/2)*2/res_x;
         pixel_span_y = vertical * focal * tan(fov_y/2)*2/res_y;
+        subpix_span_y = pixel_span_y/subpix_y;
+        subpix_span_x = pixel_span_x/subpix_x;
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
@@ -53,11 +55,13 @@ methods
                     for l = 1:subpix_x
                         rand_theta = rand * 2 * pi;
                         rand_r = rand * apert;
+                        jitter_x = rand;
+                        jitter_y = rand;
 
                         pix_point = focuspoint - (j-res_y/2-0.5) * pixel_span_y + (i-res_x/2-0.5) * pixel_span_x;
                         origin2 = origin1 + cos(rand_theta) * rand_r * vertical + sin(rand_theta) * rand_r * horizontal;
 
-                        ray_point = pix_point - pixel_span_y*(k/subpix_y-0.5) - pixel_span_x*(l/subpix_x-0.5);
+                        ray_point = pix_point - (k - subpix_y/2 - jitter_y)*subpix_span_y - (l - subpix_x/2 - jitter_x)*subpix_span_x;    
                         ray_vec = ray_point - origin2;
                         ray_vec = ray_vec/norm(ray_vec);
                         aray = ray(origin2, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
@@ -105,7 +109,7 @@ methods
         span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
         span_y = vertical * obj.focal_length * tan(fov_y/2)*2; % was *2
 
-        ray_point = focuspoint - (position(2)-0.5) * pixel_span_y + (position(1)-0.5) * pixel_span_x; % y, x
+        ray_point = focuspoint - (position(2)-0.5) * span_y + (position(1)-0.5) * span_x; % y, x
         ray_vec = ray_point - obj.origin;
         ray_vec = ray_vec/norm(ray_vec);
 
