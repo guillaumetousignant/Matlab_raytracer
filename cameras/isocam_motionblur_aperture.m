@@ -81,9 +81,6 @@ methods
 
                         pix_origin = origin_int - vertical_int * (j-res_y/2-0.5) * pixel_span_y - horizontal_int * (i-res_x/2-0.5)*-pixel_span_x;
 
-%%% HERE
-                        
-
                         ray_origin = pix_origin - vertical_int * (k - subpix_y/2 - jitter_y)*subpix_span_y - horizontal_int * (l - subpix_x/2 - jitter_x)*-subpix_span_x;
                         ray_origin2 = ray_origin + cos(rand_theta) * rand_r * vertical_int + sin(rand_theta) * rand_r * horizontal_int;
                         direction3 = (ray_origin + direction_int * focal_int) - ray_origin2;
