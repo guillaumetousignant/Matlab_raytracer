@@ -6,6 +6,7 @@ properties
     colour
     dist
     material % what is the ray in? must be refractive
+    time
 end
 methods
     function obj = ray(origin, direction, colour, mask, material)
@@ -16,6 +17,7 @@ methods
         obj.mask = mask;
         obj.dist = 0;
         obj.material = material;
+        obj.time = [1, 1];
     end
 
     function raycast(obj, scene, camera)

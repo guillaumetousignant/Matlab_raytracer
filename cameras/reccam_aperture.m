@@ -3,13 +3,22 @@ classdef reccam_aperture < reccam
 properties
     focal_length
     aperture
+    focal_length_buffer
 end
 
 methods
     function obj = reccam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture)
         obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces);        
         obj.focal_length = focal_length;
+        obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
+    end
+    
+    function update(obj)
+        obj.origin = obj.transformation.multVec([0, 0, 0]);
+        transform_norm = obj.transformation.transformDir;
+        obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
+        obj.focal_length = obj.focal_length_buffer;
     end
 
     function raytrace(obj, scene)
@@ -45,7 +54,6 @@ methods
                         rand_theta = rand * 2 * pi;
                         rand_r = rand * apert;
 
-                        
                         pix_point = focuspoint - (j-res_y/2-0.5) * pixel_span_y + (i-res_x/2-0.5) * pixel_span_x;
                         origin2 = origin1 + cos(rand_theta) * rand_r * vertical + sin(rand_theta) * rand_r * horizontal;
 
@@ -80,6 +88,36 @@ methods
     function show(obj, fignumber)
         figure(fignumber);
         imshow(obj.image.img);
+    end
+    
+    function focus(obj, foc_dist)
+        obj.focal_length_buffer = foc_dist;
+    end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        fov_y = obj.fov(1);
+        fov_x = obj.fov(2);
+
+        horizontal = cross(obj.direction, [0, 0, 1]);
+        vertical = cross(horizontal, obj.direction);
+        focuspoint = obj.origin + obj.focal_length * obj.direction;
+        span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
+        span_y = vertical * obj.focal_length * tan(fov_y/2)*2; % was *2
+
+        ray_point = focuspoint - (position(2)-0.5) * pixel_span_y + (position(1)-0.5) * pixel_span_x; % y, x
+        ray_vec = ray_point - obj.origin;
+        ray_vec = ray_vec/norm(ray_vec);
+
+        focusray = ray(obj.origin, ray_vec, [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
     end
 end
 end

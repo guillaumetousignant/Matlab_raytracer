@@ -4,6 +4,7 @@ properties
     camera
     camera_R
     focal_length
+    focal_length_buffer
     eye_dist
     aperture
 
@@ -38,14 +39,15 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.focal_length = focal_length;
+        obj.focal_length_buffer = focal_length;
         obj.eye_dist = eye_dist;
         obj.aperture = aperture;
 
         obj.camera.origin = obj.transformation.multVec([-eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([eye_dist/2, 0, 0]);
 
-        L_vec = [0, 1, 0] - [-eye_dist/2, 0, 0];
-        R_vec = [0, 1, 0] - [eye_dist/2, 0, 0];
+        L_vec = [0, focal_length, 0] - [-eye_dist/2, 0, 0];
+        R_vec = [0, focal_length, 0] - [eye_dist/2, 0, 0];
         obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
         obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
     end
@@ -55,12 +57,15 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
+        obj.focal_length = obj.focal_length_buffer;
 
         obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
         obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
+        obj.camera.focal_length = obj.focal_length;
+        obj.camera_R.focal_length = obj.focal_length;
 
-        L_vec = [0, 1, 0] - [-obj.eye_dist/2, 0, 0];
-        R_vec = [0, 1, 0] - [obj.eye_dist/2, 0, 0];
+        L_vec = [0, obj.focal_length, 0] - [-obj.eye_dist/2, 0, 0];
+        R_vec = [0, obj.focal_length, 0] - [obj.eye_dist/2, 0, 0];
         obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
         obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
     end
@@ -93,6 +98,25 @@ methods
         imshow(obj.image.img);
         figure(fignumber+1);
         imshow(obj.image_R.img);
+    end
+
+    function focus(obj, foc_dist)
+        obj.focal_length_buffer = foc_dist;
+    end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        ray_direction_sph = to_sph(obj.direction) + [0, (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*-obj.fov(2)]; % 0, y, x
+
+        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+        
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
     end
 end
 end

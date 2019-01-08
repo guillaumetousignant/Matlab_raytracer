@@ -3,13 +3,23 @@ classdef cam_aperture < cam
 properties
     focal_length
     aperture
+    focal_length_buffer
 end
 
 methods
     function obj = cam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture)
         obj = obj@cam(transform, fov, subpix, image, material, skybox, max_bounces);        
         obj.focal_length = focal_length;
+        obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
+    end
+    
+    function update(obj)
+        obj.origin = obj.transformation.multVec([0, 0, 0]);
+        transform_norm = obj.transformation.transformDir;
+        obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
+        %obj.direction_sph = to_sph(obj.direction);
+        obj.focal_length = obj.focal_length_buffer;
     end
 
     function raytrace(obj, scene)
@@ -78,6 +88,25 @@ methods
     function show(obj, fignumber)
         figure(fignumber);
         imshow(obj.image.img);
+    end
+    
+    function focus(obj, foc_dist)
+        obj.focal_length_buffer = foc_dist;
+    end
+
+    function autofocus(obj, scene, position)
+        % position is [x, y]
+        ray_direction_sph = to_sph(obj.direction) + [0, (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*-obj.fov(2)]; % 0, y, x
+
+        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
+
+        [~, t, ~] = scene.intersect(focusray);
+
+        if t == inf
+            t = 10000;
+        end
+
+        obj.focus(t);
     end
 end
 end

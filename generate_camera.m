@@ -33,13 +33,13 @@ res = [resolution(2), resolution(1)];
 
 cam_type = 'cam';
 aspect_ratio = res(2) / res(1);
-fov(2) = 80 * pi/180; % was 80
+fov(2) = 80 * pi/180;
 fov(1) = fov(2)/aspect_ratio;
 fov_iso(2) = 4;
 fov_iso(1) = fov_iso(2)/aspect_ratio;
-subpix = [1, 1] .* 2; % 2
-max_bounces = 8; % was 8
-eye_dist = 0.065; % 0.065
+subpix = [2, 2];
+max_bounces = 8;
+eye_dist = 0.065;
 focal_length = 2;
 aperture = 0.01;
 time_vec = [0, 1];
@@ -107,7 +107,7 @@ switch lower(environment)
     case 'night'
 
         moon = directional_light([0.9, 0.9, 1] * 5, transformmatrix());
-        moon.transformation.uniformscale(0.95); % will never intersect over 1 (and 1 is basically impossible) was 0.8
+        moon.transformation.uniformscale(0.92); % will never intersect over 1 (and 1 is basically impossible) was 0.8
         moon.transformation.rotatez(-pi/4);
         moon.transformation.rotatex(pi/4);
         moon.update;
@@ -117,6 +117,16 @@ switch lower(environment)
     case 'beach'
 
         askybox = skybox_texture_sun(texture('.\assets\Ocean from horn.jpg'), [0.6209296, 1-0.2292542], [0.996, 0.941, 0.918] * 1.586010 * 8, 0.035);
+    
+    case 'grey'
+
+        sun = directional_light([2.5, 2.5, 2] * 2, transformmatrix());
+        sun.transformation.uniformscale(0.95); % will never intersect over 1 (and 1 is basically impossible)
+        sun.transformation.rotatez(-pi/4);
+        sun.transformation.rotatex(-3 * pi/8);
+        sun.update;
+
+        askybox = skybox_flat_sun([0.75, 0.75, 0.75], sun);
 end
 
 image = imgbuffer(res(2), res(1));
@@ -127,32 +137,32 @@ switch lower(cam_type)
     case 'aperture'
         camera = cam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture);
     case 'motionblur'
-        camera = cam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec); 
+        camera = cam_motionblur(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec); 
     case 'motionbluraperture'
         camera = cam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec); 
     case '3d'
         image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length);
+        camera = cam_3D(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length);
     case '3daperture'
         image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture);
+        camera = cam_3D_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture);
     case '3dmotionblur'
         image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec);
+        camera = cam_3D_motionblur(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec);
     case '3dmotionbluraperture'
         image_R = imgbuffer(res(2), res(1));
         camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec);
     case 'iso'
         camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces);
     case 'isomotionblur'
-        camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, time_vec);
+        camera = isocam_motionblur(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, time_vec);
     case 'rec'
         camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces);
     case 'recaperture'
-        camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture);
+        camera = reccam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture);
     case 'recmotionblur'
-        camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec);
+        camera = reccam_motionblur(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec);
     case 'recmotionbluraperture'
-        camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec);
+        camera = reccam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec);
 end
 end
