@@ -44,7 +44,7 @@ eye_dist = 0.065;
 focal_length = 2;
 aperture = 0.01;
 time_vec = [0, 1];
-gammaind = 2.2;
+gammaind = 1; % should be 2.2
 
 air = refractive([0, 0, 0], [1, 1, 1], 1.001, struct('ind', 0), nonabsorber()); %%% CHECK remove this when merging with generate_scene
 

@@ -38,10 +38,10 @@ glass = reflective_refractive(black, white, 1.5, air, absorber(black, white, 100
 planegrey3 = triangle(difgrey, [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5], [], [], neutralmatrix);
 planegrey4 = triangle(difgrey, [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
 
-teapot = mesh(mesh_geometry('.\assets\teapot2.obj'), glass, transformmatrix());
+teapot = mesh(mesh_geometry('.\assets\teapot2.obj'), teapotmat, transformmatrix());
 teapot.transformation.rotatex(pi/2);
 %teapot.transformation.rotatez(pi/16 + pi/2);
-teapot.transformation.rotatez(-pi/2);
+teapot.transformation.rotatez(-7 * pi/8);
 teapot.transformation.uniformscale(0.5);
 teapot.transformation.translate([0, 3, 0]);
 
@@ -66,6 +66,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
+camera = generate_camera([300, 200], 'bg', 'grey', 'subpix', 1, 'type', 'aperture', 'focallength', 3); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
