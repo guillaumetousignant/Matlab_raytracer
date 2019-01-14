@@ -38,18 +38,16 @@ glass = reflective_refractive(black, white, 1.5, air, absorber(black, white, 100
 planegrey3 = triangle(difgrey, [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5], [], [], neutralmatrix);
 planegrey4 = triangle(difgrey, [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
 
-teapot = mesh(mesh_geometry('.\assets\teapot2.obj'), teapotmat, transformmatrix());
-teapot.transformation.rotatex(pi/2);
-%teapot.transformation.rotatez(pi/16 + pi/2);
-teapot.transformation.rotatez(-7 * pi/8);
-teapot.transformation.uniformscale(0.5);
-teapot.transformation.translate([0, 3, 0]);
+zombie = mesh(mesh_geometry('.\assets\Zombie_Beast4_test.obj'), teapotmat, transformmatrix());
+zombie.transformation.rotatex(pi/2);
+zombie.transformation.rotatez(-pi/16);
+zombie.transformation.uniformscale(0.025);
+zombie.transformation.translate([0, 1.5, -0.53]);
 
-teapot.update;
-teapot.transformation.rotatez(pi/4);
+zombie.update;
 
 ascene = scene(planegrey3, planegrey4);
-ascene.addmesh(teapot);
+ascene.addmesh(zombie);
 
 toc
 
@@ -66,7 +64,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([1800, 1200], 'bg', 'grey', 'subpix', 1, 'type', 'aperture', 'focallength', 3); 
+camera = generate_camera([180, 120], 'bg', 'grey', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
