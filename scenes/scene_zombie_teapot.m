@@ -30,15 +30,16 @@ tic
 % Materials
 difgrey = diffuse(black, grey1, 1);
 red_metal = reflective_fuzz(black, red, 2, 1);
+green_goo = reflective_refractive(black, white, 1.5, air, scatterer_exp(black, green, 0.05, 0.05, 0.01, 1, 1));
 coating = reflective(black, white);
-teapotmat = fresnelmix(red_metal, coating, 1.5);
-glass = reflective_refractive(black, white, 1.5, air, absorber(black, white, 100, 100));
+zombiemat = fresnelmix(red_metal, coating, 1.5);
+glass = reflective_refractive(black, white, 1.5, air, nonabsorber());
 
 % Objects
 planegrey3 = triangle(difgrey, [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5], [], [], neutralmatrix);
 planegrey4 = triangle(difgrey, [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
 
-zombie = mesh(mesh_geometry('.\assets\Zombie_Beast4_test.obj'), teapotmat, transformmatrix());
+zombie = mesh(mesh_geometry('.\assets\Zombie_Beast4_test.obj'), green_goo, transformmatrix());
 zombie.transformation.rotatex(pi/2);
 zombie.transformation.rotatez(-pi/16);
 zombie.transformation.uniformscale(0.025);
@@ -64,7 +65,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([180, 120], 'bg', 'grey', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5); 
+camera = generate_camera([1800, 1200], 'bg', 'day', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5, 'maxbounces', 32); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
