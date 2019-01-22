@@ -16,10 +16,13 @@
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
 % - Add camera UP
-%           % How to do this for spherical projection cameras? maybe as a rotation of the resulting xyz vector.
+%           % How to do this for spherical projection cameras? maybe as a rotation of the resulting xyz vector, 
+%           % have roll angle, and apply a vector rotation around direction?.
 % - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
-% - Add list of mediums, to fix is_in, add priority to each medium.
+% - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
+%           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
+% - Make the image saving filename a member of the camera or imagebuffer, so as not to change raytracer all the time.
 %
 %% KNOWN ISSUES
 %
