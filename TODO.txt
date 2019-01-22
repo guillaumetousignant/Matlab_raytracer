@@ -17,7 +17,8 @@
 %           % Can't really work, scale breaks seperation of 3D cameras
 % - Add camera UP
 %           % How to do this for spherical projection cameras? maybe as a rotation of the resulting xyz vector, 
-%           % have roll angle, and apply a vector rotation around direction?.
+%           % have roll angle, and apply a vector rotation around direction?
+%           % Get roll angle from transform matrix on update.
 % - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
 % - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
 %           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
