@@ -14,5 +14,6 @@ colours.red = [0.9568627450980392, 0.2784313725490196, 0.2784313725490196];
 colours.gemcolor = [0 0.9 1];
 colours.orange = [1, 0.6039, 0];
 colours.teal = [0.1529, 0.6549, 0.8471];
+colours.pink = [1, 0.50196, 0.75294];
 
 save colours_mat colours
