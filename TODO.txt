@@ -16,6 +16,7 @@
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
 % - Add camera UP
+%           % How to do this for spherical projection cameras? maybe as a rotation of the resulting xyz vector.
 % - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
 % - Add list of mediums, to fix is_in, add priority to each medium.
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
