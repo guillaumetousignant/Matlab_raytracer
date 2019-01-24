@@ -70,13 +70,13 @@ methods
                         ray_vec = to_xyz(pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x]);
                     
                         %%% CHECK begin
-                        roll_angle = 15;
-                        rot_mat = [ cosd(roll_angle) + direction1(1)^2 * (1 - cosd(roll_angle)), direction1(1)*direction1(2)*(1 - cosd(roll_angle)) - direction1(3)*sind(roll_angle), direction1(1)*direction1(3)*(1 - cosd(roll_angle)) + direction1(2)*sind(roll_angle); ...
-                                    direction1(1)*direction1(2)*(1 - cosd(roll_angle)) + direction1(3)*sind(roll_angle), cosd(roll_angle) + direction1(2)^2 * (1 - cosd(roll_angle)), direction1(2)*direction1(3)*(1 - cosd(roll_angle)) - direction1(1)*sind(roll_angle); ...
-                                    direction1(1)*direction1(3)*(1 - cosd(roll_angle)) - direction1(2)*sind(roll_angle), direction1(2)*direction1(3)*(1 - cosd(roll_angle)) + direction1(1)*sind(roll_angle), cosd(roll_angle) + direction1(3)^2 * (1 - cosd(roll_angle))]; %%% CHECK fix broadcast thing
-                        rot_mat = inv(rot_mat)';
-
-                        ray_vec = ray_vec * rot_mat;
+                        %roll_angle = 15;
+                        %rot_mat = [ cosd(roll_angle) + direction1(1)^2 * (1 - cosd(roll_angle)), direction1(1)*direction1(2)*(1 - cosd(roll_angle)) - direction1(3)*sind(roll_angle), direction1(1)*direction1(3)*(1 - cosd(roll_angle)) + direction1(2)*sind(roll_angle); ...
+                        %            direction1(1)*direction1(2)*(1 - cosd(roll_angle)) + direction1(3)*sind(roll_angle), cosd(roll_angle) + direction1(2)^2 * (1 - cosd(roll_angle)), direction1(2)*direction1(3)*(1 - cosd(roll_angle)) - direction1(1)*sind(roll_angle); ...
+                        %            direction1(1)*direction1(3)*(1 - cosd(roll_angle)) - direction1(2)*sind(roll_angle), direction1(2)*direction1(3)*(1 - cosd(roll_angle)) + direction1(1)*sind(roll_angle), cosd(roll_angle) + direction1(3)^2 * (1 - cosd(roll_angle))]; %%% CHECK fix broadcast thing
+                        %rot_mat = inv(rot_mat)';
+                        %
+                        %ray_vec = ray_vec * rot_mat;
                         %%% CHECK end
                         
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
