@@ -18,7 +18,6 @@ methods
         obj.origin = obj.transformation.multVec([0, 0, 0]);
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
-        %obj.direction_sph = to_sph(obj.direction);
         obj.focal_length = obj.focal_length_buffer;
         obj.up = obj.up_buffer;
     end
@@ -37,12 +36,11 @@ methods
         is_in = obj.material;
         origin1 = obj.origin;
         direction1 = obj.direction;
-        direction_sph1 = to_sph(direction1);
         apert = obj.aperture;
         focal = obj.focal_length;
         up_dir = obj.up;
 
-        horizontal = cross(direction1, up_dir); %%% CHECK wrong unless ray direction is changed too
+        horizontal = cross(direction1, up_dir); 
         vertical = cross(horizontal, direction1);
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
@@ -51,7 +49,7 @@ methods
             outline = zeros(1, res_x, 3);
             for i = 1:res_x
                 col = [0, 0, 0];
-                pix_vec_sph = direction_sph1 + [0, (j-res_y/2-0.5)*pixel_span_y, (i-res_x/2-0.5)*-pixel_span_x]; 
+                pix_vec_sph = [1, pi/2 + (j-res_y/2-0.5)*pixel_span_y, (i-res_x/2-0.5)*pixel_span_x]; 
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
@@ -60,10 +58,10 @@ methods
                         jitter_x = rand;
                         jitter_y = rand;
                         
-                        subpix_vec_sph = pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x];
+                        subpix_vec_sph = pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*subpix_span_x];
                         origin2 = origin1 + cos(rand_theta) * rand_r * vertical + sin(rand_theta) * rand_r * horizontal;
 
-                        ray_vec = (origin1 + to_xyz(subpix_vec_sph) * focal) - origin2;
+                        ray_vec = (origin1 + to_xyzoffset(subpix_vec_sph, [direction1; horizontal; vertical]) * focal) - origin2;
                         ray_vec = ray_vec/norm(ray_vec);
                         
                         aray = ray(origin2, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
@@ -102,9 +100,13 @@ methods
 
     function autofocus(obj, scene, position)
         % position is [x, y]
-        ray_direction_sph = to_sph(obj.direction) + [0, (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*-obj.fov(2)]; % 0, y, x
 
-        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
+        horizontal = cross(obj.direction, obj.up_dir); 
+        vertical = cross(horizontal, obj.direction);
+
+        ray_direction_sph = [1, pi/2 + (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*obj.fov(2)]; % 0, y, x
+
+        focusray = ray(obj.origin, to_xyzoffset(ray_direction_sph, [obj.direction; horizontal; vertical]), [0, 0, 0], [1, 1, 1], obj.material);
 
         [~, t, ~] = scene.intersect(focusray);
 

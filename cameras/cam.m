@@ -56,9 +56,10 @@ methods
         subpix_span_x = pixel_span_x/subpix_x;
         is_in = obj.material;
         origin1 = obj.origin;
-        direction_sph1 = to_sph(obj.direction);
-        %direction1 = obj.direction; %%% CHECK for roll
-        up_dir obj.up;
+        direction1 = obj.direction;
+        up_dir = obj.up;
+        horizontal = cross(direction1, up_dir); % maybe have those cached?
+        vertical = cross(horizontal, direction1);
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
@@ -66,16 +67,19 @@ methods
             outline = zeros(1, res_x, 3);
             for i = 1:res_x
                 col = [0, 0, 0];
-                pix_vec_sph = direction_sph1 + [0, (j - res_y/2 - 0.5)*pixel_span_y, (i - res_x/2 - 0.5)*-pixel_span_x]; % pixel_span_x should be +?? Maybe not because spherical, don't remember.
+                pix_vec_sph = [1, pi/2 + (j - res_y/2 - 0.5)*pixel_span_y, (i - res_x/2 - 0.5)*pixel_span_x]; % pixel_span_x should be +?? Maybe not because spherical, don't remember.
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
                         jitter_x = rand;
                         jitter_y = rand;
                         
-                        ray_vec = to_xyz(pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x]);
+                        ray_vec = pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*subpix_span_x];
                     
+                        ray_vec = to_xyzoffset(ray_vec, [direction1; horizontal; vertical])
                         %%% CHECK begin
+                        %horizontal = cross(direction1, up_dir);
+                        %vertical = cross(horizontal, direction1);
                         %roll_angle = 15;
                         %rot_mat = [ cosd(roll_angle) + direction1(1)^2 * (1 - cosd(roll_angle)), direction1(1)*direction1(2)*(1 - cosd(roll_angle)) - direction1(3)*sind(roll_angle), direction1(1)*direction1(3)*(1 - cosd(roll_angle)) + direction1(2)*sind(roll_angle); ...
                         %            direction1(1)*direction1(2)*(1 - cosd(roll_angle)) + direction1(3)*sind(roll_angle), cosd(roll_angle) + direction1(2)^2 * (1 - cosd(roll_angle)), direction1(2)*direction1(3)*(1 - cosd(roll_angle)) - direction1(1)*sind(roll_angle); ...

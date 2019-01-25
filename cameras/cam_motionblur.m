@@ -46,10 +46,15 @@ methods
         origin2 = obj.origin;
         direction1 = obj.directionlast;
         direction2 = obj.direction;
-        %direction_sph1 = obj.direction_sphlast;
-        %direction_sph2 = obj.direction_sph;
         time1 = obj.time(1);
         time2 = obj.time(2);
+        up1= obj.uplast;
+        up2 = obj.up;
+
+        horizontal1 = cross(direction1, up1);
+        horizontal2 = cross(direction2, up2);
+        vertical1 = cross(horizontal1, direction1);
+        vertical2 = cross(horizontal2, direction2);
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
@@ -57,7 +62,7 @@ methods
             outline = zeros(1, res_x, 3);
             for i = 1:res_x
                 col = [0, 0, 0];
-                pix_vec_sph = [0, (j-res_y/2-0.5)*pixel_span_y, (i-res_x/2-0.5)*-pixel_span_x]; 
+                pix_vec_sph = [1, pi/2 + (j-res_y/2-0.5)*pixel_span_y, (i-res_x/2-0.5)*pixel_span_x]; 
 
                 for k = 1:subpix_y
                     for l = 1:subpix_x
@@ -66,10 +71,11 @@ methods
                         jitter_y = rand;
 
                         direction_int = direction2 * randtime + direction1 * (1 - randtime);
-                        direction_sph_int = to_sph(direction_int);
+                        horizontal_int = horizontal2 * randtime + horizontal1 * (1 - randtime);
+                        vertical_int = vertical2 * randtime + vertical1 * (1 - randtime);
                         origin_int = origin2 * randtime + origin1 * (1 - randtime);
                         
-                        ray_vec = to_xyz(pix_vec_sph + direction_sph_int + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*-subpix_span_x]);
+                        ray_vec = to_xyzoffset(pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*subpix_span_x], [direction_int; horizontal_int; vertical_int]);
                         
                         aray = ray_motionblur(origin_int, ray_vec, [0, 0, 0], [1, 1, 1], is_in, randtime);
                         aray.raycast(scene, obj);
