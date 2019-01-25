@@ -15,7 +15,6 @@
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
-% - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
 % - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
 %           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
@@ -41,7 +40,6 @@
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
-% - Spherical cameras don't do anything with up for ray direction or focus.
 %
 %% DONE
 %
@@ -156,3 +154,5 @@
 %           % HAll have a up vector, to find horizontal.
 % - 3D cams should take up for eye position.
 %           % Now use horizontal to get eye positions.
+% - Spherical cameras don't do anything with up for ray direction or focus.
+%           % Now using up, and also fixed projection that was frong away from horizontal.
