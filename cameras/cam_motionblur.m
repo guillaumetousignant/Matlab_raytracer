@@ -5,15 +5,17 @@ properties
     %direction_sphlast
     originlast
     time
+    uplast
 end
 
 methods
-    function obj = cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
-        obj = obj@cam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);  
+    function obj = cam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@cam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);  
         obj.time = time; 
         obj.directionlast = obj.direction;
         %obj.direction_sphlast = obj.direction_sph;
         obj.originlast = obj.origin;
+        obj.uplast = obj.up;
     end
 
     function update(obj)
@@ -24,6 +26,8 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sphlast = obj.direction_sph;
         %obj.direction_sph = to_sph(obj.direction);
+        obj.uplast = obj.up;
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -103,6 +107,10 @@ methods
 
     function autofocus(obj, scene, position)
         
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

@@ -15,10 +15,6 @@
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
-% - Add camera UP
-%           % How to do this for spherical projection cameras? maybe as a rotation of the resulting xyz vector, 
-%           % have roll angle, and apply a vector rotation around direction?
-%           % Get roll angle from transform matrix on update.
 % - obj.origin = obj.transformation.multVec([0, 0, 0]); should just take last row of matrix
 % - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
 %           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
@@ -45,6 +41,8 @@
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
+% - 3D cams should take up for eye position.
+% - Spherical cameras don't do anything with up for ray direction or focus.
 %
 %% DONE
 %
@@ -155,3 +153,5 @@
 %           % Now all cameras have the method.
 % - For reccam motionblur, direction1 and direction2 seem to be swapped in relation to direction and directionlast.
 %           % Now in the right order, won't interpolate backwards anymore.
+% - Add camera UP
+%           % HAll have a up vector, to find horizontal.

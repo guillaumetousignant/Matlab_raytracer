@@ -18,19 +18,22 @@ properties
     direction
     origin
     gammaind
+    up
+    up_buffer
 
     directionlast
     originlast
     focal_lengthlast
     time
+    uplast
 end
 
 methods
-    function obj = cam_3D_motionblur(transform, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, time, gammaind)
+    function obj = cam_3D_motionblur(transform, up, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, time, gammaind)
         obj = obj@handle();      
         
-        obj.camera = cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time);
-        obj.camera_R = cam_motionblur(transform, fov, subpix, image_R, material, skybox, max_bounces, time);
+        obj.camera = cam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind);
+        obj.camera_R = cam_motionblur(transform, up, fov, subpix, image_R, material, skybox, max_bounces, time, gammaind);
         
         obj.fov = fov;        
         obj.subpix = subpix;
@@ -51,16 +54,21 @@ methods
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
         obj.gammaind = gammaind;
+        obj.up = up;
+        obj.up_buffer = up;
+        obj.uplast = up;
 
-        obj.camera.origin = obj.transformation.multVec([-eye_dist/2, 0, 0]);
-        obj.camera_R.origin = obj.transformation.multVec([eye_dist/2, 0, 0]);
+        horizontal = cross(obj.direction, up);
+
+        obj.camera.origin = obj.transformation.multVec(-eye_dist/2 * horizontal);
+        obj.camera_R.origin = obj.transformation.multVec(eye_dist/2 * horizontal);
         obj.camera.originlast = obj.camera.origin;
         obj.camera_R.originlast = obj.camera_R.origin;
 
-        L_vec = [0, focal_length, 0] - [-eye_dist/2, 0, 0];
-        R_vec = [0, focal_length, 0] - [eye_dist/2, 0, 0];
-        obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
-        obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
+        L_vec = focal_length * obj.direction + eye_dist/2 * horizontal;
+        R_vec = focal_length * obj.direction - eye_dist/2 * horizontal;
+        obj.camera.direction = L_vec/norm(L_vec);
+        obj.camera_R.direction = R_vec/norm(R_vec);
         obj.camera.directionlast = obj.camera.direction;
         obj.camera_R.directionlast = obj.camera_R.direction;
     end
@@ -69,29 +77,37 @@ methods
         obj.originlast = obj.origin;
         obj.directionlast = obj.direction;
         obj.focal_lengthlast = obj.focal_length;
+        obj.uplast = obj.up;
 
         obj.origin = obj.transformation.multVec([0, 0, 0]);
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
         obj.focal_length = obj.focal_length_buffer;
-
-        obj.camera.originlast = obj.camera.origin;
-        obj.camera_R.originlast = obj.camera_R.origin;
-        obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
-        obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
+        obj.up = obj.up_buffer;
 
         obj.camera.focal_lengthlast = obj.camera.focal_length;
         obj.camera_R.focal_lengthlast = obj.camera.focal_length;
         obj.camera.focal_length = obj.focal_length;
-        obj.camera_R.focal_length = obj.focal_length;        
+        obj.camera_R.focal_length = obj.focal_length;      
+        obj.camera.uplast = obj.camera.uplast;
+        obj.camera_R.uplast = obj.camera.uplast;
+        obj.camera.up = obj.up;
+        obj.camera_R.up = obj.up;   
+
+        horizontal = cross(obj.direction, obj.up);
+
+        obj.camera.originlast = obj.camera.origin;
+        obj.camera_R.originlast = obj.camera_R.origin;
+        obj.camera.origin = obj.transformation.multVec(-obj.eye_dist/2 * horizontal);
+        obj.camera_R.origin = obj.transformation.multVec(obj.eye_dist/2 * horizontal);
 
         obj.camera.directionlast = obj.camera.direction;
         obj.camera_R.directionlast = obj.camera_R.direction;
-        L_vec = [0, obj.focal_length, 0] - [-obj.eye_dist/2, 0, 0];
-        R_vec = [0, obj.focal_length, 0] - [obj.eye_dist/2, 0, 0];
-        obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
-        obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
+        L_vec = obj.focal_length * obj.direction + obj.eye_dist/2 * horizontal;
+        R_vec = obj.focal_length * obj.direction - obj.eye_dist/2 * horizontal;
+        obj.camera.direction = L_vec/norm(L_vec);
+        obj.camera_R.direction = R_vec/norm(R_vec);
     end
 
     function raytrace(obj, scene)
@@ -141,6 +157,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

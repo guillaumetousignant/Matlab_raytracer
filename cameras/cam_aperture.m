@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = cam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@cam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = cam_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@cam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -20,6 +20,7 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
         obj.focal_length = obj.focal_length_buffer;
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -39,8 +40,9 @@ methods
         direction_sph1 = to_sph(direction1);
         apert = obj.aperture;
         focal = obj.focal_length;
+        up_dir = obj.up;
 
-        horizontal = cross(direction1, [0, 0, 1]); % maybe have those cached?
+        horizontal = cross(direction1, up_dir); %%% CHECK wrong unless ray direction is changed too
         vertical = cross(horizontal, direction1);
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
@@ -111,6 +113,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

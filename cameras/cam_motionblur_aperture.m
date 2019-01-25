@@ -8,8 +8,8 @@ properties
 end
 
 methods
-    function obj = cam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
-        obj = obj@cam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind);  
+    function obj = cam_motionblur_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
+        obj = obj@cam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind);  
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.focal_lengthlast = focal_length;
@@ -26,6 +26,8 @@ methods
         %obj.direction_sph = to_sph(obj.direction);
         obj.focal_lengthlast = obj.focal_length;
         obj.focal_length = obj.focal_length_buffer;
+        obj.uplast = obj.up;
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -51,9 +53,11 @@ methods
         apert = obj.aperture;
         focal1 = obj.focal_lengthlast;
         focal2 = obj.focal_length;
+        up1 = obj.uplast;
+        up2 = obj.up;
 
-        horizontal1 = cross(direction1, [0, 0, 1]);
-        horizontal2 = cross(direction2, [0, 0, 1]);
+        horizontal1 = cross(direction1, up1); %%% CHECK wrong unless ray dir is changed
+        horizontal2 = cross(direction2, up2); %%% CHECK wrong unless ray dir is changed
         vertical1 = cross(horizontal1, direction1);
         vertical2 = cross(horizontal2, direction2);
 
@@ -135,6 +139,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

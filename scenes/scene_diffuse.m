@@ -44,11 +44,11 @@ toc
 %% Camera
 upvector = [1, 0, 1];
 upvector = upvector/norm(upvector);
-camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'rec', 'up', upvector); 
+camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'cam', 'up', upvector); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
-%camera.transformation.rotatex(-pi/8);
+%camera.transformation.rotatex(-pi/16);
 
 camera.update;
 camera.update; % second time to kill blur
