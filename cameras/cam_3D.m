@@ -18,14 +18,16 @@ properties
     direction
     origin
     gammaind
+    up
+    up_buffer
 end
 
 methods
-    function obj = cam_3D(transform, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, gammaind)
+    function obj = cam_3D(transform, up, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, gammaind)
         obj = obj@handle();      
         
-        obj.camera = cam(transform, fov, subpix, image, material, skybox, max_bounces);
-        obj.camera_R = cam(transform, fov, subpix, image_R, material, skybox, max_bounces);
+        obj.camera = cam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);
+        obj.camera_R = cam(transform, up, fov, subpix, image_R, material, skybox, max_bounces, gammaind);
 
         obj.fov = fov;        
         obj.subpix = subpix;
@@ -42,14 +44,18 @@ methods
         obj.focal_length_buffer = focal_length;
         obj.eye_dist = eye_dist;
         obj.gammaind = gammaind;
+        obj.up = up;
+        obj.up_buffer = up;
 
-        obj.camera.origin = obj.transformation.multVec([-eye_dist/2, 0, 0]);
-        obj.camera_R.origin = obj.transformation.multVec([eye_dist/2, 0, 0]);
+        horizontal = cross(obj.direction, up);
 
-        L_vec = [0, focal_length, 0] - [-eye_dist/2, 0, 0];
-        R_vec = [0, focal_length, 0] - [eye_dist/2, 0, 0];
-        obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
-        obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
+        obj.camera.origin = -eye_dist/2 * horizontal + obj.origin;
+        obj.camera_R.origin = eye_dist/2 * horizontal + obj.origin;
+
+        L_vec = focal_length * obj.direction + eye_dist/2 * horizontal;
+        R_vec = focal_length * obj.direction - eye_dist/2 * horizontal;
+        obj.camera.direction = L_vec/norm(L_vec);
+        obj.camera_R.direction = R_vec/norm(R_vec);
     end
 
     function update(obj)
@@ -58,16 +64,22 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
         obj.focal_length = obj.focal_length_buffer;
-
-        obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
-        obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
+        obj.up = obj.up_buffer;
+        
         obj.camera.focal_length = obj.focal_length;
         obj.camera_R.focal_length = obj.focal_length;
+        obj.camera.up = obj.up;
+        obj.camera_R.up = obj.up;
 
-        L_vec = [0, obj.focal_length, 0] - [-obj.eye_dist/2, 0, 0];
-        R_vec = [0, obj.focal_length, 0] - [obj.eye_dist/2, 0, 0];
-        obj.camera.direction = transform_norm.multDir(L_vec/norm(L_vec));
-        obj.camera_R.direction = transform_norm.multDir(R_vec/norm(R_vec));
+        horizontal = cross(obj.direction, obj.up);
+
+        obj.camera.origin = -obj.eye_dist/2 * horizontal + obj.origin;
+        obj.camera_R.origin = obj.eye_dist/2 * horizontal + obj.origin;
+
+        L_vec = obj.focal_length * obj.direction + obj.eye_dist/2 * horizontal;
+        R_vec = obj.focal_length * obj.direction - obj.eye_dist/2 * horizontal;
+        obj.camera.direction = L_vec/norm(L_vec);
+        obj.camera_R.direction = R_vec/norm(R_vec);
     end
 
     function raytrace(obj, scene)
@@ -117,6 +129,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

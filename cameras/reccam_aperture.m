@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = reccam_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = reccam_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@reccam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -19,6 +19,7 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.focal_length = obj.focal_length_buffer;
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -35,8 +36,9 @@ methods
         direction1 = obj.direction;
         apert = obj.aperture;
         focal = obj.focal_length;
+        up_vec = obj.up;
 
-        horizontal = cross(direction1, [0, 0, 1]);
+        horizontal = cross(direction1, up_vec);
         vertical = cross(horizontal, direction1);
         focuspoint = origin1 + focal * direction1;
         pixel_span_x = horizontal * focal * tan(fov_x/2)*2/res_x;
@@ -103,7 +105,7 @@ methods
         fov_y = obj.fov(1);
         fov_x = obj.fov(2);
 
-        horizontal = cross(obj.direction, [0, 0, 1]);
+        horizontal = cross(obj.direction, obj.up);
         vertical = cross(horizontal, obj.direction);
         focuspoint = obj.origin + obj.focal_length * obj.direction;
         span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
@@ -122,6 +124,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

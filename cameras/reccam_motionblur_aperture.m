@@ -8,8 +8,8 @@ properties
 end
 
 methods
-    function obj = reccam_motionblur_aperture(transform, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
-        obj = obj@reccam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind);        
+    function obj = reccam_motionblur_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, time, gammaind)
+        obj = obj@reccam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind);        
         obj.time = time; 
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
@@ -25,6 +25,8 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]);
         obj.focal_lengthlast = obj.focal_length;
         obj.focal_length = obj.focal_length_buffer;
+        obj.uplast = obj.up;
+        obj.up = up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -37,18 +39,20 @@ methods
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;
-        origin1 = obj.origin;
-        origin2 = obj.originlast;
-        direction1 = obj.direction;
-        direction2 = obj.directionlast;
+        origin1 = obj.originlast;
+        origin2 = obj.origin;
+        direction1 = obj.directionlast;
+        direction2 = obj.direction;
         time1 = obj.time(1);
         time2 = obj.time(2);
         apert = obj.aperture;
         focal1 = obj.focal_lengthlast;
         focal2 = obj.focal_length;
+        up1 = obj.uplast;
+        up2 = obj.up;
 
-        horizontal1 = cross(direction1, [0, 0, 1]); % maybe have those cached?
-        horizontal2 = cross(direction2, [0, 0, 1]);
+        horizontal1 = cross(direction1, up1); % maybe have those cached?
+        horizontal2 = cross(direction2, up2);
         vertical1 = cross(horizontal1, direction1);
         vertical2 = cross(horizontal2, direction2);
         focuspoint1 = origin1 + focal1 * direction1;
@@ -134,7 +138,7 @@ methods
         fov_y = obj.fov(1);
         fov_x = obj.fov(2);
 
-        horizontal = cross(obj.direction, [0, 0, 1]);
+        horizontal = cross(obj.direction, obj.up);
         vertical = cross(horizontal, obj.direction);
         focuspoint = obj.origin + obj.focal_length * obj.direction;
         span_x = horizontal * obj.focal_length * tan(fov_x/2)*2; % was *2
@@ -153,6 +157,10 @@ methods
         end
 
         obj.focus(t);
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end

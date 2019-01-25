@@ -1,5 +1,6 @@
 function camera = generate_camera(resolution, varargin) 
 % Varargin: Type
+%           up
 %           AR
 %           FOV
 %           FOViso
@@ -12,6 +13,8 @@ function camera = generate_camera(resolution, varargin)
 %           material
 %           bg
 %           gamma
+%           image       (array for 3D)
+%           transform
 
 %% Camera
 %resolutions = [ 2560, 3840; ... % 1
@@ -33,6 +36,7 @@ function camera = generate_camera(resolution, varargin)
 res = [resolution(2), resolution(1)];
 
 cam_type = 'cam';
+up = [0, 0, 1];
 aspect_ratio = res(2) / res(1);
 fov(2) = 80 * pi/180;
 fov(1) = fov(2)/aspect_ratio;
@@ -44,7 +48,9 @@ eye_dist = 0.065;
 focal_length = 2;
 aperture = 0.01;
 time_vec = [0, 1];
-gammaind = 2.2;
+gammaind = 1; % should be 2.2
+transformmat = transformmatrix();
+image = imgbuffer(res(2), res(1));
 
 air = refractive([0, 0, 0], [1, 1, 1], 1.001, struct('ind', 0), nonabsorber()); %%% CHECK remove this when merging with generate_scene
 
@@ -54,6 +60,8 @@ for i = 1:2:length(varargin)
     switch lower(varargin{i})
         case 'type'
             cam_type = varargin{i+1};
+        case 'up'
+            up = varargin{i+1};
         case 'ar'
             aspect_ratio = varargin{i+1};
         case 'fov'
@@ -92,6 +100,10 @@ for i = 1:2:length(varargin)
             environment = varargin{i+1}; 
         case 'gamma'
             gammaind = varargin{i+1};
+        case 'image'
+            image = varargin{i+1};
+        case 'transform'
+            transformmat = varargin{i+1};
         otherwise
             warning('generate_camera:wrongInput', ['Wrong input "', varargin{i}, '" entered. Ignored.']);
     end
@@ -133,44 +145,94 @@ switch lower(environment)
         askybox = skybox_flat_sun([0.75, 0.75, 0.75], sun);
 end
 
-image = imgbuffer(res(2), res(1));
-
 switch lower(cam_type)
     case 'cam'
-        camera = cam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = cam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'aperture'
-        camera = cam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = cam_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'motionblur'
-        camera = cam_motionblur(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind); 
+        camera = cam_motionblur(transformmat, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind); 
     case 'motionbluraperture'
-        camera = cam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind); 
+        camera = cam_motionblur_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind); 
     case '3d'
-        image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, gammaind);
+        if length(image) == 2
+            image_R = image(2);
+            image = image(1);
+        elseif length(image) == 1
+            image_R = imgbuffer(res(2), res(1));
+        elseif length(image) > 2
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. 1 and 2 taken.']);
+            image_R = image(2);
+            image = image(1);
+        else
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. Ignored.']);
+            image_R = imgbuffer(res(2), res(1));
+            image = imgbuffer(res(2), res(1));
+        end     
+        camera = cam_3D(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, gammaind);
     case '3daperture'
-        image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        if length(image) == 2
+            image_R = image(2);
+            image = image(1);
+        elseif length(image) == 1
+            image_R = imgbuffer(res(2), res(1));
+        elseif length(image) > 2
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. 1 and 2 taken.']);
+            image_R = image(2);
+            image = image(1);
+        else
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. Ignored.']);
+            image_R = imgbuffer(res(2), res(1));
+            image = imgbuffer(res(2), res(1));
+        end 
+        camera = cam_3D_aperture(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case '3dmotionblur'
-        image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_motionblur(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec, gammaind);
+        if length(image) == 2
+            image_R = image(2);
+            image = image(1);
+        elseif length(image) == 1
+            image_R = imgbuffer(res(2), res(1));
+        elseif length(image) > 2
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. 1 and 2 taken.']);
+            image_R = image(2);
+            image = image(1);
+        else
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. Ignored.']);
+            image_R = imgbuffer(res(2), res(1));
+            image = imgbuffer(res(2), res(1));
+        end 
+        camera = cam_3D_motionblur(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec, gammaind);
     case '3dmotionbluraperture'
-        image_R = imgbuffer(res(2), res(1));
-        camera = cam_3D_motionblur_aperture(transformmatrix(), fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        if length(image) == 2
+            image_R = image(2);
+            image = image(1);
+        elseif length(image) == 1
+            image_R = imgbuffer(res(2), res(1));
+        elseif length(image) > 2
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. 1 and 2 taken.']);
+            image_R = image(2);
+            image = image(1);
+        else
+            warning('generate_camera:tooManyCameras', ['Camera vector has length ', length(image), ', should be 1 or 2. Ignored.']);
+            image_R = imgbuffer(res(2), res(1));
+            image = imgbuffer(res(2), res(1));
+        end 
+        camera = cam_3D_motionblur_aperture(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
     case 'iso'
-        camera = isocam(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = isocam(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, gammaind);
     case 'isoaperture'
-        camera = isocam_aperture(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = isocam_aperture(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'isomotionblur'
-        camera = isocam_motionblur(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
+        camera = isocam_motionblur(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
     case 'isomotionbluraperture'
-        camera = isocam_motionblur_aperture(transformmatrix(), fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = isocam_motionblur_aperture(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
     case 'rec'
-        camera = reccam(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = reccam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'recaperture'
-        camera = reccam_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = reccam_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'recmotionblur'
-        camera = reccam_motionblur(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
+        camera = reccam_motionblur(transformmat, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
     case 'recmotionbluraperture'
-        camera = reccam_motionblur_aperture(transformmatrix(), fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = reccam_motionblur_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
 end
 end

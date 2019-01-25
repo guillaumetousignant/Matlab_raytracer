@@ -15,7 +15,10 @@
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
-% - Add camera UP
+% - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
+%           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
+% - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
+% - Make the image saving filename a member of the camera or imagebuffer, so as not to change raytracer all the time.
 %
 %% KNOWN ISSUES
 %
@@ -145,3 +148,11 @@
 %           % Added, now a camera parameter and input fot the write function.
 % - Add autofocus to all cameras
 %           % Now all cameras have the method.
+% - For reccam motionblur, direction1 and direction2 seem to be swapped in relation to direction and directionlast.
+%           % Now in the right order, won't interpolate backwards anymore.
+% - Add camera UP
+%           % HAll have a up vector, to find horizontal.
+% - 3D cams should take up for eye position.
+%           % Now use horizontal to get eye positions.
+% - Spherical cameras don't do anything with up for ray direction or focus.
+%           % Now using up, and also fixed projection that was frong away from horizontal.

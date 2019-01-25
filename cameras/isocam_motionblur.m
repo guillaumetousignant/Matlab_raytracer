@@ -4,14 +4,16 @@ properties
     directionlast
     originlast
     time
+    uplast
 end
 
 methods
-    function obj = isocam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
-        obj = obj@isocam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = isocam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@isocam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.time = time; 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
+        obj.uplast = obj.up;
     end
 
     function update(obj)
@@ -20,6 +22,8 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.directionlast = obj.direction;
         obj.direction = transform_norm.multDir([0, 1, 0]);
+        obj.uplast = obj.up;
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -40,9 +44,11 @@ methods
         direction2 = obj.direction;
         time1 = obj.time(1);
         time2 = obj.time(2);
+        obj.up1 = obj.uplast;
+        obj.up2 = obj.up;
 
-        horizontal1 = cross(direction1, [0, 0, 1]);
-        horizontal2 = cross(direction2, [0, 0, 1]);
+        horizontal1 = cross(direction1, up1);
+        horizontal2 = cross(direction2, up2);
         vertical1 = cross(horizontal1, direction1);
         vertical2 = cross(horizontal2, direction2);
 
@@ -56,7 +62,7 @@ methods
                 for k = 1:subpix_y
                     for l = 1:subpix_x
                         randtime = rand * (time2 - time1) + time1;
-                        itter_x = rand;
+                        jitter_x = rand;
                         jitter_y = rand;
                         
                         direction_int = direction2 * randtime + direction1 * (1 - randtime);
@@ -104,6 +110,10 @@ methods
 
     function autofocus(obj, scene, position)
         
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end
