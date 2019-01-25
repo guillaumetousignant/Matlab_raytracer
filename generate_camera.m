@@ -1,5 +1,6 @@
 function camera = generate_camera(resolution, varargin) 
 % Varargin: Type
+%           up
 %           AR
 %           FOV
 %           FOViso
@@ -35,6 +36,7 @@ function camera = generate_camera(resolution, varargin)
 res = [resolution(2), resolution(1)];
 
 cam_type = 'cam';
+up = [0, 0, 1];
 aspect_ratio = res(2) / res(1);
 fov(2) = 80 * pi/180;
 fov(1) = fov(2)/aspect_ratio;
@@ -58,6 +60,8 @@ for i = 1:2:length(varargin)
     switch lower(varargin{i})
         case 'type'
             cam_type = varargin{i+1};
+        case 'up'
+            up = varargin{i+1};
         case 'ar'
             aspect_ratio = varargin{i+1};
         case 'fov'
@@ -223,7 +227,7 @@ switch lower(cam_type)
     case 'isomotionbluraperture'
         camera = isocam_motionblur_aperture(transformmat, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
     case 'rec'
-        camera = reccam(transformmat, fov, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = reccam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'recaperture'
         camera = reccam_aperture(transformmat, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'recmotionblur'

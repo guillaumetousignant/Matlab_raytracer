@@ -11,10 +11,12 @@ properties
     direction
     origin
     gammaind
+    up % must be normalised
+    up_buffer
 end
 
 methods
-    function obj = reccam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind)
+    function obj = reccam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind)
         obj = obj@handle();        
         obj.fov = fov;        
         obj.subpix = subpix;
@@ -27,12 +29,15 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         obj.gammaind = gammaind;
+        obj.up = up;
+        obj.up_buffer = up;
     end
 
     function update(obj)
         obj.origin = obj.transformation.multVec([0, 0, 0]);
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -47,8 +52,9 @@ methods
         is_in = obj.material;
         origin1 = obj.origin;
         direction1 = obj.direction;
+        up_dir = obj.up;
 
-        horizontal = cross(direction1, [0, 0, 1]); % maybe have those cached?
+        horizontal = cross(direction1, up_dir); % maybe have those cached?
         vertical = cross(horizontal, direction1);
         focuspoint = origin1 + direction1;
         pixel_span_x = horizontal * tan(fov_x/2)*2/res_x; % maybe have those cached?
@@ -108,6 +114,10 @@ methods
 
     function autofocus(obj, scene, position)
         
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end
