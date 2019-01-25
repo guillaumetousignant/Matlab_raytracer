@@ -36,14 +36,14 @@ methods
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
         is_in = obj.material;
-        origin1 = obj.origin;
-        origin2 = obj.originlast;
-        direction1 = obj.direction;
-        direction2 = obj.directionlast;
+        origin1 = obj.originlast;
+        origin2 = obj.origin;
+        direction1 = obj.directionlast;
+        direction2 = obj.direction;
         time1 = obj.time(1);
         time2 = obj.time(2);
-        up1 = obj.up;
-        up2 = obj.uplast;
+        up1 = obj.uplast;
+        up2 = obj.up;
 
         horizontal1 = cross(direction1, up1); % maybe have those cached?
         horizontal2 = cross(direction2, up2);
