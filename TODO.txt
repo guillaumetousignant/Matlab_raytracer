@@ -45,6 +45,7 @@
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
+% - For reccam motionblur, direction1 and direction2 seem to be swapped in relation to direction and directionlast.
 %
 %% DONE
 %
