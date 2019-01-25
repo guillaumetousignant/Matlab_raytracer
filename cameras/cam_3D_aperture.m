@@ -51,8 +51,8 @@ methods
 
         horizontal = cross(obj.direction, up);
 
-        obj.camera.origin = obj.transformation.multVec(-eye_dist/2 * horizontal);
-        obj.camera_R.origin = obj.transformation.multVec(eye_dist/2 * horizontal);
+        obj.camera.origin = -eye_dist/2 * horizontal + obj.originv;
+        obj.camera_R.origin = eye_dist/2 * horizontal + obj.origin;
 
         L_vec = focal_length * obj.direction + eye_dist/2 * horizontal;
         R_vec = focal_length * obj.direction - eye_dist/2 * horizontal;
@@ -68,8 +68,6 @@ methods
         obj.focal_length = obj.focal_length_buffer;
         obj.up = obj.up_buffer;
 
-        obj.camera.origin = obj.transformation.multVec([-obj.eye_dist/2, 0, 0]);
-        obj.camera_R.origin = obj.transformation.multVec([obj.eye_dist/2, 0, 0]);
         obj.camera.focal_length = obj.focal_length;
         obj.camera_R.focal_length = obj.focal_length;
         obj.camera.up = obj.up;
@@ -77,8 +75,8 @@ methods
 
         horizontal = cross(obj.direction, obj.up);
 
-        obj.camera.origin = obj.transformation.multVec(-obj.eye_dist/2 * horizontal);
-        obj.camera_R.origin = obj.transformation.multVec(obj.eye_dist/2 * horizontal);
+        obj.camera.origin = -obj.eye_dist/2 * horizontal + obj.origin;
+        obj.camera_R.origin =  obj.eye_dist/2 * horizontal + obj.origin;
 
         L_vec = obj.focal_length * obj.direction + obj.eye_dist/2 * horizontal;
         R_vec = obj.focal_length * obj.direction - obj.eye_dist/2 * horizontal;

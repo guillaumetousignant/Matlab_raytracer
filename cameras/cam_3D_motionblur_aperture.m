@@ -63,8 +63,8 @@ methods
 
         horizontal = cross(obj.direction, up);
 
-        obj.camera.origin = obj.transformation.multVec(-eye_dist/2 * horizontal);
-        obj.camera_R.origin = obj.transformation.multVec(eye_dist/2 * horizontal);
+        obj.camera.origin = -eye_dist/2 * horizontal + obj.origin;
+        obj.camera_R.origin = eye_dist/2 * horizontal + obj.origin;
         obj.camera.originlast = obj.camera.origin;
         obj.camera_R.originlast = obj.camera_R.origin;
 
@@ -96,8 +96,8 @@ methods
 
         obj.camera.originlast = obj.camera.origin;
         obj.camera_R.originlast = obj.camera_R.origin;
-        obj.camera.origin = obj.transformation.multVec(-obj.eye_dist/2 * horizontal);
-        obj.camera_R.origin = obj.transformation.multVec(obj.eye_dist/2 * horizontal);
+        obj.camera.origin = -obj.eye_dist/2 * horizontal + obj.origin;
+        obj.camera_R.origin = obj.eye_dist/2 * horizontal + obj.origin;
 
         obj.camera.directionlast = obj.camera.direction;
         obj.camera_R.directionlast = obj.camera_R.direction;
