@@ -42,7 +42,9 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([300, 200], 'bg', 'grey', 'subpix', 1, 'type', 'cam'); 
+upvector = [1, 0, 1];
+upvector = upvector/norm(upvector);
+camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'rec', 'up', upvector); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);

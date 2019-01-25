@@ -4,14 +4,16 @@ properties
     directionlast
     originlast
     time
+    uplast
 end
 
 methods
-    function obj = reccam_motionblur(transform, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
-        obj = obj@reccam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = reccam_motionblur(transform, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
+        obj = obj@reccam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.time = time; 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
+        obj.uplast = obj.up;
     end
 
     function update(obj)
@@ -20,6 +22,8 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.directionlast = obj.direction;
         obj.direction = transform_norm.multDir([0, 1, 0]);
+        obj.uplast = obj.up;
+        obj.up = up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -38,9 +42,11 @@ methods
         direction2 = obj.directionlast;
         time1 = obj.time(1);
         time2 = obj.time(2);
+        up1 = obj.up;
+        up2 = obj.uplast;
 
-        horizontal1 = cross(direction1, [0, 0, 1]); % maybe have those cached?
-        horizontal2 = cross(direction2, [0, 0, 1]);
+        horizontal1 = cross(direction1, up1); % maybe have those cached?
+        horizontal2 = cross(direction2, up2);
         vertical1 = cross(horizontal1, direction1);
         vertical2 = cross(horizontal2, direction2);
         focuspoint1 = origin1 + direction1;
@@ -109,6 +115,10 @@ methods
 
     function autofocus(obj, scene, position)
         
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end
