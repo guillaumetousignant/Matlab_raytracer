@@ -229,10 +229,10 @@ switch lower(cam_type)
     case 'rec'
         camera = reccam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'recaperture'
-        camera = reccam_aperture(transformmat, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = reccam_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'recmotionblur'
-        camera = reccam_motionblur(transformmat, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
+        camera = reccam_motionblur(transformmat, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
     case 'recmotionbluraperture'
-        camera = reccam_motionblur_aperture(transformmat, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = reccam_motionblur_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
 end
 end
