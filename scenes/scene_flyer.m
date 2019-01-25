@@ -20,7 +20,7 @@ difgrey = diffuse(colours.black, colours.grey1, 1);
 coating = reflective(colours.black, colours.white);
 eyemat1 = diffuse(colours.black, colours.black*0.9, 1);
 
-skinmat = reflective_refractive_fuzz(colours.black, colours.white, 1.33, air, 2, 0.1, scatterer(colours.black, colours.turquoise, 0.1, 0.1, 0.2));
+skinmat = reflective_refractive_fuzz(colours.black, colours.white, 1.33, air, 2, 0.1, scatterer(colours.black, colours.watercolour, 0.25, 0.25, 0.5));
 bonemat = diffuse(colours.black, colours.white, 0.25);
 eyemat = fresnelmix(eyemat1, coating, 1.5);
 lungmat = diffuse(colours.black, colours.pink, 1); % make metal?
