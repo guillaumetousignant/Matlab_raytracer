@@ -12,10 +12,12 @@ properties
     %direction_sph
     origin
     gammaind
+    up % must be normalised
+    up_buffer
 end
 
 methods
-    function obj = isocam(transform, fov, subpix, image, material, skybox, max_bounces, gammaind)
+    function obj = isocam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind)
         obj = obj@handle();        
         obj.fov = fov;        
         obj.subpix = subpix;
@@ -29,6 +31,8 @@ methods
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
         obj.gammaind = gammaind;
+        obj.up = up;
+        obj.up_buffer = up;
     end
 
     function update(obj)
@@ -36,6 +40,7 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); %%% CHECK should use transformation only? (not transformation_norm)
         %obj.direction_sph = to_sph(obj.direction);
+        obj.up = obj.up_buffer;
     end
 
     function raytrace(obj, scene)
@@ -52,8 +57,9 @@ methods
         is_in = obj.material;
         origin1 = obj.origin;
         direction1 = obj.direction;
+        up_dir = obj.up;
 
-        horizontal = cross(direction1, [0, 0, 1]);
+        horizontal = cross(direction1, up_dir);
         vertical = cross(horizontal, direction1);
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
@@ -108,6 +114,10 @@ methods
 
     function autofocus(obj, scene, position)
         
+    end
+
+    function set_up(obj, new_up)
+        obj.up_buffer = new_up;
     end
 end
 end
