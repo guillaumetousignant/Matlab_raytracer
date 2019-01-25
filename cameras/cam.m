@@ -58,6 +58,7 @@ methods
         origin1 = obj.origin;
         direction_sph1 = to_sph(obj.direction);
         %direction1 = obj.direction; %%% CHECK for roll
+        up_dir obj.up;
 
         output = zeros(res_y, res_x, 3); %%% for parfor normal rendering
         
