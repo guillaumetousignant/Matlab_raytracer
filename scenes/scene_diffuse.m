@@ -52,3 +52,5 @@ camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'cam', 'up', upvector
 
 camera.update;
 camera.update; % second time to kill blur
+
+camera.accumulate(ascene);

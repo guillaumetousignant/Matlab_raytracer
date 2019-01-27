@@ -103,6 +103,26 @@ methods
         obj.camera_R.raytrace(scene);
     end  
 
+    function accumulate(obj, ascene, varargin)
+        if isempty(varargin)
+            niter_max = inf;
+        else
+            niter_max = varargin{1};
+        end
+
+        niter = 0;
+        while niter < niter_max
+            niter = niter + 1;
+            tic
+            obj.raytrace(ascene);
+            fprintf('\nIteration %i done.\n', niter);
+            toc
+
+            obj.show(1);
+            obj.write();
+        end
+    end
+
     function write(obj, varargin)
         if isempty(varargin)
             filename_L_towrite = obj.image.filename;
