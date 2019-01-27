@@ -9,6 +9,7 @@ air = refractive(colours.black, colours.white, 1.001, struct('ind', 0), nonabsor
 
 
 scenename = 'diffuse';
+filename = next_filename(['.', filesep, 'images', filesep, scenename]);
 
 fprintf('\nScene name: %s\n', scenename);
 fprintf('\nScene building\n');
@@ -44,7 +45,7 @@ toc
 %% Camera
 upvector = [1, 0, 1];
 upvector = upvector/norm(upvector);
-camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'cam', 'up', upvector); 
+camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'cam', 'up', upvector, 'file', filename); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);

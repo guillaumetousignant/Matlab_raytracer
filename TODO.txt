@@ -18,7 +18,6 @@
 % - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
 %           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
-% - Make the image saving filename a member of the camera or imagebuffer, so as not to change raytracer all the time.
 %
 %% KNOWN ISSUES
 %
@@ -156,3 +155,5 @@
 %           % Now use horizontal to get eye positions.
 % - Spherical cameras don't do anything with up for ray direction or focus.
 %           % Now using up, and also fixed projection that was frong away from horizontal.
+% - Make the image saving filename a member of the camera or imagebuffer, so as not to change raytracer all the time.
+%           % Filename is now member of camera, and raytracer was also incorporated in it. New function to find filename.
