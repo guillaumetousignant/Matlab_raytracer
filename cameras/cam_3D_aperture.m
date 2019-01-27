@@ -8,6 +8,7 @@ properties
     eye_dist
     aperture
 
+    filename
     fov
     subpix
     image
@@ -24,12 +25,25 @@ properties
 end
 
 methods
-    function obj = cam_3D_aperture(transform, up, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@handle();      
+    function obj = cam_3D_aperture(transform, filename, up, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@handle();   
         
-        obj.camera = cam_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind);
-        obj.camera_R = cam_aperture(transform, up, fov, subpix, image_R, material, skybox, max_bounces, focal_length, aperture, gammaind);
+        point = strfind(filename, '.');
+        if ~isempty(point)
+            point = point(end);
+            filename_L = [filename(1:point-1), '_L', filename(point:end)];
+            filename_R = [filename(1:point-1), '_R', filename(point:end)];
+            filename_S = [filename(1:point-1), '_S', filename(point:end)];
+        else
+            filename_L = [filename, '_L.png'];
+            filename_R = [filename, '_R.png'];
+            filename_S = [filename, '_S.png'];
+        end
         
+        obj.camera = cam_aperture(transform, filename_L, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind);
+        obj.camera_R = cam_aperture(transform, filename_R, up, fov, subpix, image_R, material, skybox, max_bounces, focal_length, aperture, gammaind);
+        
+        obj.filename = filename_S;
         obj.fov = fov;        
         obj.subpix = subpix;
         obj.image = image;
@@ -89,22 +103,39 @@ methods
         obj.camera_R.raytrace(scene);
     end  
 
-    function write(obj, filename)
-        point = strfind(filename, '.');
-        if ~isempty(point)
-            point = point(end);
-            filename_L = [filename(1:point-1), '_L', filename(point:end)];
-            filename_R = [filename(1:point-1), '_R', filename(point:end)];
-            filename_S = [filename(1:point-1), '_S', filename(point:end)];
+    function write(obj, varargin)
+        if isempty(varargin)
+            filename_L_towrite = obj.image.filename;
+            filename_R_towrite = obj.image_R.filename;
+            filename_S_towrite = obj.filename;
+        elseif length(varargin) == 1
+            filename_in = varargin{1};
+            point = strfind(filename_in, '.');
+            if ~isempty(point)
+                point = point(end);
+                filename_L_towrite = [filename_in(1:point-1), '_L', filename_in(point:end)];
+                filename_R_towrite = [filename_in(1:point-1), '_R', filename_in(point:end)];
+                filename_S_towrite = [filename_in(1:point-1), '_S', filename_in(point:end)];
+            else
+                filename_L_towrite = [filename_in, '_L.png'];
+                filename_R_towrite = [filename_in, '_R.png'];
+                filename_S_towrite = [filename_in, '_S.png'];
+            end
+        elseif length(varargin) == 3
+            filename_L_towrite = varargin{1};
+            filename_R_towrite = varargin{2};
+            filename_S_towrite = varargin{3};
         else
-            filename_L = [filename, '_L.png'];
-            filename_R = [filename, '_R.png'];
-            filename_S = [filename, '_S.png'];
+            warning('cam_3D_aperture:wrongFileNameNumber', 'Write function takes 0, 1 or 3 arguments for 3D cams.');
+            filename_L_towrite = obj.image.filename;
+            filename_R_towrite = obj.image_R.filename;
+            filename_S_towrite = obj.filename;
         end
-        imwrite16(obj.image.img, filename_L, obj.gammaind);
-        imwrite16(obj.image_R.img, filename_R, obj.gammaind);
         
-        imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S, obj.gammaind);
+        imwrite16(obj.image.img, filename_L_towrite, obj.gammaind);
+        imwrite16(obj.image_R.img, filename_R_towrite, obj.gammaind);
+        
+        imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S_towrite, obj.gammaind);
     end
 
     function show(obj, fignumber)

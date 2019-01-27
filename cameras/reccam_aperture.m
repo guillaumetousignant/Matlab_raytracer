@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = reccam_aperture(transform, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@reccam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = reccam_aperture(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@reccam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -87,8 +87,13 @@ methods
         obj.image.update(output);
     end  
 
-    function write(obj, filename)
-        imwrite16(obj.image.img, filename, obj.gammaind);
+    function write(obj, varargin)
+        if isempty(varargin)
+            filename_towrite = obj.filename;
+        else
+            filename_towrite = varargin{1};
+        end
+        imwrite16(obj.image.img, filename_towrite, obj.gammaind);
     end
 
     function show(obj, fignumber)

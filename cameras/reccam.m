@@ -1,6 +1,7 @@
 classdef reccam < handle
 
 properties
+filename
     fov
     subpix
     image
@@ -16,8 +17,9 @@ properties
 end
 
 methods
-    function obj = reccam(transform, up, fov, subpix, image, material, skybox, max_bounces, gammaind)
-        obj = obj@handle();        
+    function obj = reccam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind)
+        obj = obj@handle();    
+        obj.filename = filename;    
         obj.fov = fov;        
         obj.subpix = subpix;
         obj.image = image;
@@ -99,8 +101,13 @@ methods
         obj.image.update(output);
     end  
 
-    function write(obj, filename)
-        imwrite16(obj.image.img, filename, obj.gammaind);
+    function write(obj, varargin)
+        if isempty(varargin)
+            filename_towrite = obj.filename;
+        else
+            filename_towrite = varargin{1};
+        end
+        imwrite16(obj.image.img, filename_towrite, obj.gammaind);
     end
 
     function show(obj, fignumber)

@@ -1,5 +1,6 @@
 function camera = generate_camera(resolution, varargin) 
 % Varargin: Type
+%           file
 %           up
 %           AR
 %           FOV
@@ -51,6 +52,7 @@ time_vec = [0, 1];
 gammaind = 1; % should be 2.2
 transformmat = transformmatrix();
 image = imgbuffer(res(2), res(1));
+filename = 'output.png';
 
 air = refractive([0, 0, 0], [1, 1, 1], 1.001, struct('ind', 0), nonabsorber()); %%% CHECK remove this when merging with generate_scene
 
@@ -60,6 +62,8 @@ for i = 1:2:length(varargin)
     switch lower(varargin{i})
         case 'type'
             cam_type = varargin{i+1};
+        case 'file'
+            filename = varargin{i+1};
         case 'up'
             up = varargin{i+1};
         case 'ar'
@@ -147,13 +151,13 @@ end
 
 switch lower(cam_type)
     case 'cam'
-        camera = cam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = cam(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'aperture'
-        camera = cam_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = cam_aperture(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'motionblur'
-        camera = cam_motionblur(transformmat, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind); 
+        camera = cam_motionblur(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind); 
     case 'motionbluraperture'
-        camera = cam_motionblur_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind); 
+        camera = cam_motionblur_aperture(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind); 
     case '3d'
         if length(image) == 2
             image_R = image(2);
@@ -169,7 +173,7 @@ switch lower(cam_type)
             image_R = imgbuffer(res(2), res(1));
             image = imgbuffer(res(2), res(1));
         end     
-        camera = cam_3D(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, gammaind);
+        camera = cam_3D(transformmat, filename, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, gammaind);
     case '3daperture'
         if length(image) == 2
             image_R = image(2);
@@ -185,7 +189,7 @@ switch lower(cam_type)
             image_R = imgbuffer(res(2), res(1));
             image = imgbuffer(res(2), res(1));
         end 
-        camera = cam_3D_aperture(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = cam_3D_aperture(transformmat, filename, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case '3dmotionblur'
         if length(image) == 2
             image_R = image(2);
@@ -201,7 +205,7 @@ switch lower(cam_type)
             image_R = imgbuffer(res(2), res(1));
             image = imgbuffer(res(2), res(1));
         end 
-        camera = cam_3D_motionblur(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec, gammaind);
+        camera = cam_3D_motionblur(transformmat, filename, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, time_vec, gammaind);
     case '3dmotionbluraperture'
         if length(image) == 2
             image_R = image(2);
@@ -217,22 +221,22 @@ switch lower(cam_type)
             image_R = imgbuffer(res(2), res(1));
             image = imgbuffer(res(2), res(1));
         end 
-        camera = cam_3D_motionblur_aperture(transformmat, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = cam_3D_motionblur_aperture(transformmat, filename, up, fov, subpix, image, image_R, eye_dist, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
     case 'iso'
-        camera = isocam(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = isocam(transformmat, filename, up, fov_iso, subpix, image, air, askybox, max_bounces, gammaind);
     case 'isoaperture'
-        camera = isocam_aperture(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = isocam_aperture(transformmat, filename, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'isomotionblur'
-        camera = isocam_motionblur(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
+        camera = isocam_motionblur(transformmat, filename, up, fov_iso, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
     case 'isomotionbluraperture'
-        camera = isocam_motionblur_aperture(transformmat, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = isocam_motionblur_aperture(transformmat, filename, up, fov_iso, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
     case 'rec'
-        camera = reccam(transformmat, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
+        camera = reccam(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, gammaind);
     case 'recaperture'
-        camera = reccam_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
+        camera = reccam_aperture(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, gammaind);
     case 'recmotionblur'
-        camera = reccam_motionblur(transformmat, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
+        camera = reccam_motionblur(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, time_vec, gammaind);
     case 'recmotionbluraperture'
-        camera = reccam_motionblur_aperture(transformmat, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
+        camera = reccam_motionblur_aperture(transformmat, filename, up, fov, subpix, image, air, askybox, max_bounces, focal_length, aperture, time_vec, gammaind);
 end
 end

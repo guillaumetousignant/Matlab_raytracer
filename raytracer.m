@@ -18,7 +18,7 @@ switch lower(render_mode)
         toc
 
         camera.show(1);
-        camera.write('.\images\output.png');
+        camera.write();
     
     case 'accumulation'
         % Accumulation render
@@ -32,7 +32,7 @@ switch lower(render_mode)
             toc
 
             camera.show(1);
-            camera.write('.\images\output.png');
+            camera.write();
         end
 
     case 'motion'
