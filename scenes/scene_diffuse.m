@@ -9,7 +9,7 @@ air = refractive(colours.black, colours.white, 1.001, struct('ind', 0), nonabsor
 
 
 scenename = 'diffuse';
-filename = next_filename(['.', filesep, 'images', filesep, scenename]);
+filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
 fprintf('\nScene name: %s\n', scenename);
 fprintf('\nScene building\n');
