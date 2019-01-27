@@ -1,7 +1,7 @@
 classdef isocam < handle
 
 properties
-filename
+    filename
     fov % here should be x and y lengths
     subpix
     image

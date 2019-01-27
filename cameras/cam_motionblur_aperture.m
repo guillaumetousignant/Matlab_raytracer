@@ -111,20 +111,6 @@ methods
         %obj.image.set(output); %%% for parfor normal rendering
         obj.image.update(output);
     end  
-
-    function write(obj, varargin)
-        if isempty(varargin)
-            filename_towrite = obj.filename;
-        else
-            filename_towrite = varargin{1};
-        end
-        imwrite16(obj.image.img, filename_towrite, obj.gammaind);
-    end
-
-    function show(obj, fignumber)
-        figure(fignumber);
-        imshow(obj.image.img.^(1/obj.gammaind));
-    end
     
     function focus(obj, foc_dist)
         obj.focal_length_buffer = foc_dist;
@@ -147,10 +133,6 @@ methods
         end
 
         obj.focus(t);
-    end
-
-    function set_up(obj, new_up)
-        obj.up_buffer = new_up;
     end
 end
 end

@@ -1,7 +1,7 @@
 classdef reccam < handle
 
 properties
-filename
+    filename
     fov
     subpix
     image
