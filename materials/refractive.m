@@ -50,9 +50,9 @@ methods
 
         if dot(newdir, normal) < 0 % coming in
             aray.origin = aray.origin + aray.direction * aray.dist - normal * epsilon; % use n or normal?
-            if cosi < 0
+            %if cosi > 0
                 aray.add_to_mediums(obj); %%% CHECK not if total internal refraction
-            end
+            %end
         else % going out
             aray.origin = aray.origin + aray.direction * aray.dist + normal * epsilon; % use n or normal?
             aray.remove_from_mediums(obj);
