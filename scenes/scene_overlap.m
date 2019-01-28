@@ -25,9 +25,9 @@ planegrey1 = triangle(difgrey, [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, 
 planegrey2 = triangle(difgrey, [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1], [], [], neutralmatrix);
 
 sphere1 = sphere(glass, transformmatrix());
-sphere1.transformation.translate([-0.66, 3, 0]);
+sphere1.transformation.translate([-0.6, 3, 0]);
 sphere2 = sphere(glass2, transformmatrix());
-sphere2.transformation.translate([0.66, 3, 0]);
+sphere2.transformation.translate([0.72, 3, 0]);
 
 ascene = scene(sphere1, sphere2, planegrey1, planegrey2);
 
