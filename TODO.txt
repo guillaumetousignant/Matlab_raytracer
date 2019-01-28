@@ -2,6 +2,8 @@
 %
 % - Chromatic aberration.
 %           % Maybe refraction angle could be relative to ray color? Problem: doesn't work with reverse path tracing.
+%           % Maybe create wavelength to rgb function, create rays with a wavelength, and a mask with that colour and not 1 1 1.
+%           % Then, have refractors use the wavelength to get angle. Maybe also create reflectors using wavelength.
 % - Scene should maybe just have meshes and split them when building the acc structure.
 % - Pre-multiply the rotation and translation matrices, so it has only one matrix multiply to do.
 % - Shear.
