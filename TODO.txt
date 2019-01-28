@@ -39,6 +39,7 @@
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
+% - Nested dielectrics logic doesn't work right yet, going-out should check different priority than going in, and total internal refraction should not add medium.
 %
 %% DONE
 %
