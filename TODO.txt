@@ -23,8 +23,6 @@
 % - Refraction sometimes gives black result when max number of bounces
 % - What to do in refraction when set direction to 0 0 0? Put mask to 0, 0, 0 so stops bouncing?
 % - No experimentation with triangle face side, aka when is the normal negative? Useful with refractive, to find out in or out.
-% - Is_in is a bad solution to the getting out of a refractive medium problem.
-%           % Maybe don't refract when coming out of medium if isn't is_in?
 % - Transformed normals should be scaled outside of the transformmatrix class.
 % - In metal shader (and all fuzz shaders), reject normals that face away from the ray.
 % - In grid structure, gridcells are in a cell array. Should be an array of handles.
@@ -162,5 +160,7 @@
 %           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
 %           % Now pixels have a priority list of madiums, and hits with low priority mediums are ignored. Differs a bit
 %           % from paper, as normals are used to determine direction of intersection and add-removal, for same material overlap.
+% - Is_in is a bad solution to the getting out of a refractive medium problem.
+%           % See above
 % - Total internal refraction should not add medium with nested dielectrics.
 %           % Now only actual boundary passing adds material.
