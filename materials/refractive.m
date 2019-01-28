@@ -37,9 +37,9 @@ methods
             k = 1 - eta *eta * (1- cosi * cosi);
 
             if k < 0
-                newdir = [0, 0, 0]; %%% CHECK what to do here
+                newdir = [0, 0, 0]; %%% CHECK what to do here, maybe set mask to 0 for termination?
             else
-                newdir = eta * aray.direction + (eta * cosi - sqrt(k)) * n;
+                newdir = eta * aray.direction + (eta * cosi - sqrt(k)) * n; %%% CHECK should normalize?
             end
 
             aray.colour = aray.colour + aray.mask .* obj.emission;
@@ -50,9 +50,9 @@ methods
 
         if dot(newdir, normal) < 0 % coming in
             aray.origin = aray.origin + aray.direction * aray.dist - normal * epsilon; % use n or normal?
-            %if cosi > 0
-                aray.add_to_mediums(obj); %%% CHECK not if total internal refraction
-            %end
+            if dot(aray.direction, normal) < 0
+                aray.add_to_mediums(obj);
+            end
         else % going out
             aray.origin = aray.origin + aray.direction * aray.dist + normal * epsilon; % use n or normal?
             aray.remove_from_mediums(obj);

@@ -10,6 +10,7 @@ air = refractive(colours.black, colours.white, 1.001, 0, nonabsorber()); %%% CHE
 
 scenename = 'overlap';
 filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
+%filename = ['.', filesep, 'images', filesep, 'output', '.png'];
 
 fprintf('\nScene name: %s\n', scenename);
 fprintf('\nScene building\n');
@@ -17,17 +18,19 @@ tic
 
 % Materials
 difgrey = diffuse(colours.black, colours.grey1, 1);
-glass = refractive(colours.black, colours.white, 1.5, 30, absorber(colours.black, colours.red, 1000, 2));
-glass2 = refractive(colours.black, colours.white, 1.5, 20, absorber(colours.black, colours.watercolour, 1000, 2));
+glass = reflective_refractive_fuzz(colours.black, colours.white, 1.5, 30, 2, 0.05, absorber(colours.black, colours.red, 1000, 2));
+glass2 = reflective_refractive_fuzz(colours.black, colours.white, 1.33, 20, 1, 0.05, absorber(colours.black, colours.watercolour, 1000, 2));
 
 % Objects
 planegrey1 = triangle(difgrey, [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, -1], [], [], neutralmatrix);
 planegrey2 = triangle(difgrey, [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1], [], [], neutralmatrix);
 
 sphere1 = sphere(glass, transformmatrix());
-sphere1.transformation.translate([-0.6, 3, 0]);
+sphere1.transformation.translate([-0.4, 3, 0]);
+sphere1.transformation.uniformscale(1);
 sphere2 = sphere(glass2, transformmatrix());
-sphere2.transformation.translate([0.72, 3, 0]);
+sphere2.transformation.translate([0.7, 3, 0]);
+sphere2.transformation.uniformscale(1);
 
 ascene = scene(sphere1, sphere2, planegrey1, planegrey2);
 
