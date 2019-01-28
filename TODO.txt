@@ -15,8 +15,6 @@
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
-% - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
-%           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
 %
 %% KNOWN ISSUES
@@ -39,6 +37,9 @@
 % - There seems to be an issue with portals, not sure if about transformation matrix. Maybe should translate to portal?
 % - Spheres with textures are slower, due to the uv calculations. Montionblur versions are worse, because of slerp.
 %           % Maybe find a better system than offset.
+% - Nested dielectrics logic doesn't work right yet, going-out should check different priority than going in, maybe have for check after inout check.
+%           % For example, reflective-refractive materials refract when overlapping with themselves.
+%           % Seems worse for reflective-refractive than for reflective-refractive-fuzz. Maybe because smoothed.
 %
 %% DONE
 %
@@ -157,3 +158,9 @@
 %           % Now using up, and also fixed projection that was frong away from horizontal.
 % - Make the image saving filename a member of the camera or imagebuffer, so as not to change raytracer all the time.
 %           % Filename is now member of camera, and raytracer was also incorporated in it. New function to find filename.
+% - Add list of mediums, to fix is_in, add priority to each medium. Use normals, and add materials as duplicate as needed, unlike paper.
+%           % http://graphics.cs.ucdavis.edu/~bcbudge/deep/research/nested_dielectrics.pdf
+%           % Now pixels have a priority list of madiums, and hits with low priority mediums are ignored. Differs a bit
+%           % from paper, as normals are used to determine direction of intersection and add-removal, for same material overlap.
+% - Total internal refraction should not add medium with nested dielectrics.
+%           % Now only actual boundary passing adds material.

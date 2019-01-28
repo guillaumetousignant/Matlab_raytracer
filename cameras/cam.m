@@ -78,7 +78,7 @@ methods
                         
                         ray_vec = pix_vec_sph + [0, (k - subpix_y/2 - jitter_y)*subpix_span_y, (l - subpix_x/2 - jitter_x)*subpix_span_x];
                     
-                        ray_vec = to_xyzoffset(ray_vec, [direction1; horizontal; vertical])
+                        ray_vec = to_xyzoffset(ray_vec, [direction1; horizontal; vertical]);
                         %%% CHECK begin
                         %horizontal = cross(direction1, up_dir);
                         %vertical = cross(horizontal, direction1);

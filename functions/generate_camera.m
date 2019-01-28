@@ -54,7 +54,7 @@ transformmat = transformmatrix();
 image = imgbuffer(res(2), res(1));
 filename = 'output.png';
 
-air = refractive([0, 0, 0], [1, 1, 1], 1.001, struct('ind', 0), nonabsorber()); %%% CHECK remove this when merging with generate_scene
+air = refractive([0, 0, 0], [1, 1, 1], 1.001, 0, nonabsorber()); %%% CHECK remove this when merging with generate_scene
 
 environment = 'day';
 

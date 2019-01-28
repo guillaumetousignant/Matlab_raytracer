@@ -5,18 +5,18 @@ properties
     mask
     colour
     dist
-    material % what is the ray in? must be refractive
+    medium_list
     time
 end
 methods
-    function obj = ray(origin, direction, colour, mask, material)
+    function obj = ray(origin, direction, colour, mask, amedium)
         obj = obj@handle();
         obj.origin = origin;
         obj.direction = direction;
         obj.colour = colour;
         obj.mask = mask;
         obj.dist = 0;
-        obj.material = material;
+        obj.medium_list = {amedium};
         obj.time = [1, 1];
     end
 
@@ -31,11 +31,31 @@ methods
             end
             bounces = bounces + 1;
     
-            scattered = obj.material.scattering.scatter(obj);
+            scattered = obj.medium_list{1}.scattering.scatter(obj);
             if ~scattered
                 hit_obj.material.bounce(uv, hit_obj, obj);
             end
         end              
+    end
+
+    function add_to_mediums(obj, amedium)
+        for i = 1:length(obj.medium_list)
+            if obj.medium_list{i}.priority <= amedium.priority
+                obj.medium_list(i+1:end+1) = obj.medium_list(i:end);
+                obj.medium_list{i} = amedium;
+                return
+            end
+        end
+        obj.medium_list{end+1} = amedium;
+    end
+
+    function remove_from_mediums(obj, amedium)
+        for i = 1:length(obj.medium_list)
+            if obj.medium_list{i} == amedium
+                obj.medium_list(i) = [];
+                break
+            end
+        end
     end
 end
 end
