@@ -5,7 +5,7 @@ load colours_mat colours
 
 % General stuff
 neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(colours.black, colours.white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+air = refractive(colours.black, colours.white, 1.001, 0, nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
 
 
 scenename = 'overlap';
@@ -17,7 +17,8 @@ tic
 
 % Materials
 difgrey = diffuse(colours.black, colours.grey1, 1);
-glass = refractive(colours.black, colours.white, 1.5, air, nonabsorber());
+glass = refractive(colours.black, colours.white, 1.5, 30, absorber(colours.black, colours.red, 1000, 2));
+glass2 = refractive(colours.black, colours.white, 1.5, 20, absorber(colours.black, colours.watercolour, 1000, 2));
 
 % Objects
 planegrey1 = triangle(difgrey, [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, -1], [], [], neutralmatrix);
@@ -25,7 +26,7 @@ planegrey2 = triangle(difgrey, [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1
 
 sphere1 = sphere(glass, transformmatrix());
 sphere1.transformation.translate([-0.66, 3, 0]);
-sphere2 = sphere(glass, transformmatrix());
+sphere2 = sphere(glass2, transformmatrix());
 sphere2.transformation.translate([0.66, 3, 0]);
 
 ascene = scene(sphere1, sphere2, planegrey1, planegrey2);
@@ -47,7 +48,7 @@ toc
 %% Camera
 upvector = [1, 0, 1];
 upvector = upvector/norm(upvector);
-camera = generate_camera([300, 200], 'bg', 'beach', 'type', 'cam', 'file', filename); 
+camera = generate_camera([1800, 1200], 'bg', 'beach', 'type', 'cam', 'file', filename, 'material', air); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);

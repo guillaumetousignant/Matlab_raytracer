@@ -4,22 +4,16 @@ properties
     emission
     colour
     ind
-    is_in
     order % 1 to inf, 1 is flat, 2 is parabole,  higher looks like normal and inf is straight reflection.
     diffusivity % between 0 and 1, portion of the hemisphere reflected to.
 end
 
 methods
     function obj = reflective_refractive_fuzz(emi, col, ind, is_in, order, diffu, scattering)
-        obj = obj@medium(scattering);
+        obj = obj@medium(is_in, scattering);
         obj.emission = emi;
         obj.colour = col;
         obj.ind = ind;
-        if isempty(is_in)
-            obj.is_in = obj;
-        else
-            obj.is_in = is_in; % bad solution, doesn't work for object partly in other refractive mediums (ex: sphere of glass partly in water)
-        end
         obj.order = order;
         obj.diffusivity = diffu;
     end

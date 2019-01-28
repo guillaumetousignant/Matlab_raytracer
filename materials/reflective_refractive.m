@@ -4,20 +4,14 @@ properties
     emission
     colour
     ind
-    is_in
 end
 
 methods
     function obj = reflective_refractive(emi, col, ind, is_in, scattering)
-        obj = obj@medium(scattering);
+        obj = obj@medium(is_in, scattering);
         obj.emission = emi;
         obj.colour = col;
         obj.ind = ind;
-        if isempty(is_in)
-            obj.is_in = obj;
-        else
-            obj.is_in = is_in; % bad solution, doesn't work for object partly in other refractive mediums (ex: sphere of glass partly in water)
-        end
     end
 
     function bounce(obj, uv, hit_obj, aray) 
