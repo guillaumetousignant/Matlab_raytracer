@@ -13,7 +13,7 @@ methods
     end
 
     function bounce(obj, uv, hit_obj, aray) 
-        epsilon = 0.0001;
+        epsilon = 0.00000001;
 
         normal = hit_obj.normal(uv, aray);        
         cosi = dot(aray.direction, normal);
