@@ -60,4 +60,10 @@ camera = generate_camera([1800, 1200], 'bg', 'beach', 'type', 'cam', 'file', fil
 camera.update;
 camera.update; % second time to kill blur
 
+scene_struct = struct();
+scene_struct.materials = cell(3, 1);
+scene_struct.objects = cell(4, 1);
+scene_struct.camera = struct();
+scene_struct.name = 'overlap';
+
 camera.accumulate(ascene);
