@@ -5,7 +5,7 @@ load colours_mat colours
 
 % General stuff
 neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(colours.black, colours.white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+air = refractive(colours.black, colours.white, 1.001, 0, nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
 
 
 scenename = 'flyer';
@@ -20,7 +20,7 @@ difgrey = diffuse(colours.black, colours.grey1, 1);
 coating = reflective(colours.black, colours.white);
 eyemat1 = diffuse(colours.black, colours.black*0.9, 1);
 
-skinmat = reflective_refractive_fuzz(colours.black, colours.white, 1.33, air, 2, 0.1, scatterer(colours.black, colours.watercolour, 0.25, 0.25, 0.5));
+skinmat = reflective_refractive_fuzz(colours.black, colours.white, 1.33, 10, 2, 0.1, scatterer(colours.black, colours.watercolour, 0.25, 0.25, 0.5));
 bonemat = diffuse(colours.black, colours.white, 0.25);
 eyemat = fresnelmix(eyemat1, coating, 1.5);
 lungmat = diffuse(colours.black, colours.pink, 1); % make metal?
@@ -69,7 +69,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([1800, 1200], 'type', 'cam', 'focalLength', 0.01, 'bg', 'beach', 'aperture', 0.025, 'maxbounces', 32);
+camera = generate_camera([1800, 1200], 'type', 'cam', 'focalLength', 0.01, 'bg', 'beach', 'aperture', 0.025, 'maxbounces', 32, 'material', air);
 
 camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
@@ -78,3 +78,5 @@ camera.transformation.rotatez(pi);
 camera.update;
 camera.autofocus(ascene, [0.5 0.5]);
 camera.update; % second time to kill blur
+
+camera.accumulate(ascene);
