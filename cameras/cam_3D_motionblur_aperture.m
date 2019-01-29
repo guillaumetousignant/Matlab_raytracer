@@ -148,8 +148,8 @@ methods
 
     function write(obj, varargin)
         if isempty(varargin)
-            filename_L_towrite = obj.image.filename;
-            filename_R_towrite = obj.image_R.filename;
+            filename_L_towrite = obj.camera.filename;
+            filename_R_towrite = obj.camera_R.filename;
             filename_S_towrite = obj.filename;
         elseif length(varargin) == 1
             filename_in = varargin{1};
@@ -170,8 +170,8 @@ methods
             filename_S_towrite = varargin{3};
         else
             warning('cam_3D_aperture:wrongFileNameNumber', 'Write function takes 0, 1 or 3 arguments for 3D cams.');
-            filename_L_towrite = obj.image.filename;
-            filename_R_towrite = obj.image_R.filename;
+            filename_L_towrite = obj.camera.filename;
+            filename_R_towrite = obj.camera_R.filename;
             filename_S_towrite = obj.filename;
         end
         

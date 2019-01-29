@@ -123,8 +123,8 @@ methods
 
     function write(obj, varargin)
         if isempty(varargin)
-            filename_L_towrite = obj.image.filename;
-            filename_R_towrite = obj.image_R.filename;
+            filename_L_towrite = obj.camera.filename;
+            filename_R_towrite = obj.camera_R.filename;
             filename_S_towrite = obj.filename;
         elseif length(varargin) == 1
             filename_in = varargin{1};
@@ -145,8 +145,8 @@ methods
             filename_S_towrite = varargin{3};
         else
             warning('cam_3D_aperture:wrongFileNameNumber', 'Write function takes 0, 1 or 3 arguments for 3D cams.');
-            filename_L_towrite = obj.image.filename;
-            filename_R_towrite = obj.image_R.filename;
+            filename_L_towrite = obj.camera.filename;
+            filename_R_towrite = obj.camera_R.filename;
             filename_S_towrite = obj.filename;
         end
         
@@ -154,6 +154,13 @@ methods
         imwrite16(obj.image_R.img, filename_R_towrite, obj.gammaind);
         
         imwrite16(cat(3, obj.image.img(:, :, 1), obj.image_R.img(:, :, [2, 3])), filename_S_towrite, obj.gammaind);
+    end
+
+    function show(obj, fignumber)
+        figure(fignumber);
+        imshow(obj.image.img.^(1/obj.gammaind));
+        figure(fignumber+1);
+        imshow(obj.image_R.img.^(1/obj.gammaind));
     end
     
     function focus(obj, foc_dist)
