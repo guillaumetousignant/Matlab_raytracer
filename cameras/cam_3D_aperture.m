@@ -65,7 +65,7 @@ methods
 
         horizontal = cross(obj.direction, up);
 
-        obj.camera.origin = -eye_dist/2 * horizontal + obj.originv;
+        obj.camera.origin = -eye_dist/2 * horizontal + obj.origin;
         obj.camera_R.origin = eye_dist/2 * horizontal + obj.origin;
 
         L_vec = focal_length * obj.direction + eye_dist/2 * horizontal;
