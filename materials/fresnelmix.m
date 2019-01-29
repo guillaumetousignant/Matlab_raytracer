@@ -18,7 +18,7 @@ methods
 
         cosi = abs(dot(aray.direction, normal));
 
-        etai = aray.material.ind;
+        etai = aray.medium_list{1}.ind;
         etat = obj.ind;
 
         sint = etai/etat * sqrt(1 - cosi * cosi);
