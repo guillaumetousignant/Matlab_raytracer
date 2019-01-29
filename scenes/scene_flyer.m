@@ -9,6 +9,7 @@ air = refractive(colours.black, colours.white, 1.001, 0, nonabsorber()); %%% CHE
 
 
 scenename = 'flyer';
+filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
 fprintf('\nScene name: %s\n', scenename);
 fprintf('\nScene building\n');
@@ -69,7 +70,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([1800, 1200], 'type', 'cam', 'focalLength', 0.01, 'bg', 'beach', 'aperture', 0.025, 'maxbounces', 32, 'material', air);
+camera = generate_camera([1800, 1200], 'type', '3daperture', 'focalLength', 0.01, 'bg', 'beach', 'aperture', 0.025, 'maxbounces', 32, 'material', air, 'file', filename);
 
 camera.transformation.rotatez(pi);
 %camera.transformation.translate([-1, -2, 0]);
