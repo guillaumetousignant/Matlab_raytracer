@@ -16,7 +16,7 @@ methods
         obj.colour = colour;
         obj.mask = mask;
         obj.dist = 0;
-        obj.medium_list = {amedium};
+        obj.medium_list = {amedium; amedium};
         obj.time = [1, 1];
     end
 
