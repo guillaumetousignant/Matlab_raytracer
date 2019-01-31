@@ -61,9 +61,17 @@ camera.update;
 camera.update; % second time to kill blur
 
 scene_struct = struct();
-scene_struct.materials = cell(3, 1);
-scene_struct.objects = cell(4, 1);
-scene_struct.camera = struct();
 scene_struct.name = 'overlap';
+
+scene_struct.materials = cell(3, 1);
+scene_struct.materials{1} = struct('name', 'dirgrey', 'type', 'diffuse', 'emission', 'black', 'colour', 'grey1', 'roughness', 1);
+absorber1 = struct('name', 'red_absorber', 'type', 'absorber', 'emission', 'black', 'colour', 'red', 'emission_distance', 1000, 'absorption_distance', 2);
+scene_struct.materials{2} = struct('name', 'glass', 'type', 'reflective_refractive_fuzz', 'emission', 'black', 'colour', 'white', 'ind', 1.5, 'priority', 30, 'order', 2, 'diffusivity', 0.05, 'scattering_fn', absorber1);
+absorber2 = struct('name', 'blue_absorber', 'type', 'absorber', 'emission', 'black', 'colour', 'watercolour', 'emission_distance', 1000, 'absorption_distance', 2);
+scene_struct.materials{3} = struct('name', 'glass2', 'type', 'reflective_refractive_fuzz', 'emission', 'black', 'colour', 'white', 'ind', 1.33, 'priority', 20, 'order', 1, 'diffusivity', 0.05, 'scattering_fn', absorber2);
+
+scene_struct.objects = cell(4, 1);
+
+scene_struct.camera = struct();
 
 camera.accumulate(ascene);
