@@ -1,183 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scene>
+<scene name="overlap">
    <name>overlap</name>
    <scatterers>
-      <scatterer>
-         <name>red_absorber</name>
-         <type>absorber</type>
-         <emission>black</emission>
-         <colour>red</colour>
-         <emission_distance>1000</emission_distance>
-         <absorption_distance>2</absorption_distance>
-      </scatterer>
-      <scatterer>
-         <name>blue_absorber</name>
-         <type>absorber</type>
-         <emission>black</emission>
-         <colour>watercolour</colour>
-         <emission_distance>1000</emission_distance>
-         <absorption_distance>2</absorption_distance>
-      </scatterer>
-      <scatterer>
-         <name>air_absorber</name>
-         <type>nonabsorber</type>
-      </scatterer>
+      <scatterer absorption_distance="2" colour="red" emission="black" emission_distance="1000" name="red_absorber" type="absorber"/>
+      <scatterer absorption_distance="2" colour="watercolour" emission="black" emission_distance="1000" name="blue_absorber" type="absorber"/>
+      <scatterer name="air_absorber" type="nonabsorber"/>
    </scatterers>
    <materials>
-      <material>
-         <name>difgrey</name>
-         <type>diffuse</type>
-         <emission>black</emission>
-         <colour>grey1</colour>
-         <roughness>1</roughness>
-      </material>
-      <material>
-         <name>glass</name>
-         <type>reflective_refractive_fuzz</type>
-         <emission>black</emission>
-         <colour>white</colour>
-         <ind>1.5</ind>
-         <priority>30</priority>
-         <order>2</order>
-         <diffusivity>0.05</diffusivity>
-         <scattering_fn>1</scattering_fn>
-      </material>
-      <material>
-         <name>glass2</name>
-         <type>reflective_refractive_fuzz</type>
-         <emission>black</emission>
-         <colour>white</colour>
-         <ind>1.33</ind>
-         <priority>20</priority>
-         <order>1</order>
-         <diffusivity>0.05</diffusivity>
-         <scattering_fn>2</scattering_fn>
-      </material>
-      <material>
-         <name>air</name>
-         <type>refractive</type>
-         <emission>black</emission>
-         <colour>white</colour>
-         <ind>1.001</ind>
-         <priority>0</priority>
-         <scattering_fn>3</scattering_fn>
-      </material>
+      <material colour="grey1" emission="black" name="difgrey" roughness="1" type="diffuse"/>
+      <material colour="white" diffusivity="0.05" emission="black" ind="1.5" name="glass" order="2" priority="30" scattering_fn="1" type="reflective_refractive_fuzz"/>
+      <material colour="white" diffusivity="0.05" emission="black" ind="1.33" name="glass2" order="1" priority="20" scattering_fn="2" type="reflective_refractive_fuzz"/>
+      <material colour="white" emission="black" ind="1.001" name="air" priority="0" scattering_fn="3" type="refractive"/>
    </materials>
    <transform_matrices>
-      <transform_matrix>
-         <name>neutralmatrix</name>
-         <value>NaN</value>
-      </transform_matrix>
+      <transform_matrix name="neutralmatrix" value="NaN"/>
    </transform_matrices>
    <objects>
-      <object>
-         <name>planegrey1</name>
-         <type>triangle</type>
-         <material>1</material>
-         <points>-1000 1000 -1
--1000 -1000 -1
- 1000 -1000 -1</points>
-         <normals>NaN</normals>
-         <texture_coordinates>NaN</texture_coordinates>
-         <transform_matrix>1</transform_matrix>
-      </object>
-      <object>
-         <name>planegrey2</name>
-         <type>triangle</type>
-         <material>1</material>
-         <points>-1000 1000 -1
- 1000 -1000 -1
- 1000 1000 -1</points>
-         <normals>NaN</normals>
-         <texture_coordinates>NaN</texture_coordinates>
-         <transform_matrix>1</transform_matrix>
-      </object>
-      <object>
-         <name>sphere1</name>
-         <type>sphere</type>
-         <material>2</material>
-         <transform_matrix>NaN</transform_matrix>
+      <object material="1" name="planegrey1" normals="NaN" points="-1000 1000 -1&#xA;-1000 -1000 -1&#xA; 1000 -1000 -1" texture_coordinates="NaN" transform_matrix="1" type="triangle"/>
+      <object material="1" name="planegrey2" normals="NaN" points="-1000 1000 -1&#xA; 1000 -1000 -1&#xA; 1000 1000 -1" texture_coordinates="NaN" transform_matrix="1" type="triangle"/>
+      <object material="2" name="sphere1" transform_matrix="NaN" type="sphere">
          <transformations_pre>
-            <transformation_pre>
-               <type>translation</type>
-               <value>-0.4 3 0</value>
-            </transformation_pre>
-            <transformation_pre>
-               <type>uniformscale</type>
-               <value>1</value>
-            </transformation_pre>
+            <transformation_pre type="translation" value="-0.4 3 0"/>
+            <transformation_pre type="uniformscale" value="1"/>
          </transformations_pre>
       </object>
-      <object>
-         <name>sphere2</name>
-         <type>sphere</type>
-         <material>3</material>
-         <transform_matrix>NaN</transform_matrix>
+      <object material="3" name="sphere2" transform_matrix="NaN" type="sphere">
          <transformations_pre>
-            <transformation_pre>
-               <type>translation</type>
-               <value>0.7 3 0</value>
-            </transformation_pre>
-            <transformation_pre>
-               <type>uniformscale</type>
-               <value>1</value>
-            </transformation_pre>
+            <transformation_pre type="translation" value="0.7 3 0"/>
+            <transformation_pre type="uniformscale" value="1"/>
          </transformations_pre>
       </object>
    </objects>
    <directional_lights>
-      <directional_light>
-         <name>sun</name>
-         <colour>5 5 4</colour>
-         <transform_matrix>NaN</transform_matrix>
+      <directional_light colour="5 5 4" name="sun" transform_matrix="NaN">
          <transformations_pre>
-            <transformation_pre>
-               <type>uniformscale</type>
-               <value>0.95</value>
-            </transformation_pre>
-            <transformation_pre>
-               <type>rotatez</type>
-               <value>-0.7854</value>
-            </transformation_pre>
-            <transformation_pre>
-               <type>rotatex</type>
-               <value>-1.1781</value>
-            </transformation_pre>
+            <transformation_pre type="uniformscale" value="0.95"/>
+            <transformation_pre type="rotatez" value="-0.7854"/>
+            <transformation_pre type="rotatex" value="-1.1781"/>
          </transformations_pre>
       </directional_light>
    </directional_lights>
    <skyboxes>
-      <skybox>
-         <name>day</name>
-         <type>skybox_flat_sun</type>
-         <background>0.804 0.8825 0.9765</background>
-         <lights>1</lights>
-      </skybox>
+      <skybox background="0.804 0.8825 0.9765" lights="1" name="day" type="skybox_flat_sun"/>
    </skyboxes>
    <imgbuffers>
-      <imgbuffer>
-         <name>buffer1</name>
-         <type>imgbuffer</type>
-         <resx>1800</resx>
-         <resy>1200</resy>
-      </imgbuffer>
+      <imgbuffer name="buffer1" resx="1800" resy="1200" type="imgbuffer"/>
    </imgbuffers>
    <cameras>
-      <camera>
-         <name>camera1</name>
-         <type>cam</type>
-         <transformation_matrix>NaN</transformation_matrix>
-         <filename>NaN</filename>
-         <up>0 0 1</up>
-         <fov>0.93084 1.3963</fov>
-         <subpix>1 1</subpix>
-         <imgbuffer>1</imgbuffer>
-         <material>4</material>
-         <skybox>1</skybox>
-         <max_bounces>8</max_bounces>
-         <gammaind>1</gammaind>
-         <rendermode>accumulation</rendermode>
-         <n_iter>Inf</n_iter>
-      </camera>
+      <camera filename="NaN" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" material="4" max_bounces="8" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="1" subpix="1 1" transformation_matrix="NaN" type="cam" up="0 0 1"/>
    </cameras>
 </scene>
