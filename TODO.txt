@@ -40,6 +40,7 @@
 % - Nested dielectrics logic doesn't work right yet, going-out should check different priority than going in, maybe have for check after inout check.
 %           % For example, reflective-refractive materials refract when overlapping with themselves.
 %           % Seems worse for reflective-refractive than for reflective-refractive-fuzz. Maybe because smoothed.
+% - Scene structures can't have [] in them, using NaN.
 %
 %% DONE
 %
