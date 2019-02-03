@@ -67,7 +67,7 @@ scene_struct.scene.materials.material = material_cell;
 transform_cell = cell(1, 1);
 
 transform_cell{1}.name = 'neutralmatrix';
-transform_cell{1}.value = []; % fill if is empty
+transform_cell{1}.value = NaN; % fill if is empty
 
 scene_struct.scene.transform_matrices.transform_matrix = transform_cell;
 
@@ -78,22 +78,22 @@ object_cell{1}.name = 'planegrey1';
 object_cell{1}.type = 'triangle';
 object_cell{1}.material = 1; % can also be name
 object_cell{1}.points = [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, -1];
-object_cell{1}.normals = [];
-object_cell{1}.texture_coordinates = [];
+object_cell{1}.normals = NaN;
+object_cell{1}.texture_coordinates = NaN;
 object_cell{1}.transform_matrix = 1; % if not empty, search for right matrix, if empty, create.
 
 object_cell{2}.name = 'planegrey2';
 object_cell{2}.type = 'triangle';
 object_cell{2}.material = 1; % can also be name
 object_cell{2}.points = [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1];
-object_cell{2}.normals = [];
-object_cell{2}.texture_coordinates = [];
+object_cell{2}.normals = NaN;
+object_cell{2}.texture_coordinates = NaN;
 object_cell{2}.transform_matrix = 1; % if not empty, search for right matrix, if empty, create.
 
 object_cell{3}.name = 'sphere1';
 object_cell{3}.type = 'sphere';
 object_cell{3}.material = 2; % can also be name
-object_cell{3}.transform_matrix = []; % if not empty, search for right matrix, if empty, create.
+object_cell{3}.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(2, 1);
 transformation_pre_cell{1}.type = 'translation';
 transformation_pre_cell{1}.value = [-0.4, 3, 0];
@@ -104,7 +104,7 @@ object_cell{3}.transformations_pre.transformation_pre = transformation_pre_cell;
 object_cell{4}.name = 'sphere2';
 object_cell{4}.type = 'sphere';
 object_cell{4}.material = 3; % can also be name
-object_cell{4}.transform_matrix = []; % if not empty, search for right matrix, if empty, create.
+object_cell{4}.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(2, 1);
 transformation_pre_cell{1}.type = 'translation';
 transformation_pre_cell{1}.value = [0.7, 3, 0];
@@ -119,7 +119,7 @@ directional_light_cell = cell(1, 1);
 
 directional_light_cell{1}.name = 'sun';
 directional_light_cell{1}.colour = [2.5, 2.5, 2] * 2;
-directional_light_cell{1}.transform_matrix = [];
+directional_light_cell{1}.transform_matrix = NaN;
 transformation_pre_cell = cell(3, 1);
 transformation_pre_cell{1}.type = 'uniformscale';
 transformation_pre_cell{1}.value = 0.95;
@@ -162,8 +162,8 @@ camera_cell = cell(1, 1);
 
 camera_cell{1}.name = 'camera1';
 camera_cell{1}.type = 'cam';
-camera_cell{1}.transformation_matrix = [];
-camera_cell{1}.filename = []; % if is empty, use next available with scene name
+camera_cell{1}.transformation_matrix = NaN;
+camera_cell{1}.filename = NaN; % if is empty, use next available with scene name
 camera_cell{1}.up = [0, 0, 1];
 camera_cell{1}.fov = fov;
 camera_cell{1}.subpix = [1, 1];
@@ -178,4 +178,4 @@ camera_cell{1}.n_iter = inf;
 scene_struct.scene.cameras.camera = camera_cell;
 
 %% Output
-struct2xml(scene_struct, [scene_name, '.xml']);
+struct2xml(scene_struct, ['.', filesep, 'scenes', filesep, scene_name, '.xml']);
