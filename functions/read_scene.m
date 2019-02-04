@@ -10,8 +10,6 @@ function read_scene(filename, varargin)
     filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
     objects = {};
-    skyboxes = {};
-    imgbuffers = {};
     cameras = {};
 
     %% Creation
@@ -159,23 +157,49 @@ function read_scene(filename, varargin)
             temp = s.scene.skyboxes.skybox{i, 1}.Attributes;
             switch lower(temp.type)
                 case 'skybox_flat_sun'
-                    skyboxes{i, 1} = 
+                    directional_lights = get_directional_lights(temp.lights);
+                    skyboxes{i, 1} = skybox_flat_sun(get_colour(temp.colour), directional_lights{:});
                 case 'skybox_flat'
                     skyboxes{i, 1} = skybox_flat(get_colour(temp.colour));
                 case 'skybox_texture_sun'
-                    skyboxes{i, 1} = 
+                    skyboxes{i, 1} = skybox_texture_sun(temp.texture, get_value(temp.light_position), get_colour(temp.light_colour), get_value(light_radius));
                 case 'skybox_texture_transformation_sun'
-                    skyboxes{i, 1} = 
+                    transform_matrix = get_transform_matrix(temp.transform_matrix);
+                    skyboxes{i, 1} = skybox_texture_transformation_sun(temp.texture, transform_matrix, get_value(temp.light_position), get_colour(temp.light_colour), get_value(light_radius));
                 case 'skybox_texture_transformation'
-                    skyboxes{i, 1} = 
+                    transform_matrix = get_transform_matrix(temp.transform_matrix);
+                    skyboxes{i, 1} = skybox_texture_transformation(temp.texture, transform_matrix);
                 case 'skybox_texture'
-                    skyboxes{i, 1} = 
+                    skyboxes{i, 1} = skybox_texture(temp.texture);
             end                    
         end
     else
         n_skyboxes = 0;
         skyboxes = {};
     end
+
+    if isfield(s.scene, 'imgbuffers')
+        n_imgbuffers = size(s.scene.imgbuffers.imgbuffer, 1);
+        imgbuffers = cell(n_imgbuffers, 1);
+
+        for i = 1:n_imgbuffers
+            temp = s.scene.n_imgbuffers.n_imgbuffer{i, 1}.Attributes;
+            switch lower(temp.type)
+                case 'imgbuffer'
+                    imgbuffers{i, 1} = imgbuffer(temp.resx, temp.resy);
+                otherwise
+                    imgbuffers{i, 1} = imgbuffer(300, 200);
+                    warning('read_scene:unknownImgbufferType', ['Unknown imgbuffer type "', temp.type, '", ignoring.']);
+            end
+        end
+    else
+        n_imgbuffers = 0;
+        imgbuffers = {};
+    end
+
+
+
+
 
 
     %% Fixes
@@ -339,6 +363,30 @@ function read_scene(filename, varargin)
                 end
             end
             is_in_output = index;
+        end
+    end
+
+    function directional_lights_output = get_directional_lights(directional_lights_input)
+        [value_num, status] = str2num(directional_lights_input);
+        if status
+            directional_lights_output1 = value_num;
+        else
+            directional_lights_input = strsplit(directional_lights_input, {',', ';'});
+            index = zeros(1, length(directional_lights_input));
+            for j5 = 1:length(directional_lights_input)
+                value_temp = strtrim(directional_lights_input{j5});
+                for k2 = 1:size(s.scene.directional_lights.directional_light, 1)
+                    if strcmpi(s.scene.directional_lights.directional_light{k2, 1}.Attributes.name, value_temp)
+                        index(1, j5) = k2;
+                        break
+                    end
+                end
+            end
+            directional_lights_output1 = index;
+        end
+        directional_lights_output = cell(size(directional_lights_output1, 2), 1);
+        for j5 = 1:size(directional_lights_output1, 2)
+            directional_lights_output{j5, 1} = directional_lights{directional_lights_output1(1, j5), 1};
         end
     end
 end
