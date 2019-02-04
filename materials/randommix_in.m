@@ -1,15 +1,15 @@
 classdef randommix_in < material
 properties
     ratio
-    material_1
-    material_2
+    material_refracted
+    material_reflected
 end
 
 methods
-    function obj = randommix_in(material_1, material_2, ratio)
+    function obj = randommix_in(material_refracted, material_reflected, ratio)
         obj = obj@material();
-        obj.material_1 = material_1;
-        obj.material_2 = material_2;
+        obj.material_refracted = material_refracted;
+        obj.material_reflected = material_reflected;
         obj.ratio = ratio;
     end
 
@@ -18,9 +18,9 @@ methods
         cosi = dot(aray.direction, normal);
 
         if (cosi > 0) || (rand < obj.ratio) % material 1 or going out 
-           obj.material_1.bounce(uv, hit_obj, aray);
+           obj.material_refracted.bounce(uv, hit_obj, aray);
         else % material 2
-            obj.material_2.bounce(uv, hit_obj, aray);
+            obj.material_reflected.bounce(uv, hit_obj, aray);
         end
     end
 end
