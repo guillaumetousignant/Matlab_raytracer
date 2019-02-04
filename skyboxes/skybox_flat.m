@@ -5,7 +5,7 @@ properties
 end
 
 methods
-    function obj = skybox_flat( background)
+    function obj = skybox_flat(background)
         obj = obj@handle();
         obj.background = background;
     end
