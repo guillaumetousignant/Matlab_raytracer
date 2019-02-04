@@ -30,7 +30,7 @@ methods
             newdir = transform_norm.multDir(aray.direction);
             aray.direction = newdir/norm(newdir);
 
-            aray.material = obj.is_in;
+            aray.medium_list = obj.is_in;
         end
     end
 end
