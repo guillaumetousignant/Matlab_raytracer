@@ -9,7 +9,7 @@ end
 methods
     function obj = diffuse_full(emi, tex, rough)
         obj = obj@material();
-        obj.emission = emi;
+        obj.emissionmap = emi;
         obj.texture = tex;
         obj.roughness = rough;
     end
