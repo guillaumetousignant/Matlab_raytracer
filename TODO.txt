@@ -40,7 +40,7 @@
 % - Nested dielectrics logic doesn't work right yet, going-out should check different priority than going in, maybe have for check after inout check.
 %           % For example, reflective-refractive materials refract when overlapping with themselves.
 %           % Seems worse for reflective-refractive than for reflective-refractive-fuzz. Maybe because smoothed.
-% - Scene structures can't have [] in them, using NaN.
+% - Portals still use old is_in solution, but can have a cell array of materials to work with effects. Must know what is on the other end.
 %
 %% DONE
 %
@@ -167,3 +167,5 @@
 %           % See above
 % - Total internal refraction should not add medium with nested dielectrics.
 %           % Now only actual boundary passing adds material.
+% - Scene structures can't have [] in them, using NaN.
+%           % If not using NaN, null pointer error in matlab.
