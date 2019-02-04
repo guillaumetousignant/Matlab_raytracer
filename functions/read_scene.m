@@ -194,7 +194,8 @@ function read_scene(filename, varargin)
             for j = 1:n_transforms
                 apply_transformation(directional_lights{i, 1}, temp.transformations_pre.transformation_pre{j, 1}.Attributes);
             end
-        end        
+        end      
+        directional_lights{i, 1}.update;
     end
 
 
@@ -325,25 +326,45 @@ function output_value = get_value(input_value)
 end
 
 function apply_transformation(object, transform)
-    value = get_value(transform);
+    value = get_value(transform.value);
     switch lower(transform.type)
         case 'rotatexaxis'
+            object.transformation.rotatexaxis(value);
         case 'rotateyaxis'
+            object.transformation.rotateyaxis(value);
         case 'rotatezaxis'
+            object.transformation.rotatezaxis(value);
         case 'rotatex'
+            object.transformation.rotatex(value);
         case 'rotatey'
+            object.transformation.rotatey(value);
         case 'rotatez'
+            object.transformation.rotatez(value);
         case 'rotateaxis'
+            vec = get_value(transform.axis);
+            object.transformation.rotateaxis(vec, value);
         case 'rotate'
+            vec = get_value(transform.axis);
+            object.transformation.rotate(vec, value);
         case 'translate'
+            object.transformation.translate(value);
         case 'scaleaxis'
+            object.transformation.aleaxis(value);
         case 'uniformscaleaxis'
+            object.transformation.uniformscaleaxis(value);
         case 'scale'
+            object.transformation.scale(value);
         case 'uniformscale'
+            object.transformation.uniformscale(value);
         case 'reflect'
+            object.transformation.reflect(value);
         case 'shear'
+            object.transformation.shear(value);
         case 'transpose'
+            object.transformation.transpose();
         case 'invert'
+            object.transformation.invert();
         case 'neg'
+            object.transformation.neg();
     end
 end
