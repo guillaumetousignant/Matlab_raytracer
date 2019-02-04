@@ -151,6 +151,31 @@ function read_scene(filename, varargin)
         directional_lights = {};
     end
 
+    if isfield(s.scene, 'skyboxes')
+        n_skyboxes = size(s.scene.skyboxes.skybox, 1);
+        skyboxes = cell(n_skyboxes, 1);
+
+        for i = 1:n_skyboxes
+            temp = s.scene.skyboxes.skybox{i, 1}.Attributes;
+            switch lower(temp.type)
+                case 'skybox_flat_sun'
+                    skyboxes{i, 1} = 
+                case 'skybox_flat'
+                    skyboxes{i, 1} = skybox_flat(get_colour(temp.colour));
+                case 'skybox_texture_sun'
+                    skyboxes{i, 1} = 
+                case 'skybox_texture_transformation_sun'
+                    skyboxes{i, 1} = 
+                case 'skybox_texture_transformation'
+                    skyboxes{i, 1} = 
+                case 'skybox_texture'
+                    skyboxes{i, 1} = 
+            end                    
+        end
+    else
+        n_skyboxes = 0;
+        skyboxes = {};
+    end
 
 
     %% Fixes
@@ -185,6 +210,7 @@ function read_scene(filename, varargin)
             scatterers{i, 1}.is_in = is_in;
         end
     end
+
 
     %% Updating
     for i = 1:n_directional_lights
