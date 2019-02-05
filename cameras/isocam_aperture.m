@@ -8,7 +8,7 @@ end
 
 methods
     function obj = isocam_aperture(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@isocam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces,maind);        
+        obj = obj@isocam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
