@@ -5,7 +5,7 @@ properties
 end
 
 methods
-    function obj = box(coord) % coord is a 2x3 matric, min row vector and max row vector
+    function obj = box(coord) % coord is a 2x3 matrix, min row vector and max row vector
         obj = obj@handle();
         obj.coord = coord;
     end
