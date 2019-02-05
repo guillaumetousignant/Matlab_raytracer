@@ -9,7 +9,6 @@ function read_scene(filename, varargin)
     scenename = s.scene.Attributes.name;
     filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
-    objects = {};
     cameras = {};
 
     %% Creation
@@ -25,9 +24,9 @@ function read_scene(filename, varargin)
                 if isnan(value_num)
                     transform_matrices{i, 1} = transformmatrix();
                 else
-                    if length(value_num) == 16
-                        value_num = reshape(value_num, [4, 4]);
-                    end
+                    %if length(value_num) == 16
+                    %    value_num = reshape(value_num, [4, 4]); % maybe not needed
+                    %end
                     transform_matrices{i, 1} = transformmatrix(value_num);
                 end
             else
@@ -133,6 +132,80 @@ function read_scene(filename, varargin)
         materials = {};
         materials_mix_list = {};
         materials_medium_list = {};
+    end
+
+    if isfield(s.scene, 'mesh_geometries')
+        n_mesh_geometries = size(s.scene.mesh_geometries.mesh_geometry, 1);
+        mesh_geometries = cell(n_mesh_geometries, 1);
+
+        for i = 1:n_mesh_geometries
+            temp = s.scene.mesh_geometries.mesh_geometry{i, 1}.Attributes;
+            switch lower(temp.type)
+                case 'mesh_geometry'
+                    mesh_geometries{i, 1} = mesh_geometry(temp.filename);
+                otherwise
+                    error('read_scene:unknownGeometry', ['Unknown geometry type "', lower(temp.type), '". Exiting.']);
+            end
+        end
+    else
+        n_mesh_geometries = 0;
+        mesh_geometries = {};
+    end
+
+    if isfield(s.scene, 'objects')
+        n_objects = size(s.scene.objects.object, 1);
+        objects = cell(n_objects, 1);
+
+        for i = 1:n_objects
+            temp = s.scene.objects.object{i, 1}.Attributes;
+            transform_matrix = get_transform_matrix(temp.transform_matrix);
+            temp_material = get_material(temp.material);
+            switch lower(temp.type)
+                case 'sphere'
+                    objects{i, 1} = sphere(temp_material, transform_matrix);
+                case 'sphere_motionblur'
+                    objects{i, 1} = sphere_motionblur(temp_material, transform_matrix);
+                case 'plane'
+                    objects{i, 1} = plane(temp_material, transform_matrix);
+                case 'mesh'
+                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = mesh(mesh_geometry, temp_material, transform_matrix);
+                case 'mesh_motionblur'
+                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = mesh_motionblur(mesh_geometry, temp_material, transform_matrix);
+                case 'triangle'
+                    normals = get_value(temp.normals);
+                    if isnan(normals)
+                        normals = [];
+                    end
+                    texcoord = get_value(temp.texture_coordinates);
+                    if isnan(texcoord)
+                        texcoord = [];
+                    end
+                    objects{i, 1} = triangle(temp_material, get_value(temp.points), normals, texcoord, transform_matrix);
+                case 'triangle_motionblur'
+                    normals = get_value(temp.normals);
+                    if isnan(normals)
+                        normals = [];
+                    end
+                    texcoord = get_value(temp.texture_coordinates);
+                    if isnan(texcoord)
+                        texcoord = [];
+                    end
+                    objects{i, 1} = triangle_motionblur(temp_material, get_value(temp.points), normals, texcoord, transform_matrix);
+                case 'triangle_mesh'
+                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = triangle_mesh(temp_material, mesh_geometry, get_value(temp.index), transform_matrix);
+                case 'triangle_mesh_motionblur'
+                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = triangle_mesh_motionblur(temp_material, mesh_geometry, get_value(temp.index), transform_matrix); 
+                otherwise
+                    error('read_scene:unknownObject', ['Unknown object type "', lower(temp.type), '". Ignored.']);
+            end
+        end
+    else
+        n_objects = 0;
+        objects = {};
     end
 
     if isfield(s.scene, 'directional_lights')
@@ -248,6 +321,16 @@ function read_scene(filename, varargin)
         directional_lights{i, 1}.update;
     end
 
+    for i = 1:n_objects
+        temp = s.scene.objects.object{i, 1};
+        if isfield(temp, 'transformations_pre')
+            n_transforms = length(temp.transformations_pre.transformation_pre);
+            for j = 1:n_transforms
+                apply_transformation(objects{i, 1}, temp.transformations_pre.transformation_pre{j, 1}.Attributes);
+            end
+        end      
+        objects{i, 1}.update;
+    end
 
 
 
@@ -255,8 +338,7 @@ function read_scene(filename, varargin)
 
 
 
-
-
+    %% Functions
     function output_colour = get_colour(input_colour)
         [output_colour, colour_status] = str2num(input_colour);
         if ~colour_status
@@ -328,6 +410,25 @@ function read_scene(filename, varargin)
         end
     end
 
+    function output_material = get_material(input_material)
+        [input_material_num, status] = str2num(input_material);
+        if status
+            output_material = materials{input_material_num};
+        else
+            index = 0;
+            for j6 = 1:size(s.scene.materials.material, 1)
+                if strcmpi(s.scene.materials.material{j6, 1}.Attributes.name, input_material)
+                    output_material = materials{j6};
+                    break
+                end
+            end
+            if ~index
+                output_material = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
+                warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
+            end
+        end
+    end
+
     function transform_matrix_output = get_transform_matrix(transform_matrix_input)
         [transform_matrix_input_num, status] = str2num(transform_matrix_input);
         if status
@@ -387,6 +488,24 @@ function read_scene(filename, varargin)
         directional_lights_output = cell(size(directional_lights_output1, 2), 1);
         for j5 = 1:size(directional_lights_output1, 2)
             directional_lights_output{j5, 1} = directional_lights{directional_lights_output1(1, j5), 1};
+        end
+    end
+
+    function output_mesh_geometry = get_mesh_geometry(input_mesh_geometry)
+        [input_mesh_geometry_num, status] = str2num(input_mesh_geometry);
+        if status
+            output_mesh_geometry = mesh_geometries{input_mesh_geometry_num};
+        else
+            index = 0;
+            for j7 = 1:size(s.scene.mesh_geometries.mesh_geometry, 1)
+                if strcmpi(s.scene.mesh_geometries.mesh_geometry{j7, 1}.Attributes.name, input_mesh_geometry)
+                    output_mesh_geometry = mesh_geometries{j7};
+                    break
+                end
+            end
+            if ~index
+                error('read_scene:mesh_geometryNotFound', ['Mesh geometry "', input_mesh_geometry, '" not found, exiting.']);
+            end
         end
     end
 end
