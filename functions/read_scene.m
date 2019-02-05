@@ -1,13 +1,13 @@
-function read_scene(filename, varargin)
+function read_scene(xml_filename, varargin)
     %[num, status] = str2num(str) % will work for matrices, NaN, inf, i etc.
 
     % Colours
     load colours_mat colours
 
-    s = xml2struct(filename);
+    s = xml2struct(xml_filename);
 
     scenename = s.scene.Attributes.name;
-    filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
+    next_filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
     cameras = {};
 
@@ -244,6 +244,9 @@ function read_scene(filename, varargin)
                     skyboxes{i, 1} = skybox_texture_transformation(temp.texture, transform_matrix);
                 case 'skybox_texture'
                     skyboxes{i, 1} = skybox_texture(temp.texture);
+                otherwise
+                    skyboxes{i, 1} = skybox_flat([0.5, 0.5, 0.5]);
+                    warning('read_scene:unknownSkyboxType', ['Unknown skybox type "', temp.type, '", ignoring.']);
             end                    
         end
     else
@@ -256,7 +259,7 @@ function read_scene(filename, varargin)
         imgbuffers = cell(n_imgbuffers, 1);
 
         for i = 1:n_imgbuffers
-            temp = s.scene.n_imgbuffers.n_imgbuffer{i, 1}.Attributes;
+            temp = s.scene.imgbuffers.imgbuffer{i, 1}.Attributes;
             switch lower(temp.type)
                 case 'imgbuffer'
                     imgbuffers{i, 1} = imgbuffer(temp.resx, temp.resy);
@@ -270,9 +273,28 @@ function read_scene(filename, varargin)
         imgbuffers = {};
     end
 
+    if isfield(s.scene, 'cameras')
+        n_cameras = size(s.scene.cameras.camera, 1);
+        cameras = cell(n_cameras, 1);
 
-
-
+        for i = 1:n_cameras
+            temp = s.scene.cameras.camera{i, 1}.Attributes;            
+            if strcmpi(temp.filename, 'nan')
+                filename = next_filename;
+            else
+                filename = next_filename; 
+            end
+            switch lower(temp.type)
+                case 'cam'
+                    cameras{i, 1} = cam(get_transform_matrix(temp.transform_matrix), filename, get_value(up), get_value(fov), get_value(subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(max_bounces), get_value(gammaind));
+                otherwise
+                    error('read_scene:unknownCameraType', ['Unknown camera type "', temp.type, '", exiting.']);
+            end
+        end
+    else
+        n_cameras = 0;
+        cameras = {};
+    end
 
 
     %% Fixes
@@ -505,6 +527,44 @@ function read_scene(filename, varargin)
             end
             if ~index
                 error('read_scene:mesh_geometryNotFound', ['Mesh geometry "', input_mesh_geometry, '" not found, exiting.']);
+            end
+        end
+    end
+
+    function output_imgbuffer = get_imgbuffer(input_imgbuffer)
+        [input_imgbuffer_num, status] = str2num(input_imgbuffer);
+        if status
+            output_imgbuffer = imgbuffers{input_imgbuffer_num};
+        else
+            index = 0;
+            for j8 = 1:size(s.scene.imgbuffers.imgbuffer, 1)
+                if strcmpi(s.scene.imgbuffers.imgbuffer{j8, 1}.Attributes.name, input_imgbuffer)
+                    output_imgbuffer = imgbuffers{j8};
+                    break
+                end
+            end
+            if ~index
+                output_imgbuffer = imgbuffer(300, 200);
+                warning('read_scene:imgbufferNotFound', ['Image buffer "', input_imgbuffer, '" not found, ignoring.']);
+            end
+        end
+    end
+
+    function output_skybox = get_skybox(input_skybox)
+        [input_skybox_num, status] = str2num(input_skybox);
+        if status
+            output_skybox = skyboxes{input_skybox_num};
+        else
+            index = 0;
+            for j9 = 1:size(s.scene.skyboxes.skybox, 1)
+                if strcmpi(s.scene.skyboxes.skybox{j9, 1}.Attributes.name, input_skybox)
+                    output_skybox = skyboxes{j9};
+                    break
+                end
+            end
+            if ~index
+                output_skybox = skybox_flat([0.5, 0.5, 0.5]);
+                warning('read_scene:skyboxNotFound', ['Skybox "', input_skybox, '" not found, ignoring.']);
             end
         end
     end
