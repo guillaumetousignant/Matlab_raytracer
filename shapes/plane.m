@@ -49,5 +49,13 @@ methods
     function [normalvec] = normal(obj, uv, aray)
         normalvec = obj.normalvec;
     end
+
+    function [coord] = mincoord(obj)
+        coord = [-inf, -inf, -inf];
+    end
+
+    function [coord] = maxcoord(obj)
+        coord = [inf, inf, inf];
+    end
 end
 end
