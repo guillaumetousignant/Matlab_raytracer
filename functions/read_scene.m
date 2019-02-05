@@ -13,11 +13,11 @@ function read_scene(xml_filename, varargin)
 
     %% Creation
     if isfield(s.scene, 'transform_matrices')
-        n_transform_matrices = size(s.scene.transform_matrices.transform_matrix, 1);
+        n_transform_matrices = size(s.scene.transform_matrices.transform_matrix, 2);
         transform_matrices = cell(n_transform_matrices, 1);
 
         for i = 1:n_transform_matrices
-            value = s.scene.transform_matrices.transform_matrix{i, 1}.Attributes.value;
+            value = s.scene.transform_matrices.transform_matrix{1, i}.Attributes.value;
             [value_num, status] = str2num(value);
             
             if status
@@ -40,12 +40,12 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'scatterers')
-        n_scatterers = size(s.scene.scatterers.scatterer, 1);
+        n_scatterers = size(s.scene.scatterers.scatterer, 2);
         scatterers = cell(n_scatterers, 1);
         scatterers_medium_list = cell(n_scatterers, 1);
 
         for i = 1:n_scatterers
-            temp = s.scene.scatterers.scatterer{i, 1}.Attributes;
+            temp = s.scene.scatterers.scatterer{1, i}.Attributes;
             switch lower(temp.type)
                 case 'absorber'
                     scatterers{i, 1} = absorber(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.emission_distance), get_value(temp.absorption_distance));
@@ -71,13 +71,13 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'materials')
-        n_materials = size(s.scene.materials.material, 1);
+        n_materials = size(s.scene.materials.material, 2);
         materials = cell(n_materials, 1);
         materials_mix_list = cell(n_materials, 2);
         materials_medium_list = cell(n_materials, 1);
 
         for i = 1:n_materials
-            temp = s.scene.materials.material{i, 1}.Attributes;
+            temp = s.scene.materials.material{1, i}.Attributes;
             switch lower(temp.type)
                 case 'diffuse_full'
                     materials{i, 1} = diffuse_full(temp.emission_map, temp.texture, get_value(temp.roughness));
@@ -135,11 +135,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'mesh_geometries')
-        n_mesh_geometries = size(s.scene.mesh_geometries.mesh_geometry, 1);
+        n_mesh_geometries = size(s.scene.mesh_geometries.mesh_geometry, 2);
         mesh_geometries = cell(n_mesh_geometries, 1);
 
         for i = 1:n_mesh_geometries
-            temp = s.scene.mesh_geometries.mesh_geometry{i, 1}.Attributes;
+            temp = s.scene.mesh_geometries.mesh_geometry{1, i}.Attributes;
             switch lower(temp.type)
                 case 'mesh_geometry'
                     mesh_geometries{i, 1} = mesh_geometry(temp.filename);
@@ -153,11 +153,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'objects')
-        n_objects = size(s.scene.objects.object, 1);
+        n_objects = size(s.scene.objects.object, 2);
         objects = cell(n_objects, 1);
 
         for i = 1:n_objects
-            temp = s.scene.objects.object{i, 1}.Attributes;
+            temp = s.scene.objects.object{1, i}.Attributes;
             transform_matrix = get_transform_matrix(temp.transform_matrix);
             temp_material = get_material(temp.material);
             switch lower(temp.type)
@@ -168,11 +168,11 @@ function read_scene(xml_filename, varargin)
                 case 'plane'
                     objects{i, 1} = plane(temp_material, transform_matrix);
                 case 'mesh'
-                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
-                    objects{i, 1} = mesh(mesh_geometry, temp_material, transform_matrix);
+                    temp_mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = mesh(temp_mesh_geometry, temp_material, transform_matrix);
                 case 'mesh_motionblur'
-                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
-                    objects{i, 1} = mesh_motionblur(mesh_geometry, temp_material, transform_matrix);
+                    temp_mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = mesh_motionblur(temp_mesh_geometry, temp_material, transform_matrix);
                 case 'triangle'
                     normals = get_value(temp.normals);
                     if isnan(normals)
@@ -194,11 +194,11 @@ function read_scene(xml_filename, varargin)
                     end
                     objects{i, 1} = triangle_motionblur(temp_material, get_value(temp.points), normals, texcoord, transform_matrix);
                 case 'triangle_mesh'
-                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
-                    objects{i, 1} = triangle_mesh(temp_material, mesh_geometry, get_value(temp.index), transform_matrix);
+                    temp_mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = triangle_mesh(temp_material, temp_mesh_geometry, get_value(temp.index), transform_matrix);
                 case 'triangle_mesh_motionblur'
-                    mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
-                    objects{i, 1} = triangle_mesh_motionblur(temp_material, mesh_geometry, get_value(temp.index), transform_matrix); 
+                    temp_mesh_geometry = get_mesh_geometry(temp.mesh_geometry);
+                    objects{i, 1} = triangle_mesh_motionblur(temp_material, temp_mesh_geometry, get_value(temp.index), transform_matrix); 
                 otherwise
                     error('read_scene:unknownObject', ['Unknown object type "', lower(temp.type), '". Ignored.']);
             end
@@ -209,11 +209,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'directional_lights')
-        n_directional_lights = size(s.scene.directional_lights.directional_light, 1);
+        n_directional_lights = size(s.scene.directional_lights.directional_light, 2);
         directional_lights = cell(n_directional_lights, 1);
 
         for i = 1:n_directional_lights
-            temp = s.scene.directional_lights.directional_light{i, 1}.Attributes;
+            temp = s.scene.directional_lights.directional_light{1, i}.Attributes;
             transform_matrix = get_transform_matrix(temp.transform_matrix);
             directional_lights{i, 1} = directional_light(get_colour(temp.colour), transform_matrix);        
         end
@@ -223,11 +223,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'skyboxes')
-        n_skyboxes = size(s.scene.skyboxes.skybox, 1);
+        n_skyboxes = size(s.scene.skyboxes.skybox, 2);
         skyboxes = cell(n_skyboxes, 1);
 
         for i = 1:n_skyboxes
-            temp = s.scene.skyboxes.skybox{i, 1}.Attributes;
+            temp = s.scene.skyboxes.skybox{1, i}.Attributes;
             switch lower(temp.type)
                 case 'skybox_flat_sun'
                     directional_lights = get_directional_lights(temp.lights);
@@ -255,11 +255,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'imgbuffers')
-        n_imgbuffers = size(s.scene.imgbuffers.imgbuffer, 1);
+        n_imgbuffers = size(s.scene.imgbuffers.imgbuffer, 2);
         imgbuffers = cell(n_imgbuffers, 1);
 
         for i = 1:n_imgbuffers
-            temp = s.scene.imgbuffers.imgbuffer{i, 1}.Attributes;
+            temp = s.scene.imgbuffers.imgbuffer{1, i}.Attributes;
             switch lower(temp.type)
                 case 'imgbuffer'
                     imgbuffers{i, 1} = imgbuffer(temp.resx, temp.resy);
@@ -274,11 +274,11 @@ function read_scene(xml_filename, varargin)
     end
 
     if isfield(s.scene, 'cameras')
-        n_cameras = size(s.scene.cameras.camera, 1);
+        n_cameras = size(s.scene.cameras.camera, 2);
         cameras = cell(n_cameras, 1);
 
         for i = 1:n_cameras
-            temp = s.scene.cameras.camera{i, 1}.Attributes;            
+            temp = s.scene.cameras.camera{1, i}.Attributes;            
             if strcmpi(temp.filename, 'nan')
                 filename = next_filename;
             else
@@ -286,7 +286,37 @@ function read_scene(xml_filename, varargin)
             end
             switch lower(temp.type)
                 case 'cam'
-                    cameras{i, 1} = cam(get_transform_matrix(temp.transform_matrix), filename, get_value(up), get_value(fov), get_value(subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(max_bounces), get_value(gammaind));
+                    cameras{i, 1} = cam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
+                case 'cam_aperture'
+                    cameras{i, 1} = cam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                case 'cam_motionblur'
+                    cameras{i, 1} = cam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
+                case 'cam_motionblur_aperture'
+                    cameras{i, 1} = cam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                case 'reccam'
+                    cameras{i, 1} = 
+                case 'reccam_aperture'
+                    cameras{i, 1} = 
+                case 'reccam_motionblur'
+                    cameras{i, 1} = 
+                case 'reccam_motionblur_aperture'
+                    cameras{i, 1} = 
+                case 'isocam'
+                    cameras{i, 1} = 
+                case 'isocam_aperture'
+                    cameras{i, 1} = 
+                case 'isocam_motionblur'
+                    cameras{i, 1} = 
+                case 'isocam_motionblur_aperture'
+                    cameras{i, 1} = 
+                case 'cam_3d'
+                    cameras{i, 1} = 
+                case 'cam_3d_aperture'
+                    cameras{i, 1} = 
+                case 'cam_3d_motionblur'
+                    cameras{i, 1} = 
+                case 'cam_3d_motionblur_aperture'
+                    cameras{i, 1} = 
                 otherwise
                     error('read_scene:unknownCameraType', ['Unknown camera type "', temp.type, '", exiting.']);
             end
@@ -333,22 +363,22 @@ function read_scene(xml_filename, varargin)
 
     %% Updating
     for i = 1:n_directional_lights
-        temp = s.scene.directional_lights.directional_light{i, 1};
+        temp = s.scene.directional_lights.directional_light{1, i};
         if isfield(temp, 'transformations_pre')
-            n_transforms = length(temp.transformations_pre.transformation_pre);
+            n_transforms = size(temp.transformations_pre.transformation_pre, 2);
             for j = 1:n_transforms
-                apply_transformation(directional_lights{i, 1}, temp.transformations_pre.transformation_pre{j, 1}.Attributes);
+                apply_transformation(directional_lights{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
             end
         end      
         directional_lights{i, 1}.update;
     end
 
     for i = 1:n_objects
-        temp = s.scene.objects.object{i, 1};
+        temp = s.scene.objects.object{1, i};
         if isfield(temp, 'transformations_pre')
-            n_transforms = length(temp.transformations_pre.transformation_pre);
+            n_transforms = size(temp.transformations_pre.transformation_pre, 2);
             for j = 1:n_transforms
-                apply_transformation(objects{i, 1}, temp.transformations_pre.transformation_pre{j, 1}.Attributes);
+                apply_transformation(objects{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
             end
         end      
         objects{i, 1}.update;
@@ -379,8 +409,8 @@ function read_scene(xml_filename, varargin)
             output_scattering_fn = scatterers{input_scattering_fn_num};
         else
             index = 0;
-            for j1 = 1:size(s.scene.scatterers.scatterer, 1)
-                if strcmpi(s.scene.scatterers.scatterer{j1, 1}.Attributes.name, input_scattering_fn)
+            for j1 = 1:size(s.scene.scatterers.scatterer, 2)
+                if strcmpi(s.scene.scatterers.scatterer{1, j1}.Attributes.name, input_scattering_fn)
                     output_scattering_fn = scatterers{j1};
                     break
                 end
@@ -401,8 +431,8 @@ function read_scene(xml_filename, varargin)
             output_materials{1, 1} = materials{input_material_num};
         else
             index = 0;
-            for j2 = 1:size(s.scene.materials.material, 1)
-                if strcmpi(s.scene.materials.material{j2, 1}.Attributes.name, input_material)
+            for j2 = 1:size(s.scene.materials.material, 2)
+                if strcmpi(s.scene.materials.material{1, j2}.Attributes.name, input_material)
                     output_materials{1, 1} = materials{j2};
                     break
                 end
@@ -419,8 +449,8 @@ function read_scene(xml_filename, varargin)
             output_materials{1, 2} = materials{input_material_num};
         else
             index = 0;
-            for j2 = 1:size(s.scene.materials.material, 1)
-                if strcmpi(s.scene.materials.material{j2, 1}.Attributes.name, input_material)
+            for j2 = 1:size(s.scene.materials.material, 2)
+                if strcmpi(s.scene.materials.material{1, j2}.Attributes.name, input_material)
                     output_materials{1, 2} = materials{j2};
                     break
                 end
@@ -438,8 +468,8 @@ function read_scene(xml_filename, varargin)
             output_material = materials{input_material_num};
         else
             index = 0;
-            for j6 = 1:size(s.scene.materials.material, 1)
-                if strcmpi(s.scene.materials.material{j6, 1}.Attributes.name, input_material)
+            for j6 = 1:size(s.scene.materials.material, 2)
+                if strcmpi(s.scene.materials.material{1, j6}.Attributes.name, input_material)
                     output_material = materials{j6};
                     break
                 end
@@ -461,7 +491,7 @@ function read_scene(xml_filename, varargin)
             end
         else
             for j3 = 1:n_transform_matrices
-                if strcmpi(s.scene.transform_matrices.transform_matrix{j3, 1}.Attributes.name, transform)
+                if strcmpi(s.scene.transform_matrices.transform_matrix{1, j3}.Attributes.name, transform)
                     transform_matrix_output = transform_matrices{j3, 1};
                     break
                 end
@@ -478,8 +508,8 @@ function read_scene(xml_filename, varargin)
             index = zeros(1, length(is_in_input));
             for j4 = 1:length(is_in_input)
                 value_temp = strtrim(is_in_input{j4});
-                for k1 = 1:size(s.scene.materials.material, 1)
-                    if strcmpi(s.scene.materials.material{k1, 1}.Attributes.name, value_temp)
+                for k1 = 1:size(s.scene.materials.material, 2)
+                    if strcmpi(s.scene.materials.material{1, k1}.Attributes.name, value_temp)
                         index(1, j4) = k1;
                         break
                     end
@@ -498,8 +528,8 @@ function read_scene(xml_filename, varargin)
             index = zeros(1, length(directional_lights_input));
             for j5 = 1:length(directional_lights_input)
                 value_temp = strtrim(directional_lights_input{j5});
-                for k2 = 1:size(s.scene.directional_lights.directional_light, 1)
-                    if strcmpi(s.scene.directional_lights.directional_light{k2, 1}.Attributes.name, value_temp)
+                for k2 = 1:size(s.scene.directional_lights.directional_light, 2)
+                    if strcmpi(s.scene.directional_lights.directional_light{1, k2}.Attributes.name, value_temp)
                         index(1, j5) = k2;
                         break
                     end
@@ -519,8 +549,8 @@ function read_scene(xml_filename, varargin)
             output_mesh_geometry = mesh_geometries{input_mesh_geometry_num};
         else
             index = 0;
-            for j7 = 1:size(s.scene.mesh_geometries.mesh_geometry, 1)
-                if strcmpi(s.scene.mesh_geometries.mesh_geometry{j7, 1}.Attributes.name, input_mesh_geometry)
+            for j7 = 1:size(s.scene.mesh_geometries.mesh_geometry, 2)
+                if strcmpi(s.scene.mesh_geometries.mesh_geometry{1, j7}.Attributes.name, input_mesh_geometry)
                     output_mesh_geometry = mesh_geometries{j7};
                     break
                 end
@@ -537,8 +567,8 @@ function read_scene(xml_filename, varargin)
             output_imgbuffer = imgbuffers{input_imgbuffer_num};
         else
             index = 0;
-            for j8 = 1:size(s.scene.imgbuffers.imgbuffer, 1)
-                if strcmpi(s.scene.imgbuffers.imgbuffer{j8, 1}.Attributes.name, input_imgbuffer)
+            for j8 = 1:size(s.scene.imgbuffers.imgbuffer, 2)
+                if strcmpi(s.scene.imgbuffers.imgbuffer{1, j8}.Attributes.name, input_imgbuffer)
                     output_imgbuffer = imgbuffers{j8};
                     break
                 end
@@ -556,8 +586,8 @@ function read_scene(xml_filename, varargin)
             output_skybox = skyboxes{input_skybox_num};
         else
             index = 0;
-            for j9 = 1:size(s.scene.skyboxes.skybox, 1)
-                if strcmpi(s.scene.skyboxes.skybox{j9, 1}.Attributes.name, input_skybox)
+            for j9 = 1:size(s.scene.skyboxes.skybox, 2)
+                if strcmpi(s.scene.skyboxes.skybox{1, j9}.Attributes.name, input_skybox)
                     output_skybox = skyboxes{j9};
                     break
                 end
