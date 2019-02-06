@@ -2,14 +2,14 @@ classdef portal < material
 
 properties
     transformation
-    is_in
+    medium_list
 end
 
 methods
-    function obj = portal(trans, is_in)
+    function obj = portal(trans, medium_list)
         obj = obj@material();
         obj.transformation = trans;
-        obj.is_in = is_in;
+        obj.medium_list = medium_list;
     end
 
     function bounce(obj, uv, hit_obj, aray) 
@@ -25,7 +25,7 @@ methods
             newdir = transform_norm.multDir(aray.direction);
             aray.direction = newdir/norm(newdir);
 
-            aray.medium_list = obj.is_in;
+            aray.medium_list = obj.medium_list;
 
             %%% REMOVE
             %aray.mask = aray.mask * 0.5;

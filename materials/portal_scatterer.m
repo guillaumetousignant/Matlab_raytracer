@@ -2,16 +2,16 @@ classdef portal_scatterer < scattering_fn
 
 properties
     transformation
-    is_in
+    medium_list
     scattering_coefficient
 end
 
 methods
-    function obj = portal_scatterer(trans, scat_dist, is_in)
+    function obj = portal_scatterer(trans, scat_dist, medium_list)
         obj = obj@scattering_fn();
 
         obj.transformation = trans;
-        obj.is_in = is_in;
+        obj.medium_list = medium_list;
         obj.scattering_coefficient = 1/scat_dist;
     end
 
@@ -30,7 +30,7 @@ methods
             newdir = transform_norm.multDir(aray.direction);
             aray.direction = newdir/norm(newdir);
 
-            aray.medium_list = obj.is_in;
+            aray.medium_list = obj.medium_list;
         end
     end
 end
