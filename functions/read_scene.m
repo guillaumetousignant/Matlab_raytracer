@@ -400,7 +400,11 @@ function read_scene(xml_filename, varargin)
     n_primitives = 0;
     n_meshes = 0;
     for i = 1:n_objects
-
+        if isa(objects{i, 1}, 'mesh') || isa(objects{i, 1}, 'mesh_motionblur') %%% CHECK add types as needes
+            n_meshes = n_meshes + 1;
+        else
+            n_primitives = n_primitives + 1;
+        end
     end
 
     %% Running
