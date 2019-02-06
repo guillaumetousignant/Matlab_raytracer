@@ -9,14 +9,14 @@ properties
     time
 end
 methods
-    function obj = ray(origin, direction, colour, mask, amedium)
+    function obj = ray(origin, direction, colour, mask, medium_list)
         obj = obj@handle();
         obj.origin = origin;
         obj.direction = direction;
         obj.colour = colour;
         obj.mask = mask;
         obj.dist = 0;
-        obj.medium_list = {amedium; amedium};
+        obj.medium_list = medium_list;
         obj.time = [1, 1];
     end
 
