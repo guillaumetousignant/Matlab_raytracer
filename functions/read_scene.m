@@ -7,9 +7,7 @@ function read_scene(xml_filename, varargin)
     s = xml2struct(xml_filename);
 
     scenename = s.scene.Attributes.name;
-    next_filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
-
-    cameras = {};
+    new_filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
 
     %% Creation
     if isfield(s.scene, 'transform_matrices')
@@ -280,9 +278,9 @@ function read_scene(xml_filename, varargin)
         for i = 1:n_cameras
             temp = s.scene.cameras.camera{1, i}.Attributes;            
             if strcmpi(temp.filename, 'nan')
-                filename = next_filename;
+                filename = new_filename;
             else
-                filename = next_filename; 
+                filename = temp.filename; 
             end
             switch lower(temp.type)
                 case 'cam'
@@ -294,29 +292,29 @@ function read_scene(xml_filename, varargin)
                 case 'cam_motionblur_aperture'
                     cameras{i, 1} = cam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'reccam'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = reccam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
                 case 'reccam_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = reccam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'reccam_motionblur'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = reccam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
                 case 'reccam_motionblur_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = reccam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'isocam'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = isocam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
                 case 'isocam_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = isocam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'isocam_motionblur'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = isocam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
                 case 'isocam_motionblur_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = isocam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = cam_3d(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.gammaind));
                 case 'cam_3d_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = cam_3d_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'cam_3d_motionblur'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = cam_3d_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d_motionblur_aperture'
-                    cameras{i, 1} = 
+                    cameras{i, 1} = cam_3d_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 otherwise
                     error('read_scene:unknownCameraType', ['Unknown camera type "', temp.type, '", exiting.']);
             end
@@ -383,6 +381,19 @@ function read_scene(xml_filename, varargin)
         end      
         objects{i, 1}.update;
     end
+
+    for i = 1:n_cameras
+        temp = s.scene.cameras.camera{1, i};
+        if isfield(temp, 'transformations_pre')
+            n_transforms = size(temp.transformations_pre.transformation_pre, 2);
+            for j = 1:n_transforms
+                apply_transformation(cameras{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
+            end
+        end      
+        cameras{i, 1}.update;
+    end
+
+    %% Scene building
 
 
 
