@@ -51,7 +51,7 @@ function read_scene(xml_filename, varargin)
                     scatterers{i, 1} = nonabsorber();
                 case 'portal_scatterer'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
-                    scatterers_medium_list{i, 1} = get_is_in(temp.is_in);
+                    scatterers_medium_list{i, 1} = get_is_in(temp.medium_list);
                     scatterers{i, 1} = portal_scatterer(transform_matrix, get_value(temp.scattering_distance), []);
                 case 'scatterer_exp'
                     scatterers{i, 1} = scatterer_exp(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.emission_distance), get_value(temp.absorption_distance), get_value(temp.scattering_distance), get_value(temp.order), get_value(temp.scattering_angle));
@@ -96,7 +96,7 @@ function read_scene(xml_filename, varargin)
                     warning('read_scene:portal_refractiveNotImplemented', 'Portal_refractive not implemented, ignoring.');
                 case 'portal'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
-                    materials_medium_list{i, 1} = get_is_in(temp.is_in);
+                    materials_medium_list{i, 1} = get_is_in(temp.medium_list);
                     materials{i, 1} = portal(transform_matrix, []);
                 case 'randommix_in'
                     materials_mix_list(i, :) = get_materials(temp.material_refracted, temp.material_reflected);
@@ -284,37 +284,37 @@ function read_scene(xml_filename, varargin)
             end
             switch lower(temp.type)
                 case 'cam'
-                    cameras{i, 1} = cam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
+                    cameras{i, 1} = cam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
                 case 'cam_aperture'
-                    cameras{i, 1} = cam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'cam_motionblur'
-                    cameras{i, 1} = cam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_motionblur_aperture'
-                    cameras{i, 1} = cam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'reccam'
-                    cameras{i, 1} = reccam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
+                    cameras{i, 1} = reccam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
                 case 'reccam_aperture'
-                    cameras{i, 1} = reccam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                    cameras{i, 1} = reccam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'reccam_motionblur'
-                    cameras{i, 1} = reccam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = reccam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
                 case 'reccam_motionblur_aperture'
-                    cameras{i, 1} = reccam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = reccam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'isocam'
-                    cameras{i, 1} = isocam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
+                    cameras{i, 1} = isocam(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.gammaind));
                 case 'isocam_aperture'
-                    cameras{i, 1} = isocam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                    cameras{i, 1} = isocam_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'isocam_motionblur'
-                    cameras{i, 1} = isocam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = isocam_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.time), get_value(temp.gammaind));
                 case 'isocam_motionblur_aperture'
-                    cameras{i, 1} = isocam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = isocam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d'
-                    cameras{i, 1} = cam_3d(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3d(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.gammaind));
                 case 'cam_3d_aperture'
-                    cameras{i, 1} = cam_3d_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3d_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'cam_3d_motionblur'
-                    cameras{i, 1} = cam_3d_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3d_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d_motionblur_aperture'
-                    cameras{i, 1} = cam_3d_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.material), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3d_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 otherwise
                     error('read_scene:unknownCameraType', ['Unknown camera type "', temp.type, '", exiting.']);
             end
@@ -334,27 +334,27 @@ function read_scene(xml_filename, varargin)
         end
     end
 
-    % Materials is_in fix
+    % Materials medium_list fix
     for i = 1:n_materials
         if ~isempty(materials_medium_list{i, 1})
-            is_in = cell(length(materials_medium_list{i, 1}), 1);
+            medium_list = cell(length(materials_medium_list{i, 1}), 1);
             for j = 1:length(materials_medium_list{i, 1})
-                is_in{j, 1} = materials{materials_medium_list{i, 1}(j)};
+                medium_list{j, 1} = materials{materials_medium_list{i, 1}(j)};
             end
 
-            materials{i, 1}.is_in = is_in;
+            materials{i, 1}.medium_list = medium_list;
         end
     end
 
-    % Scatterers is_in fix
+    % Scatterers medium_list fix
     for i = 1:n_scatterers
         if ~isempty(scatterers_medium_list{i, 1})
-            is_in = cell(length(scatterers_medium_list{i, 1}), 1);
+            medium_list = cell(length(scatterers_medium_list{i, 1}), 1);
             for j = 1:length(scatterers_medium_list{i, 1})
-                is_in{j, 1} = materials{scatterers_medium_list{i, 1}(j)};
+                medium_list{j, 1} = materials{scatterers_medium_list{i, 1}(j)};
             end
 
-            scatterers{i, 1}.is_in = is_in;
+            scatterers{i, 1}.medium_list = medium_list;
         end
     end
 

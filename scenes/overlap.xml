@@ -47,6 +47,6 @@
       <imgbuffer name="buffer1" resx="1800" resy="1200" type="imgbuffer"/>
    </imgbuffers>
    <cameras>
-      <camera filename="NaN" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" material="4" max_bounces="8" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="1" subpix="1 1" transformation_matrix="NaN" type="cam" up="0 0 1"/>
+      <camera filename="NaN" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" medium_list="4 4" max_bounces="8" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="1" subpix="1 1" transformation_matrix="NaN" type="cam" up="0 0 1"/>
    </cameras>
 </scene>
