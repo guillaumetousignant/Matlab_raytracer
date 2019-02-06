@@ -396,9 +396,7 @@ function read_scene(xml_filename, varargin)
     %% Scene building
 
 
-
-
-
+    %% Running
 
 
     %% Functions
