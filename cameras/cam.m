@@ -5,7 +5,7 @@ properties
     fov
     subpix
     image
-    material % what is the camera in? must be refractive
+    medium_list % what is the camera in? must be refractive
     skybox
     transformation
     max_bounces
@@ -18,13 +18,13 @@ properties
 end
 
 methods
-    function obj = cam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind)
+    function obj = cam(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind)
         obj = obj@handle();      
         obj.filename = filename;  
         obj.fov = fov;        
         obj.subpix = subpix;
         obj.image = image;
-        obj.material = material;
+        obj.medium_list = medium_list;
         obj.skybox = skybox;
         obj.transformation = transform;
         obj.max_bounces = max_bounces;
@@ -56,7 +56,7 @@ methods
         subpix_x = obj.subpix(2);
         subpix_span_y = pixel_span_y/subpix_y;
         subpix_span_x = pixel_span_x/subpix_x;
-        is_in = obj.material;
+        is_in = obj.medium_list;
         origin1 = obj.origin;
         direction1 = obj.direction;
         up_dir = obj.up;

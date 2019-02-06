@@ -8,8 +8,8 @@ properties
 end
 
 methods
-    function obj = reccam_motionblur(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
-        obj = obj@reccam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = reccam_motionblur(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, time, gammaind)
+        obj = obj@reccam(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind);        
         obj.time = time; 
         obj.directionlast = obj.direction;
         obj.originlast = obj.origin;
@@ -35,7 +35,7 @@ methods
         res_x = obj.image.sizex;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
-        is_in = obj.material;
+        is_in = obj.medium_list;
         origin1 = obj.originlast;
         origin2 = obj.origin;
         direction1 = obj.directionlast;

@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = reccam_aperture(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@reccam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = reccam_aperture(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@reccam(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -31,7 +31,7 @@ methods
         res_x = obj.image.sizex;
         subpix_y = obj.subpix(1);
         subpix_x = obj.subpix(2);
-        is_in = obj.material;
+        is_in = obj.medium_list;
         origin1 = obj.origin;
         direction1 = obj.direction;
         apert = obj.aperture;
@@ -106,7 +106,7 @@ methods
         ray_vec = ray_point - obj.origin;
         ray_vec = ray_vec/norm(ray_vec);
 
-        focusray = ray(obj.origin, ray_vec, [0, 0, 0], [1, 1, 1], obj.material);
+        focusray = ray(obj.origin, ray_vec, [0, 0, 0], [1, 1, 1], obj.medium_list);
 
         [~, t, ~] = scene.intersect(focusray);
 

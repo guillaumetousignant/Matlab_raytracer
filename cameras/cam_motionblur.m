@@ -9,8 +9,8 @@ properties
 end
 
 methods
-    function obj = cam_motionblur(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, time, gammaind)
-        obj = obj@cam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);  
+    function obj = cam_motionblur(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, time, gammaind)
+        obj = obj@cam(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind);  
         obj.time = time; 
         obj.directionlast = obj.direction;
         %obj.direction_sphlast = obj.direction_sph;
@@ -41,7 +41,7 @@ methods
         subpix_x = obj.subpix(2);
         subpix_span_y = pixel_span_y/subpix_y;
         subpix_span_x = pixel_span_x/subpix_x;
-        is_in = obj.material;
+        is_in = obj.medium_list;
         origin1 = obj.originlast;
         origin2 = obj.origin;
         direction1 = obj.directionlast;

@@ -12,7 +12,7 @@ properties
     subpix
     image
     image_R
-    material % what is the camera in? must be refractive
+    medium_list % what is the camera in? must be refractive
     skybox
     transformation
     max_bounces
@@ -24,7 +24,7 @@ properties
 end
 
 methods
-    function obj = cam_3D(transform, filename, up, fov, subpix, image, image_R, eye_dist, material, skybox, max_bounces, focal_length, gammaind)
+    function obj = cam_3D(transform, filename, up, fov, subpix, image, image_R, eye_dist, medium_list, skybox, max_bounces, focal_length, gammaind)
         obj = obj@handle();      
 
         point = strfind(filename, '.');
@@ -39,15 +39,15 @@ methods
             filename_S = [filename, '_S.png'];
         end
         
-        obj.camera = cam(transform, filename_L, up, fov, subpix, image, material, skybox, max_bounces, gammaind);
-        obj.camera_R = cam(transform, filename_R, up, fov, subpix, image_R, material, skybox, max_bounces, gammaind);
+        obj.camera = cam(transform, filename_L, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind);
+        obj.camera_R = cam(transform, filename_R, up, fov, subpix, image_R, medium_list, skybox, max_bounces, gammaind);
 
         obj.filename = filename_S;
         obj.fov = fov;        
         obj.subpix = subpix;
         obj.image = image;
         obj.image_R = image_R;
-        obj.material = material;
+        obj.medium_list = medium_list;
         obj.skybox = skybox;
         obj.transformation = transform;
         obj.max_bounces = max_bounces;
@@ -171,7 +171,7 @@ methods
         % position is [x, y]
         ray_direction_sph = to_sph(obj.direction) + [0, (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*-obj.fov(2)]; % 0, y, x
 
-        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.material);
+        focusray = ray(obj.origin, to_xyz(ray_direction_sph), [0, 0, 0], [1, 1, 1], obj.medium_list);
 
         [~, t, ~] = scene.intersect(focusray);
 

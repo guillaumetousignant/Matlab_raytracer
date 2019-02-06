@@ -7,8 +7,8 @@ properties
 end
 
 methods
-    function obj = cam_aperture(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, focal_length, aperture, gammaind)
-        obj = obj@cam(transform, filename, up, fov, subpix, image, material, skybox, max_bounces, gammaind);        
+    function obj = cam_aperture(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, focal_length, aperture, gammaind)
+        obj = obj@cam(transform, filename, up, fov, subpix, image, medium_list, skybox, max_bounces, gammaind);        
         obj.focal_length = focal_length;
         obj.focal_length_buffer = focal_length;
         obj.aperture = aperture;
@@ -33,7 +33,7 @@ methods
         subpix_x = obj.subpix(2);
         subpix_span_y = pixel_span_y/subpix_y;
         subpix_span_x = pixel_span_x/subpix_x;
-        is_in = obj.material;
+        is_in = obj.medium_list;
         origin1 = obj.origin;
         direction1 = obj.direction;
         apert = obj.aperture;
@@ -97,7 +97,7 @@ methods
 
         ray_direction_sph = [1, pi/2 + (position(2)-0.5)*obj.fov(1), (position(1)-0.5)*obj.fov(2)]; % 0, y, x
 
-        focusray = ray(obj.origin, to_xyzoffset(ray_direction_sph, [obj.direction; horizontal; vertical]), [0, 0, 0], [1, 1, 1], obj.material);
+        focusray = ray(obj.origin, to_xyzoffset(ray_direction_sph, [obj.direction; horizontal; vertical]), [0, 0, 0], [1, 1, 1], obj.medium_list);
 
         [~, t, ~] = scene.intersect(focusray);
 
