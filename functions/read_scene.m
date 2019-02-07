@@ -544,7 +544,7 @@ function read_scene(xml_filename, varargin)
         if status_sf
             output_scattering_fn = scatterers{input_scattering_fn_num};
         else
-            index = 0;
+            index_sf = 0;
             for j1 = 1:size(s.scene.scatterers.scatterer, 2)
                 if size(s.scene.scatterers.scatterer, 2) == 1
                     temp_sf = s.scene.scatterers.scatterer.Attributes;
@@ -553,11 +553,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_sf.name, input_scattering_fn)
                     output_scattering_fn = scatterers{j1};
-                    index = j1;
+                    index_sf = j1;
                     break
                 end
             end
-            if ~index
+            if ~index_sf
                 output_scattering_fn = nonabsorber();
                 warning('read_scene:scattererNotFound', ['Scatterer "', input_scattering_fn, '" not found, ignoring.']);
             end
@@ -572,7 +572,7 @@ function read_scene(xml_filename, varargin)
         if status_mat1
             output_materials{1, 1} = materials{input_material_num};
         else
-            index = 0;
+            index_mat1 = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
                     temp_mat1 = s.scene.materials.material.Attributes;
@@ -581,10 +581,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_mat1.name, input_material)
                     output_materials{1, 1} = materials{j2};
+                    index_mat1 = j2;
                     break
                 end
             end
-            if ~index
+            if ~index_mat1
                 output_materials{1, 1} = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
                 warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
             end
@@ -595,7 +596,7 @@ function read_scene(xml_filename, varargin)
         if status_mat2
             output_materials{1, 2} = materials{input_material_num};
         else
-            index = 0;
+            index_mat2 = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
                     temp_mat2 = s.scene.materials.material.Attributes;
@@ -604,10 +605,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_mat2.name, input_material)
                     output_materials{1, 2} = materials{j2};
+                    index_mat2 = j2;
                     break
                 end
             end
-            if ~index
+            if ~index_mat2
                 output_materials{1, 2} = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
                 warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
             end
@@ -619,7 +621,7 @@ function read_scene(xml_filename, varargin)
         if status_mat
             output_material = materials{input_material_num};
         else
-            index = 0;
+            index_mat = 0;
             for j6 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
                     temp_mat = s.scene.materials.material.Attributes;
@@ -628,10 +630,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_mat.name, input_material)
                     output_material = materials{j6};
+                    index_mat = j6;
                     break
                 end
             end
-            if ~index
+            if ~index_mat
                 output_material = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
                 warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
             end
@@ -647,6 +650,7 @@ function read_scene(xml_filename, varargin)
                 transform_matrix_output = transform_matrices{transform_matrix_input_num};
             end
         else
+            index_tm = 0;
             for j3 = 1:n_transform_matrices
                 if size(s.scene.transform_matrices.transform_matrix, 2) == 1
                     temp_tm = s.scene.transform_matrices.transform_matrix.Attributes;
@@ -655,8 +659,13 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_tm.name, transform)
                     transform_matrix_output = transform_matrices{j3, 1};
+                    index_tm = j3;
                     break
                 end
+            end
+            if ~index_tm
+                transform_matrix_output = transformmatrix();
+                warning('read_scene:transformmatrixNotFound', ['Transformation matric "', transform_matrix_input, '" not found, ignoring.']);
             end
         end
     end
@@ -668,7 +677,7 @@ function read_scene(xml_filename, varargin)
             is_in_output = value_num_in;
         else
             is_in_input = strsplit(is_in_input, {',', ';'});
-            index = zeros(1, length(is_in_input));
+            index_in = zeros(1, length(is_in_input));
             for j4 = 1:length(is_in_input)
                 value_temp = strtrim(is_in_input{j4});
                 for k1 = 1:size(s.scene.materials.material, 2)
@@ -678,21 +687,21 @@ function read_scene(xml_filename, varargin)
                         temp_in = s.scene.materials.material{1, k1}.Attributes;
                     end
                     if strcmpi(temp_in.name, value_temp)
-                        index(1, j4) = k1;
+                        index_in(1, j4) = k1;
                         break
                     end
                 end
             end
-            is_in_output = index;
+            is_in_output = index_in;
         end
     end
 
     function is_in_output = get_is_in2(is_in_input)
         % Returns materials
-        [index, status_in2] = str2num(is_in_input);
+        [index_in2, status_in2] = str2num(is_in_input);
         if ~status_in2
             is_in_input = strsplit(is_in_input, {',', ';'});
-            index = zeros(1, length(is_in_input));
+            index_in2 = zeros(1, length(is_in_input));
             for j10 = 1:length(is_in_input)
                 value_temp = strtrim(is_in_input{j10});
                 for k1 = 1:size(s.scene.materials.material, 2)
@@ -702,15 +711,15 @@ function read_scene(xml_filename, varargin)
                         temp_in2 = s.scene.materials.material{1, k1}.Attributes;
                     end
                     if strcmpi(temp_in2.name, value_temp)
-                        index(1, j10) = k1;
+                        index_in2(1, j10) = k1;
                         break
                     end
                 end
             end
         end
-        is_in_output = cell(length(index), 1);
-        for j10 = 1:length(index)
-            is_in_output{j10, 1} = materials{index(j10)};
+        is_in_output = cell(length(index_in2, 1);
+        for j10 = 1:length(index_in2)
+            is_in_output{j10, 1} = materials{index_in2(j10)};
         end
     end
 
@@ -720,7 +729,7 @@ function read_scene(xml_filename, varargin)
             directional_lights_output1 = value_num_dl;
         else
             directional_lights_input = strsplit(directional_lights_input, {',', ';'});
-            index = zeros(1, length(directional_lights_input));
+            index_dl = zeros(1, length(directional_lights_input));
             for j5 = 1:length(directional_lights_input)
                 value_temp = strtrim(directional_lights_input{j5});
                 for k2 = 1:size(s.scene.directional_lights.directional_light, 2)
@@ -730,12 +739,12 @@ function read_scene(xml_filename, varargin)
                         temp_dl = s.scene.directional_lights.directional_light{1, k2}.Attributes;
                     end
                     if strcmpi(temp_dl.name, value_temp)
-                        index(1, j5) = k2;
+                        index_dl(1, j5) = k2;
                         break
                     end
                 end
             end
-            directional_lights_output1 = index;
+            directional_lights_output1 = index_dl;
         end
         directional_lights_output = cell(size(directional_lights_output1, 2), 1);
         for j5 = 1:size(directional_lights_output1, 2)
@@ -748,7 +757,7 @@ function read_scene(xml_filename, varargin)
         if status_mg
             output_mesh_geometry = mesh_geometries{input_mesh_geometry_num};
         else
-            index = 0;
+            index_mg = 0;
             for j7 = 1:size(s.scene.mesh_geometries.mesh_geometry, 2)
                 if size(s.scene.mesh_geometries.mesh_geometry, 2) == 1
                     temp_mg = s.scene.mesh_geometries.mesh_geometry.Attributes;
@@ -757,10 +766,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_mg.name, input_mesh_geometry)
                     output_mesh_geometry = mesh_geometries{j7};
+                    index_mg = j7;
                     break
                 end
             end
-            if ~index
+            if ~index_mg
                 error('read_scene:mesh_geometryNotFound', ['Mesh geometry "', input_mesh_geometry, '" not found, exiting.']);
             end
         end
@@ -771,19 +781,20 @@ function read_scene(xml_filename, varargin)
         if status_im
             output_imgbuffer = imgbuffers{input_imgbuffer_num};
         else
-            index = 0;
+            index_im = 0;
             for j8 = 1:size(s.scene.imgbuffers.imgbuffer, 2)
                 if size(s.scene.imgbuffers.imgbuffer, 2) == 1
-                    temp)im = s.scene.imgbuffers.imgbuffer.Attributes;
+                    temp_im = s.scene.imgbuffers.imgbuffer.Attributes;
                 else
                     temp_im = s.scene.imgbuffers.imgbuffer{1, j8}.Attributes;
                 end
                 if strcmpi(temp_im.name, input_imgbuffer)
                     output_imgbuffer = imgbuffers{j8};
+                    index_im = j8;
                     break
                 end
             end
-            if ~index
+            if ~index_im
                 output_imgbuffer = imgbuffer(300, 200);
                 warning('read_scene:imgbufferNotFound', ['Image buffer "', input_imgbuffer, '" not found, ignoring.']);
             end
@@ -795,7 +806,7 @@ function read_scene(xml_filename, varargin)
         if status_sk
             output_skybox = skyboxes{input_skybox_num};
         else
-            index = 0;
+            index_sk = 0;
             for j9 = 1:size(s.scene.skyboxes.skybox, 2)
                 if size(s.scene.skyboxes.skybox, 2) == 1
                     temp_sk = s.scene.skyboxes.skybox.Attributes;
@@ -804,10 +815,11 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp_sk.name, input_skybox)
                     output_skybox = skyboxes{j9};
+                    index_sk = j9;
                     break
                 end
             end
-            if ~index
+            if ~index_sk
                 output_skybox = skybox_flat([0.5, 0.5, 0.5]);
                 warning('read_scene:skyboxNotFound', ['Skybox "', input_skybox, '" not found, ignoring.']);
             end
