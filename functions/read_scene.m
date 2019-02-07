@@ -553,6 +553,7 @@ function read_scene(xml_filename, varargin)
                 end
                 if strcmpi(temp.name, input_scattering_fn)
                     output_scattering_fn = scatterers{j1};
+                    index = j1;
                     break
                 end
             end
