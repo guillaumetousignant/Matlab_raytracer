@@ -261,10 +261,10 @@ function read_scene(xml_filename, varargin)
                 case 'skybox_flat'
                     skyboxes{i, 1} = skybox_flat(get_colour(temp.colour));
                 case 'skybox_texture_sun'
-                    skyboxes{i, 1} = skybox_texture_sun(temp.texture, get_value(temp.light_position), get_colour(temp.light_colour), get_value(light_radius));
+                    skyboxes{i, 1} = skybox_texture_sun(temp.texture, get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
                 case 'skybox_texture_transformation_sun'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
-                    skyboxes{i, 1} = skybox_texture_transformation_sun(temp.texture, transform_matrix, get_value(temp.light_position), get_colour(temp.light_colour), get_value(light_radius));
+                    skyboxes{i, 1} = skybox_texture_transformation_sun(temp.texture, transform_matrix, get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
                 case 'skybox_texture_transformation'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
                     skyboxes{i, 1} = skybox_texture_transformation(temp.texture, transform_matrix);
