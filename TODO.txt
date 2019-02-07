@@ -18,6 +18,7 @@
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
 % - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
+% - Have a scene object in the xml structure, to not use all objects and make lists there.
 %
 %% KNOWN ISSUES
 %
