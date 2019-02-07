@@ -120,7 +120,7 @@ function read_scene(xml_filename, varargin)
                     materials{i, 1} = reflective_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.order), get_value(temp.diffusivity));
                 case 'reflective_refractive_fuzz'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
-                    materials{i, 1} = reflective_refractivefuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), get_value(temp.order), get_value(temp.diffusivity), scattering_fn);
+                    materials{i, 1} = reflective_refractive_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), get_value(temp.order), get_value(temp.diffusivity), scattering_fn);
                 case 'reflective_refractive'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
                     materials{i, 1} = reflective_refractive(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), scattering_fn);
@@ -171,7 +171,7 @@ function read_scene(xml_filename, varargin)
         objects = cell(n_objects, 1);
 
         for i = 1:n_objects
-            if n_n_objects == 1
+            if n_objects == 1
                 temp = s.scene.objects.object.Attributes;
             else
                 temp = s.scene.objects.object{1, i}.Attributes;
@@ -292,7 +292,7 @@ function read_scene(xml_filename, varargin)
             end
             switch lower(temp.type)
                 case 'imgbuffer'
-                    imgbuffers{i, 1} = imgbuffer(temp.resx, temp.resy);
+                    imgbuffers{i, 1} = imgbuffer(get_value(temp.resx), get_value(temp.resy));
                 otherwise
                     imgbuffers{i, 1} = imgbuffer(300, 200);
                     warning('read_scene:unknownImgbufferType', ['Unknown imgbuffer type "', temp.type, '", ignoring.']);
@@ -417,7 +417,7 @@ function read_scene(xml_filename, varargin)
     end
 
     for i = 1:n_objects
-        if n_objets == 1
+        if n_objects == 1
             temp = s.scene.objects.object;
         else
             temp = s.scene.objects.object{1, i};
@@ -480,7 +480,7 @@ function read_scene(xml_filename, varargin)
             counter_meshes = counter_meshes + 1;
             meshes{counter_meshes, 1} = objects{i, 1};
         else
-            n_primitives = n_primitives + 1;
+            counter_primitives = counter_primitives + 1;
             primitives{counter_primitives, 1} = objects{i, 1};
         end 
     end
@@ -514,7 +514,7 @@ function read_scene(xml_filename, varargin)
         [output_colour, colour_status] = str2num(input_colour);
         if ~colour_status
             if isfield(colours, input_colour)
-                output_colour = colours(input_colour);
+                output_colour = colours.(input_colour);
             else
                 output_colour = [0.5 0.5 0.5];
                 warning('read_scene:unknownColour', ['Unknown colour "', input_colour, '", ignoring.']);
