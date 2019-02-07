@@ -15,7 +15,11 @@ function read_scene(xml_filename, varargin)
         transform_matrices = cell(n_transform_matrices, 1);
 
         for i = 1:n_transform_matrices
-            value = s.scene.transform_matrices.transform_matrix{1, i}.Attributes.value;
+            if n_transform_matrices == 1
+                value = s.scene.transform_matrices.transform_matrix.Attributes.value;
+            else
+                value = s.scene.transform_matrices.transform_matrix{1, i}.Attributes.value;
+            end
             [value_num, status] = str2num(value);
             
             if status
@@ -43,7 +47,11 @@ function read_scene(xml_filename, varargin)
         scatterers_medium_list = cell(n_scatterers, 1);
 
         for i = 1:n_scatterers
-            temp = s.scene.scatterers.scatterer{1, i}.Attributes;
+            if n_scatterers == 1
+                temp = s.scene.scatterers.scatterer.Attributes;
+            else
+                temp = s.scene.scatterers.scatterer{1, i}.Attributes;
+            end
             switch lower(temp.type)
                 case 'absorber'
                     scatterers{i, 1} = absorber(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.emission_distance), get_value(temp.absorption_distance));
@@ -75,7 +83,11 @@ function read_scene(xml_filename, varargin)
         materials_medium_list = cell(n_materials, 1);
 
         for i = 1:n_materials
-            temp = s.scene.materials.material{1, i}.Attributes;
+            if n_materials == 1
+                temp = s.scene.materials.material.Attributes;
+            else
+                temp = s.scene.materials.material{1, i}.Attributes;
+            end
             switch lower(temp.type)
                 case 'diffuse_full'
                     materials{i, 1} = diffuse_full(temp.emission_map, temp.texture, get_value(temp.roughness));
@@ -137,7 +149,11 @@ function read_scene(xml_filename, varargin)
         mesh_geometries = cell(n_mesh_geometries, 1);
 
         for i = 1:n_mesh_geometries
-            temp = s.scene.mesh_geometries.mesh_geometry{1, i}.Attributes;
+            if n_mesh_geometries == 1
+                temp = s.scene.mesh_geometries.mesh_geometry.Attributes;
+            else
+                temp = s.scene.mesh_geometries.mesh_geometry{1, i}.Attributes;
+            end
             switch lower(temp.type)
                 case 'mesh_geometry'
                     mesh_geometries{i, 1} = mesh_geometry(temp.filename);
@@ -155,7 +171,11 @@ function read_scene(xml_filename, varargin)
         objects = cell(n_objects, 1);
 
         for i = 1:n_objects
-            temp = s.scene.objects.object{1, i}.Attributes;
+            if n_n_objects == 1
+                temp = s.scene.objects.object.Attributes;
+            else
+                temp = s.scene.objects.object{1, i}.Attributes;
+            end
             transform_matrix = get_transform_matrix(temp.transform_matrix);
             temp_material = get_material(temp.material);
             switch lower(temp.type)
@@ -211,7 +231,11 @@ function read_scene(xml_filename, varargin)
         directional_lights = cell(n_directional_lights, 1);
 
         for i = 1:n_directional_lights
-            temp = s.scene.directional_lights.directional_light{1, i}.Attributes;
+            if n_directional_lights == 1
+                temp = s.scene.directional_lights.directional_light.Attributes;
+            else
+                temp = s.scene.directional_lights.directional_light{1, i}.Attributes;
+            end
             transform_matrix = get_transform_matrix(temp.transform_matrix);
             directional_lights{i, 1} = directional_light(get_colour(temp.colour), transform_matrix);        
         end
@@ -225,7 +249,11 @@ function read_scene(xml_filename, varargin)
         skyboxes = cell(n_skyboxes, 1);
 
         for i = 1:n_skyboxes
-            temp = s.scene.skyboxes.skybox{1, i}.Attributes;
+            if n_skyboxes == 1
+                temp = s.scene.skyboxes.skybox.Attributes;
+            else
+                temp = s.scene.skyboxes.skybox{1, i}.Attributes;
+            end
             switch lower(temp.type)
                 case 'skybox_flat_sun'
                     directional_lights = get_directional_lights(temp.lights);
@@ -257,7 +285,11 @@ function read_scene(xml_filename, varargin)
         imgbuffers = cell(n_imgbuffers, 1);
 
         for i = 1:n_imgbuffers
-            temp = s.scene.imgbuffers.imgbuffer{1, i}.Attributes;
+            if n_imgbuffers == 1
+                temp = s.scene.imgbuffers.imgbuffer.Attributes;
+            else
+                temp = s.scene.imgbuffers.imgbuffer{1, i}.Attributes;
+            end
             switch lower(temp.type)
                 case 'imgbuffer'
                     imgbuffers{i, 1} = imgbuffer(temp.resx, temp.resy);
@@ -276,7 +308,11 @@ function read_scene(xml_filename, varargin)
         cameras = cell(n_cameras, 1);
 
         for i = 1:n_cameras
-            temp = s.scene.cameras.camera{1, i}.Attributes;            
+            if n_cameras == 1
+                temp = s.scene.cameras.camera.Attributes;
+            else
+                temp = s.scene.cameras.camera{1, i}.Attributes;
+            end            
             if strcmpi(temp.filename, 'nan')
                 filename = new_filename;
             else
@@ -361,33 +397,60 @@ function read_scene(xml_filename, varargin)
 
     %% Updating pre
     for i = 1:n_directional_lights
-        temp = s.scene.directional_lights.directional_light{1, i};
+        if n_directional_lights == 1
+            temp = s.scene.directional_lights.directional_light;
+        else
+            temp = s.scene.directional_lights.directional_light{1, i};
+        end
         if isfield(temp, 'transformations_pre')
             n_transforms = size(temp.transformations_pre.transformation_pre, 2);
             for j = 1:n_transforms
-                apply_transformation(directional_lights{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
+                if n_transforms == 1
+                    transform_struct = temp.transformations_pre.transformation_pre.Attributes;
+                else
+                    transform_struct = temp.transformations_pre.transformation_pre{1, j}.Attributes;
+                end
+                apply_transformation(directional_lights{i, 1}, transform_struct);
             end
         end      
         directional_lights{i, 1}.update;
     end
 
     for i = 1:n_objects
-        temp = s.scene.objects.object{1, i};
+        if n_objets == 1
+            temp = s.scene.objects.object;
+        else
+            temp = s.scene.objects.object{1, i};
+        end
         if isfield(temp, 'transformations_pre')
             n_transforms = size(temp.transformations_pre.transformation_pre, 2);
             for j = 1:n_transforms
-                apply_transformation(objects{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
+                if n_transforms == 1
+                    transform_struct = temp.transformations_pre.transformation_pre.Attributes;
+                else
+                    transform_struct = temp.transformations_pre.transformation_pre{1, j}.Attributes;
+                end
+                apply_transformation(objects{i, 1}, transform_struct);
             end
         end      
         objects{i, 1}.update;
     end
 
     for i = 1:n_cameras
-        temp = s.scene.cameras.camera{1, i};
+        if n_cameras == 1
+            temp = s.scene.cameras.camera;
+        else
+            temp = s.scene.cameras.camera{1, i};
+        end
         if isfield(temp, 'transformations_pre')
             n_transforms = size(temp.transformations_pre.transformation_pre, 2);
             for j = 1:n_transforms
-                apply_transformation(cameras{i, 1}, temp.transformations_pre.transformation_pre{1, j}.Attributes);
+                if n_transforms == 1
+                    transform_struct = temp.transformations_pre.transformation_pre.Attributes;
+                else
+                    transform_struct = temp.transformations_pre.transformation_pre{1, j}.Attributes;
+                end
+                apply_transformation(cameras{i, 1}, transform_struct);
             end
         end      
         cameras{i, 1}.update;
@@ -431,12 +494,17 @@ function read_scene(xml_filename, varargin)
 
     %% Running
     for i = 1:n_cameras
-        switch lower(s.scene.cameras.camera{1, i}.Attributes.rendermode)
+        if n_cameras == 1
+            temp = s.scene.cameras.camera.Attributes;
+        else
+            temp = s.scene.cameras.camera{1, i}.Attributes;
+        end
+        switch lower(temp.rendermode)
         case 'accumulation'
-            n_iter = s.scene.cameras.camera{1, i}.Attributes.n_iter;
+            n_iter = temp.n_iter;
             cameras{i, 1}.accumulate(ascene, n_iter);
         otherwise
-            warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', s.scene.cameras.camera{1, i}.Attributes.rendermode, '", ignored.']);
+            warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', temp.rendermode, '", ignored.']);
         end
     end
 
