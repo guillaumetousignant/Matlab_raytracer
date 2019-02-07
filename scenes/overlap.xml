@@ -20,13 +20,13 @@
       <object material="1" name="planegrey2" normals="NaN" points="-1000 1000 -1&#xA; 1000 -1000 -1&#xA; 1000 1000 -1" texture_coordinates="NaN" transform_matrix="1" type="triangle"/>
       <object material="2" name="sphere1" transform_matrix="NaN" type="sphere">
          <transformations_pre>
-            <transformation_pre type="translation" value="-0.4 3 0"/>
+            <transformation_pre type="translate" value="-0.4 3 0"/>
             <transformation_pre type="uniformscale" value="1"/>
          </transformations_pre>
       </object>
       <object material="3" name="sphere2" transform_matrix="NaN" type="sphere">
          <transformations_pre>
-            <transformation_pre type="translation" value="0.7 3 0"/>
+            <transformation_pre type="translat" value="0.7 3 0"/>
             <transformation_pre type="uniformscale" value="1"/>
          </transformations_pre>
       </object>
