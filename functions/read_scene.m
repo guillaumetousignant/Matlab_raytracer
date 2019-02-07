@@ -398,7 +398,9 @@ function read_scene(xml_filename, varargin)
 
     %% Scene building
     n_primitives = 0;
+    counter_primitives = 0;
     n_meshes = 0;
+    counter_meshes = 0;
     for i = 1:n_objects
         if isa(objects{i, 1}, 'mesh') || isa(objects{i, 1}, 'mesh_motionblur') %%% CHECK add types as needes
             n_meshes = n_meshes + 1;
@@ -407,7 +409,36 @@ function read_scene(xml_filename, varargin)
         end
     end
 
+    primitives = cell(n_primitives, 1);
+    meshes = cell(n_meshes, 1);
+
+    for i = 1:n_objects
+        if isa(objects{i, 1}, 'mesh') || isa(objects{i, 1}, 'mesh_motionblur') %%% CHECK add types as needes
+            counter_meshes = counter_meshes + 1;
+            meshes{counter_meshes, 1} = objects{i, 1};
+        else
+            n_primitives = n_primitives + 1;
+            primitives{counter_primitives, 1} = objects{i, 1};
+        end 
+    end
+
+    ascene = scene(primitives{:});
+
+    for i = 1:n_meshes
+        ascene.addmesh(meshes{i, 1});
+    end
+    
+
     %% Running
+    for i = 1:n_cameras
+        switch lower(s.scene.cameras.camera{1, i}.Attributes.rendermode)
+        case 'accumulation'
+            n_iter = s.scene.cameras.camera{1, i}.Attributes.n_iter;
+            cameras{i, 1}.accumulate(ascene, n_iter);
+        otherwise
+            warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', s.scene.cameras.camera{1, i}.Attributes.rendermode, '", ignored.']);
+        end
+    end
 
 
     %% Functions
