@@ -344,13 +344,13 @@ function read_scene(xml_filename, varargin)
                 case 'isocam_motionblur_aperture'
                     cameras{i, 1} = isocam_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d'
-                    cameras{i, 1} = cam_3d(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3D(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.gammaind));
                 case 'cam_3d_aperture'
-                    cameras{i, 1} = cam_3d_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3D_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.gammaind));
                 case 'cam_3d_motionblur'
-                    cameras{i, 1} = cam_3d_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3D_motionblur(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.time), get_value(temp.gammaind));
                 case 'cam_3d_motionblur_aperture'
-                    cameras{i, 1} = cam_3d_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
+                    cameras{i, 1} = cam_3D_motionblur_aperture(get_transform_matrix(temp.transform_matrix), filename, get_value(temp.up), get_value(temp.fov), get_value(temp.subpix), get_imgbuffer(temp.imgbuffer), get_imgbuffer(temp.imgbuffer_R), get_value(temp.eye_dist), get_is_in2(temp.medium_list), get_skybox(temp.skybox), get_value(temp.max_bounces), get_value(temp.focal_length), get_value(temp.aperture), get_value(temp.time), get_value(temp.gammaind));
                 otherwise
                     error('read_scene:unknownCameraType', ['Unknown camera type "', temp.type, '", exiting.']);
             end
@@ -717,7 +717,7 @@ function read_scene(xml_filename, varargin)
                 end
             end
         end
-        is_in_output = cell(length(index_in2, 1));
+        is_in_output = cell(length(index_in2), 1);
         for j10 = 1:length(index_in2)
             is_in_output{j10, 1} = materials{index_in2(j10)};
         end
