@@ -490,6 +490,13 @@ function read_scene(xml_filename, varargin)
     for i = 1:n_meshes
         ascene.addmesh(meshes{i, 1});
     end
+
+    for i = 1:n_cameras
+        cameras{i, 1}.update;
+    end
+
+    ascene.update;
+    ascene.buildacc;
     
 
     %% Running
@@ -501,7 +508,7 @@ function read_scene(xml_filename, varargin)
         end
         switch lower(temp.rendermode)
         case 'accumulation'
-            n_iter = temp.n_iter;
+            n_iter = get_value(temp.n_iter);
             cameras{i, 1}.accumulate(ascene, n_iter);
         otherwise
             warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', temp.rendermode, '", ignored.']);
