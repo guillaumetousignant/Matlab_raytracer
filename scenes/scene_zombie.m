@@ -170,7 +170,7 @@ fov(1) = fov(2)/aspect_ratio;
 camera_cell = cell(1, 1);
 
 camera_cell{1}.Attributes.name = 'camera1';
-camera_cell{1}.Attributes.type = '3daperture';
+camera_cell{1}.Attributes.type = 'cam_3d_aperture';
 camera_cell{1}.Attributes.transform_matrix = NaN;
 camera_cell{1}.Attributes.filename = NaN; % if is empty, use next available with scene name
 camera_cell{1}.Attributes.up = [0, 0, 1];
