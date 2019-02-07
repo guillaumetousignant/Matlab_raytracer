@@ -42,6 +42,7 @@
 %           % Seems worse for reflective-refractive than for reflective-refractive-fuzz. Maybe because smoothed.
 % - Portals still use old is_in solution, but can have a cell array of materials to work with effects. Must know what is on the other end.
 % - Cameras still use is_in solution, should give cell arrays at all times.
+% - str2num returns an array of crap for white, pink and grey. Avoid those.
 %
 %% DONE
 %
