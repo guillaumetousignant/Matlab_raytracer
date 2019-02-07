@@ -717,7 +717,7 @@ function read_scene(xml_filename, varargin)
                 end
             end
         end
-        is_in_output = cell(length(index_in2, 1);
+        is_in_output = cell(length(index_in2, 1));
         for j10 = 1:length(index_in2)
             is_in_output{j10, 1} = materials{index_in2(j10)};
         end
