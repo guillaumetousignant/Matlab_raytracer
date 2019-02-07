@@ -2,6 +2,19 @@
 scene_name = 'zombie';
 scene_struct.scene.Attributes.name = scene_name;
 
+%% Textures
+texture_cell = cell(2, 1);
+
+texture_cell{1}.Attributes.name = 'zombie_texture';
+texture_cell{1}.Attributes.type = 'texture';
+texture_cell{1}.Attributes.filename = '.\assets\Zombie beast_texture5.jpg';
+
+texture_cell{2}.Attributes.name = 'beach_texture';
+texture_cell{2}.Attributes.type = 'texture';
+texture_cell{2}.Attributes.filename = '.\assets\Ocean from horn.jpg';
+
+scene_struct.scene.textures.texture = texture_cell;
+
 %% Scattering
 scatterer_cell = cell(1, 1);
 
@@ -42,7 +55,7 @@ material_cell{4}.Attributes.scattering_fn = 'air_absorber'; % can be index or na
 material_cell{5}.Attributes.name = 'zombiemat';
 material_cell{5}.Attributes.type = 'diffuse_tex';
 material_cell{5}.Attributes.emission = 'black'; % can also be array
-material_cell{5}.Attributes.texture = '.\assets\Zombie beast_texture5.jpg';
+material_cell{5}.Attributes.texture = 1;
 material_cell{5}.Attributes.roughness = 1;
 
 scene_struct.scene.materials.material = material_cell;
@@ -138,7 +151,7 @@ skybox_cell = cell(1, 1);
 
 skybox_cell{1}.Attributes.name = 'beach';
 skybox_cell{1}.Attributes.type = 'skybox_texture_sun';
-skybox_cell{1}.Attributes.texture = '.\assets\Ocean from horn.jpg';
+skybox_cell{1}.Attributes.texture = 'beach_texture';
 skybox_cell{1}.Attributes.light_position = [0.6209296, 1-0.2292542];
 skybox_cell{1}.Attributes.light_colour = [0.996, 0.941, 0.918] * 1.586010 * 8;
 skybox_cell{1}.Attributes.light_radius = 0.035;
