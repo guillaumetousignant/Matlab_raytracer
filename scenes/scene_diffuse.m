@@ -1,57 +1,138 @@
 %% Scene
+scene_name = 'diffuse';
+scene_struct.scene.Attributes.name = scene_name;
+scene_struct.scene.Attributes.primitive_list = 'sphere1, planegrey1, planegrey2';
 
-% Colours
-load colours_mat colours
+%% Scattering
+scatterer_cell = cell(1, 1);
 
-% General stuff
-neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(colours.black, colours.white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+scatterer_cell{1}.Attributes.name = 'air_absorber';
+scatterer_cell{1}.Attributes.type = 'nonabsorber';
 
+scene_struct.scene.scatterers.scatterer = scatterer_cell;
 
-scenename = 'diffuse';
-filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
+%% Materials
+material_cell = cell(3, 1);
 
-fprintf('\nScene name: %s\n', scenename);
-fprintf('\nScene building\n');
-tic
+material_cell{1}.Attributes.name = 'difgrey';
+material_cell{1}.Attributes.type = 'diffuse';
+material_cell{1}.Attributes.emission = 'black'; % can also be array
+material_cell{1}.Attributes.colour = 'grey1'; % can also be array
+material_cell{1}.Attributes.roughness = 1;
 
-% Materials
-difgrey = diffuse(colours.black, colours.grey1, 1);
-difgrey2 = diffuse(colours.black, colours.grey2, 1);
+material_cell{2}.Attributes.name = 'difgrey2';
+material_cell{2}.Attributes.type = 'diffuse';
+material_cell{2}.Attributes.emission = 'black'; % can also be array
+material_cell{2}.Attributes.colour = 'grey2'; % can also be array
+material_cell{2}.Attributes.roughness = 1;
 
-% Objects
-planegrey1 = triangle(difgrey, [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, -1], [], [], neutralmatrix);
-planegrey2 = triangle(difgrey, [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1], [], [], neutralmatrix);
+material_cell{3}.Attributes.name = 'air';
+material_cell{3}.Attributes.type = 'refractive';
+material_cell{3}.Attributes.emission = 'black'; % can also be array
+material_cell{3}.Attributes.colour = 'white'; % can also be array
+material_cell{3}.Attributes.ind = 1.001;
+material_cell{3}.Attributes.priority = 0;
+material_cell{3}.Attributes.scattering_fn = 'air_absorber'; % can be index or name
 
-spheregrey = sphere(difgrey2, transformmatrix());
-spheregrey.transformation.translate([0, 4, 0]);
+scene_struct.scene.materials.material = material_cell;
 
-ascene = scene(spheregrey, planegrey1, planegrey2);
+%% Transform matrices
 
-toc
+%% Objects
+object_cell = cell(3, 1);
 
-fprintf('\nScene updating\n');
-tic
-ascene.update;
-toc
+object_cell{1}.Attributes.name = 'planegrey1';
+object_cell{1}.Attributes.type = 'triangle';
+object_cell{1}.Attributes.material = 'difgrey'; % can also be name
+object_cell{1}.Attributes.points = [-1000, 1000, -1; -1000, -1000, -1; 1000, -1000, -1];
+object_cell{1}.Attributes.normals = NaN;
+object_cell{1}.Attributes.texture_coordinates = NaN;
+object_cell{1}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 
-fprintf('\nAcceleration structure building\n');
-tic
-ascene.buildacc;
-toc
+object_cell{2}.Attributes.name = 'planegrey2';
+object_cell{2}.Attributes.type = 'triangle';
+object_cell{2}.Attributes.material = 'difgrey'; % can also be name
+object_cell{2}.Attributes.points = [-1000, 1000, -1; 1000, -1000, -1; 1000, 1000, -1];
+object_cell{2}.Attributes.normals = NaN;
+object_cell{2}.Attributes.texture_coordinates = NaN;
+object_cell{2}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 
-%save scene.mat ascene
+object_cell{3}.Attributes.name = 'sphere1';
+object_cell{3}.Attributes.type = 'sphere';
+object_cell{3}.Attributes.material = 'difgrey2'; % can also be name
+object_cell{3}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(2, 1);
+transformation_pre_cell{1}.Attributes.type = 'translate';
+transformation_pre_cell{1}.Attributes.value = [0, 4, 0];
+transformation_pre_cell{2}.Attributes.type = 'uniformscale';
+transformation_pre_cell{2}.Attributes.value = 1;
+object_cell{3}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+scene_struct.scene.objects.object = object_cell;
+
+%% Directional lights
+directional_light_cell = cell(1, 1);
+
+directional_light_cell{1}.Attributes.name = 'sun';
+directional_light_cell{1}.Attributes.colour = [2.5, 2.5, 2] * 2;
+directional_light_cell{1}.Attributes.transform_matrix = NaN;
+transformation_pre_cell = cell(3, 1);
+transformation_pre_cell{1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{1}.Attributes.value = 0.95;
+transformation_pre_cell{2}.Attributes.type = 'rotatez';
+transformation_pre_cell{2}.Attributes.value = -pi/4;
+transformation_pre_cell{3}.Attributes.type = 'rotatex';
+transformation_pre_cell{3}.Attributes.value = -3 * pi/8;
+directional_light_cell{1}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+scene_struct.scene.directional_lights.directional_light = directional_light_cell;
+
+%% Skyboxes
+skybox_cell = cell(1, 1);
+
+skybox_cell{1}.Attributes.name = 'grey';
+skybox_cell{1}.Attributes.type = 'skybox_flat_sun';
+skybox_cell{1}.Attributes.colour = [0.75, 0.75, 0.75];
+skybox_cell{1}.Attributes.lights = 'sun'; % can be array of indices, or cell array of names. Maybe should be another struct?
+
+scene_struct.scene.skyboxes.skybox = skybox_cell;
+
+%% Image buffers
+res_x = 300;
+res_y = 200;
+imgbuffer_cell = cell(1, 1);
+
+imgbuffer_cell{1}.Attributes.name = 'buffer1';
+imgbuffer_cell{1}.Attributes.type = 'imgbuffer';
+imgbuffer_cell{1}.Attributes.resx = res_x;
+imgbuffer_cell{1}.Attributes.resy = res_y;
+
+scene_struct.scene.imgbuffers.imgbuffer = imgbuffer_cell;
 
 %% Camera
-upvector = [1, 0, 1];
-upvector = upvector/norm(upvector);
-camera = generate_camera([300, 200], 'bg', 'grey', 'type', 'cam', 'up', upvector, 'file', filename); 
+aspect_ratio = res_x/res_y;
+fov(2) = 80 * pi/180;
+fov(1) = fov(2)/aspect_ratio;
 
-%camera.transformation.rotatez(-pi/6);
-%camera.transformation.translate([-1, -2, 0]);
-%camera.transformation.rotatex(-pi/16);
+camera_cell = cell(1, 1);
 
-camera.update;
-camera.update; % second time to kill blur
+camera_cell{1}.Attributes.name = 'camera1';
+camera_cell{1}.Attributes.type = 'cam';
+camera_cell{1}.Attributes.transform_matrix = NaN;
+camera_cell{1}.Attributes.filename = NaN; % if is empty, use next available with scene name
+upvector = [1, 0, 3];
+camera_cell{1}.Attributes.up = upvector/norm(upvector);
+camera_cell{1}.Attributes.fov = fov;
+camera_cell{1}.Attributes.subpix = [1, 1];
+camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
+camera_cell{1}.Attributes.medium_list = 'air; air'; % can be index or name
+camera_cell{1}.Attributes.skybox = 1; % can be index or name
+camera_cell{1}.Attributes.max_bounces = 8;
+camera_cell{1}.Attributes.gammaind = 1;
+camera_cell{1}.Attributes.rendermode = 'accumulation';
+camera_cell{1}.Attributes.n_iter = inf;
 
-camera.accumulate(ascene);
+scene_struct.scene.cameras.camera = camera_cell;
+
+%% Output
+struct2xml(scene_struct, ['.', filesep, 'scenes', filesep, scene_name, '.xml']);
