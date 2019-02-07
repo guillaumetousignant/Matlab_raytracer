@@ -547,11 +547,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j1 = 1:size(s.scene.scatterers.scatterer, 2)
                 if size(s.scene.scatterers.scatterer, 2) == 1
-                    temp = s.scene.scatterers.scatterer.Attributes;
+                    temp_sf = s.scene.scatterers.scatterer.Attributes;
                 else
-                    temp = s.scene.scatterers.scatterer{1, j1}.Attributes;
+                    temp_sf = s.scene.scatterers.scatterer{1, j1}.Attributes;
                 end
-                if strcmpi(temp.name, input_scattering_fn)
+                if strcmpi(temp_sf.name, input_scattering_fn)
                     output_scattering_fn = scatterers{j1};
                     index = j1;
                     break
@@ -575,11 +575,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
-                    temp = s.scene.materials.material.Attributes;
+                    temp_mat1 = s.scene.materials.material.Attributes;
                 else
-                    temp = s.scene.materials.material{1, j2}.Attributes;
+                    temp_mat1 = s.scene.materials.material{1, j2}.Attributes;
                 end
-                if strcmpi(temp.name, input_material)
+                if strcmpi(temp_mat1.name, input_material)
                     output_materials{1, 1} = materials{j2};
                     break
                 end
@@ -598,11 +598,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
-                    temp = s.scene.materials.material.Attributes;
+                    temp_mat2 = s.scene.materials.material.Attributes;
                 else
-                    temp = s.scene.materials.material{1, j2}.Attributes;
+                    temp_mat2 = s.scene.materials.material{1, j2}.Attributes;
                 end
-                if strcmpi(temp.name, input_material)
+                if strcmpi(temp_mat2.name, input_material)
                     output_materials{1, 2} = materials{j2};
                     break
                 end
@@ -622,11 +622,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j6 = 1:size(s.scene.materials.material, 2)
                 if size(s.scene.materials.material, 2) == 1
-                    temp = s.scene.materials.material.Attributes;
+                    temp_mat = s.scene.materials.material.Attributes;
                 else
-                    temp = s.scene.materials.material{1, j6}.Attributes;
+                    temp_mat = s.scene.materials.material{1, j6}.Attributes;
                 end
-                if strcmpi(temp.name, input_material)
+                if strcmpi(temp_mat.name, input_material)
                     output_material = materials{j6};
                     break
                 end
@@ -649,11 +649,11 @@ function read_scene(xml_filename, varargin)
         else
             for j3 = 1:n_transform_matrices
                 if size(s.scene.transform_matrices.transform_matrix, 2) == 1
-                    temp = s.scene.transform_matrices.transform_matrix.Attributes;
+                    temp_tm = s.scene.transform_matrices.transform_matrix.Attributes;
                 else
-                    temp = s.scene.transform_matrices.transform_matrix{1, j3}.Attributes;
+                    temp_tm = s.scene.transform_matrices.transform_matrix{1, j3}.Attributes;
                 end
-                if strcmpi(temp.name, transform)
+                if strcmpi(temp_tm.name, transform)
                     transform_matrix_output = transform_matrices{j3, 1};
                     break
                 end
@@ -673,11 +673,11 @@ function read_scene(xml_filename, varargin)
                 value_temp = strtrim(is_in_input{j4});
                 for k1 = 1:size(s.scene.materials.material, 2)
                     if size(s.scene.materials.material, 2) == 1
-                        temp = s.scene.materials.material.Attributes;
+                        temp_in = s.scene.materials.material.Attributes;
                     else
-                        temp = s.scene.materials.material{1, k1}.Attributes;
+                        temp_in = s.scene.materials.material{1, k1}.Attributes;
                     end
-                    if strcmpi(temp.name, value_temp)
+                    if strcmpi(temp_in.name, value_temp)
                         index(1, j4) = k1;
                         break
                     end
@@ -697,11 +697,11 @@ function read_scene(xml_filename, varargin)
                 value_temp = strtrim(is_in_input{j10});
                 for k1 = 1:size(s.scene.materials.material, 2)
                     if size(s.scene.materials.material, 2) == 1
-                        temp = s.scene.materials.material.Attributes;
+                        temp_in2 = s.scene.materials.material.Attributes;
                     else
-                        temp = s.scene.materials.material{1, k1}.Attributes;
+                        temp_in2 = s.scene.materials.material{1, k1}.Attributes;
                     end
-                    if strcmpi(temp.name, value_temp)
+                    if strcmpi(temp_in2.name, value_temp)
                         index(1, j10) = k1;
                         break
                     end
@@ -725,11 +725,11 @@ function read_scene(xml_filename, varargin)
                 value_temp = strtrim(directional_lights_input{j5});
                 for k2 = 1:size(s.scene.directional_lights.directional_light, 2)
                     if size(s.scene.directional_lights.directional_light, 2) == 1
-                        temp = s.scene.directional_lights.directional_light.Attributes;
+                        temp_dl = s.scene.directional_lights.directional_light.Attributes;
                     else
-                        temp = s.scene.directional_lights.directional_light{1, k2}.Attributes;
+                        temp_dl = s.scene.directional_lights.directional_light{1, k2}.Attributes;
                     end
-                    if strcmpi(temp.name, value_temp)
+                    if strcmpi(temp_dl.name, value_temp)
                         index(1, j5) = k2;
                         break
                     end
@@ -751,11 +751,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j7 = 1:size(s.scene.mesh_geometries.mesh_geometry, 2)
                 if size(s.scene.mesh_geometries.mesh_geometry, 2) == 1
-                    temp = s.scene.mesh_geometries.mesh_geometry.Attributes;
+                    temp_mg = s.scene.mesh_geometries.mesh_geometry.Attributes;
                 else
-                    temp = s.scene.mesh_geometries.mesh_geometry{1, j7}.Attributes;
+                    temp_mg = s.scene.mesh_geometries.mesh_geometry{1, j7}.Attributes;
                 end
-                if strcmpi(temp.name, input_mesh_geometry)
+                if strcmpi(temp_mg.name, input_mesh_geometry)
                     output_mesh_geometry = mesh_geometries{j7};
                     break
                 end
@@ -774,11 +774,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j8 = 1:size(s.scene.imgbuffers.imgbuffer, 2)
                 if size(s.scene.imgbuffers.imgbuffer, 2) == 1
-                    temp = s.scene.imgbuffers.imgbuffer.Attributes;
+                    temp)im = s.scene.imgbuffers.imgbuffer.Attributes;
                 else
-                    temp = s.scene.imgbuffers.imgbuffer{1, j8}.Attributes;
+                    temp_im = s.scene.imgbuffers.imgbuffer{1, j8}.Attributes;
                 end
-                if strcmpi(temp.name, input_imgbuffer)
+                if strcmpi(temp_im.name, input_imgbuffer)
                     output_imgbuffer = imgbuffers{j8};
                     break
                 end
@@ -798,11 +798,11 @@ function read_scene(xml_filename, varargin)
             index = 0;
             for j9 = 1:size(s.scene.skyboxes.skybox, 2)
                 if size(s.scene.skyboxes.skybox, 2) == 1
-                    temp = s.scene.skyboxes.skybox.Attributes;
+                    temp_sk = s.scene.skyboxes.skybox.Attributes;
                 else
-                    temp = s.scene.skyboxes.skybox{1, j9}.Attributes;
+                    temp_sk = s.scene.skyboxes.skybox{1, j9}.Attributes;
                 end
-                if strcmpi(temp.name, input_skybox)
+                if strcmpi(temp_sk.name, input_skybox)
                     output_skybox = skyboxes{j9};
                     break
                 end
