@@ -540,8 +540,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function output_scattering_fn = get_scattering_fn(input_scattering_fn)
-        [input_scattering_fn_num, status] = str2num(input_scattering_fn);
-        if status
+        [input_scattering_fn_num, status_sf] = str2num(input_scattering_fn);
+        if status_sf
             output_scattering_fn = scatterers{input_scattering_fn_num};
         else
             index = 0;
@@ -567,8 +567,8 @@ function read_scene(xml_filename, varargin)
         output_materials = cell(1, 2);
 
         input_material = material_refracted;
-        [input_material_num, status] = str2num(input_material);
-        if status
+        [input_material_num, status_mat1] = str2num(input_material);
+        if status_mat1
             output_materials{1, 1} = materials{input_material_num};
         else
             index = 0;
@@ -590,8 +590,8 @@ function read_scene(xml_filename, varargin)
         end
 
         input_material = material_reflected;
-        [input_material_num, status] = str2num(input_material);
-        if status
+        [input_material_num, status_mat2] = str2num(input_material);
+        if status_mat2
             output_materials{1, 2} = materials{input_material_num};
         else
             index = 0;
@@ -614,8 +614,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function output_material = get_material(input_material)
-        [input_material_num, status] = str2num(input_material);
-        if status
+        [input_material_num, status_mat] = str2num(input_material);
+        if status_mat
             output_material = materials{input_material_num};
         else
             index = 0;
@@ -638,8 +638,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function transform_matrix_output = get_transform_matrix(transform_matrix_input)
-        [transform_matrix_input_num, status] = str2num(transform_matrix_input);
-        if status
+        [transform_matrix_input_num, status_tm] = str2num(transform_matrix_input);
+        if status_tm
             if isnan(transform_matrix_input_num)
                 transform_matrix_output = transformmatrix();
             else
@@ -662,9 +662,9 @@ function read_scene(xml_filename, varargin)
 
     function is_in_output = get_is_in(is_in_input)
         % Returns material indices
-        [value_num, status] = str2num(is_in_input);
-        if status
-            is_in_output = value_num;
+        [value_num_in, status_in] = str2num(is_in_input);
+        if status_in
+            is_in_output = value_num_in;
         else
             is_in_input = strsplit(is_in_input, {',', ';'});
             index = zeros(1, length(is_in_input));
@@ -688,8 +688,8 @@ function read_scene(xml_filename, varargin)
 
     function is_in_output = get_is_in2(is_in_input)
         % Returns materials
-        [index, status] = str2num(is_in_input);
-        if ~status
+        [index, status_in2] = str2num(is_in_input);
+        if ~status_in2
             is_in_input = strsplit(is_in_input, {',', ';'});
             index = zeros(1, length(is_in_input));
             for j10 = 1:length(is_in_input)
@@ -714,9 +714,9 @@ function read_scene(xml_filename, varargin)
     end
 
     function directional_lights_output = get_directional_lights(directional_lights_input)
-        [value_num, status] = str2num(directional_lights_input);
-        if status
-            directional_lights_output1 = value_num;
+        [value_num_dl, status_dl] = str2num(directional_lights_input);
+        if status_dl
+            directional_lights_output1 = value_num_dl;
         else
             directional_lights_input = strsplit(directional_lights_input, {',', ';'});
             index = zeros(1, length(directional_lights_input));
@@ -743,8 +743,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function output_mesh_geometry = get_mesh_geometry(input_mesh_geometry)
-        [input_mesh_geometry_num, status] = str2num(input_mesh_geometry);
-        if status
+        [input_mesh_geometry_num, status_mg] = str2num(input_mesh_geometry);
+        if status_mg
             output_mesh_geometry = mesh_geometries{input_mesh_geometry_num};
         else
             index = 0;
@@ -766,8 +766,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function output_imgbuffer = get_imgbuffer(input_imgbuffer)
-        [input_imgbuffer_num, status] = str2num(input_imgbuffer);
-        if status
+        [input_imgbuffer_num, status_im] = str2num(input_imgbuffer);
+        if status_im
             output_imgbuffer = imgbuffers{input_imgbuffer_num};
         else
             index = 0;
@@ -790,8 +790,8 @@ function read_scene(xml_filename, varargin)
     end
 
     function output_skybox = get_skybox(input_skybox)
-        [input_skybox_num, status] = str2num(input_skybox);
-        if status
+        [input_skybox_num, status_sk] = str2num(input_skybox);
+        if status_sk
             output_skybox = skyboxes{input_skybox_num};
         else
             index = 0;
