@@ -482,47 +482,34 @@ function read_scene(xml_filename, varargin)
 
 
     %% Scene building
-    n_primitives = 0;
-    counter_primitives = 0;
-    n_meshes = 0;
-    counter_meshes = 0;
-    for i = 1:n_objects
-        if isa(objects{i, 1}, 'mesh') || isa(objects{i, 1}, 'mesh_motionblur') %%% CHECK add types as needes
-            n_meshes = n_meshes + 1;
-        else
-            n_primitives = n_primitives + 1;
-        end
+    if isfield(s.scene.Attributes, 'primitive_list')
+        primitives = get_primitives(s.scene.Attributes.primitive_list);
+    else
+        primitives = {};
     end
-
-    primitives = cell(n_primitives, 1);
-    meshes = cell(n_meshes, 1);
-
-    for i = 1:n_objects
-        if isa(objects{i, 1}, 'mesh') || isa(objects{i, 1}, 'mesh_motionblur') %%% CHECK add types as needes
-            counter_meshes = counter_meshes + 1;
-            meshes{counter_meshes, 1} = objects{i, 1};
-        else
-            counter_primitives = counter_primitives + 1;
-            primitives{counter_primitives, 1} = objects{i, 1};
-        end 
+    if isfield(s.scene.Attributes, 'mesh_list')
+        meshes = get_primitives(s.scene.Attributes.mesh_list);
+    else
+        meshes = {};
     end
 
     ascene = scene(primitives{:});
 
-    for i = 1:n_meshes
+    for i = 1:size(meshes, 1)
         ascene.addmesh(meshes{i, 1});
     end
 
     ascene.update;
     ascene.buildacc;
 
+    % Autofocus
     for i = 1:n_cameras
         if n_cameras == 1
             temp = s.scene.cameras.camera.Attributes;
         else
             temp = s.scene.cameras.camera{1, i}.Attributes;
         end
-        if isnan(get_value(temp.focal_length))
+        if isfield(temp, 'focal_length') && isnan(get_value(temp.focal_length))
             cameras{i, 1}.autofocus(ascene, get_value(temp.focus_position));
         end
         cameras{i, 1}.update;
@@ -869,6 +856,33 @@ function read_scene(xml_filename, varargin)
             if ~index_tx
                 error('read_scene:textureNotFound', ['Texture "', input_texture, '" not found, exiting.']);
             end
+        end
+    end
+
+    function primitives_output = get_primitives(input_primitives)
+        % Returns materials
+        [index_pri, status_pri] = str2num(input_primitives);
+        if ~status_pri
+            input_primitives = strsplit(input_primitives, {',', ';'});
+            index_pri = zeros(1, length(input_primitives));
+            for j11 = 1:length(input_primitives)
+                value_temp_pri = strtrim(input_primitives{j11});
+                for k11 = 1:size(s.scene.objects.object, 2)
+                    if size(s.scene.objects.object, 2) == 1
+                        temp_pri = s.scene.objects.object.Attributes;
+                    else
+                        temp_pri = s.scene.objects.object{1, k11}.Attributes;
+                    end
+                    if strcmpi(temp_pri.name, value_temp_pri)
+                        index_pri(1, j11) = k11;
+                        break
+                    end
+                end
+            end
+        end
+        primitives_output = cell(length(index_pri), 1);
+        for j11 = 1:length(index_pri)
+            primitives_output{j11, 1} = objects{index_pri(j11)};
         end
     end
 end
