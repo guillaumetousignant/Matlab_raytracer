@@ -15,7 +15,7 @@ methods
     end
 
     function bounce(obj, uv, hit_obj, aray)
-        epsilon = 0.00000001; % was 0.001
+        epsilon = 0.00001; % was 0.0000001
 
         normal = hit_obj.normal(uv, aray);
 

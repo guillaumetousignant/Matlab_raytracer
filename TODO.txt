@@ -17,8 +17,6 @@
 % - Add refractive portal.
 % - Make camera fov, aperture and focal length tied to scale.
 %           % Can't really work, scale breaks seperation of 3D cameras
-% - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
-% - Have a scene object in the xml structure, to not use all objects and make lists there.
 %
 %% KNOWN ISSUES
 %
@@ -45,6 +43,7 @@
 % - Cameras still use is_in solution, should give cell arrays at all times.
 % - read_scene still lacking move functionnality, and camera focus call.
 %           % Maybe have NaN for focus length to focus.
+% - Diffuse with spheres has a black circle if epsilon is too small.
 %
 %% DONE
 %
@@ -175,3 +174,7 @@
 %           % If not using NaN, null pointer error in matlab.
 % - str2num returns an array of crap for white, pink and grey, because those are functions and it uses eval. Avoid those.
 %           % Now checks if is in colours structure first, neat fix. Can sill break the thing with 'flag' and some more.
+% - Add scenes as xml structures. Can generate with matlab, but must be generic and used in all versions.
+%           % Scenes will be saved as xml files. Read_scene sets the format.
+% - Have a scene object in the xml structure, to not use all objects and make lists there.
+%           % Now there are two lists, one for primitives and the other one for meshes. Can then have unused objects.
