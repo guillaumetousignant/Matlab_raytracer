@@ -518,9 +518,11 @@ function read_scene(xml_filename, varargin)
 
     %% Functions
     function output_colour = get_colour(input_colour)
+        %%% CHECK fucks up with white, pink and grey
         [output_colour, colour_status] = str2num(input_colour);
-        if ~colour_status
-            if isfield(colours, input_colour)
+        is_in_map = isfield(colours, input_colour);
+        if ~colour_status || is_in_map
+            if is_in_map
                 output_colour = colours.(input_colour);
             else
                 output_colour = [0.5 0.5 0.5];
