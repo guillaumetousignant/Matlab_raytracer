@@ -58,7 +58,7 @@ toc
 %save scene.mat ascene
 
 %% Camera
-camera = generate_camera([1800, 1200], 'bg', 'night', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5, 'maxbounces', 32, 'material', air, 'file', filename); 
+camera = generate_camera([1800, 1200], 'bg', 'night', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5, 'maxbounces', 32, 'material', {air, air}, 'file', filename); 
 
 %camera.transformation.rotatez(-pi/6);
 %camera.transformation.translate([-1, -2, 0]);
