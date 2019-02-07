@@ -136,7 +136,7 @@ skybox_cell = cell(1, 1);
 
 skybox_cell{1}.Attributes.name = 'day';
 skybox_cell{1}.Attributes.type = 'skybox_flat_sun';
-skybox_cell{1}.Attributes.background = [0.8040, 0.8825, 0.9765];
+skybox_cell{1}.Attributes.colour = [0.8040, 0.8825, 0.9765];
 skybox_cell{1}.Attributes.lights = 1; % can be array of indices, or cell array of names. Maybe should be another struct?
 
 scene_struct.scene.skyboxes.skybox = skybox_cell;
@@ -162,7 +162,7 @@ camera_cell = cell(1, 1);
 
 camera_cell{1}.Attributes.name = 'camera1';
 camera_cell{1}.Attributes.type = 'cam';
-camera_cell{1}.Attributes.transformation_matrix = NaN;
+camera_cell{1}.Attributes.transform_matrix = NaN;
 camera_cell{1}.Attributes.filename = NaN; % if is empty, use next available with scene name
 camera_cell{1}.Attributes.up = [0, 0, 1];
 camera_cell{1}.Attributes.fov = fov;
