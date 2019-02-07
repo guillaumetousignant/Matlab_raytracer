@@ -41,9 +41,10 @@
 %           % Seems worse for reflective-refractive than for reflective-refractive-fuzz. Maybe because smoothed.
 % - Portals still use old is_in solution, but can have a cell array of materials to work with effects. Must know what is on the other end.
 % - Cameras still use is_in solution, should give cell arrays at all times.
-% - read_scene still lacking move functionnality, and camera focus call.
+% - read_scene still lacking move functionnality.
 %           % Maybe have NaN for focus length to focus.
 % - Diffuse with spheres has a black circle if epsilon is too small.
+% - read_scene doesn't work with material cells for meshes.
 %
 %% DONE
 %
@@ -178,3 +179,5 @@
 %           % Scenes will be saved as xml files. Read_scene sets the format.
 % - Have a scene object in the xml structure, to not use all objects and make lists there.
 %           % Now there are two lists, one for primitives and the other one for meshes. Can then have unused objects.
+% - xml read function lacks camera focus.
+%           % Now can focus, when setting focal_length at NaN.
