@@ -800,5 +800,7 @@ function apply_transformation(object, transform)
             object.transformation.invert();
         case 'neg'
             object.transformation.neg();
+        otherwise
+            warning('read_scene:unknownTransformation', ['Transformation "', transform.type, '" not found, ignoring.']);
     end
 end
