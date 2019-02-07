@@ -50,7 +50,7 @@ scene_struct.scene.materials.material = material_cell;
 %% Transform matrices
 mesh_geometry_cell = cell(1, 1);
 
-mesh_geometry_cell{1}.Attributes.name = 'zombie mesh';
+mesh_geometry_cell{1}.Attributes.name = 'zombie_mesh';
 mesh_geometry_cell{1}.Attributes.type = 'mesh_geometry';
 mesh_geometry_cell{1}.Attributes.filename = '.\assets\Zombie_Beast4_test.obj';
 
@@ -98,7 +98,7 @@ object_cell{3}.transformations_pre.transformation_pre = transformation_pre_cell;
 
 object_cell{4}.Attributes.name = 'zombie';
 object_cell{4}.Attributes.type = 'mesh';
-object_cell{4}.Attributes.mesh_geometry = 'zombie mesh';
+object_cell{4}.Attributes.mesh_geometry = 'zombie_mesh';
 object_cell{4}.Attributes.material = 'zombiemat'; % can also be name
 object_cell{4}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(5, 1);
@@ -179,7 +179,7 @@ camera_cell{1}.Attributes.subpix = [1, 1];
 camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
 camera_cell{1}.Attributes.imgbuffer_R = 2;
 camera_cell{1}.Attributes.eye_dist = 0.065;
-camera_cell{1}.Attributes.medium_list = 'air; air' % can be index array, or names with ;
+camera_cell{1}.Attributes.medium_list = 'air; air'; % can be index array, or names with ;
 camera_cell{1}.Attributes.skybox = 1; % can be index or name
 camera_cell{1}.Attributes.max_bounces = 8;
 camera_cell{1}.Attributes.focal_length = NaN;
