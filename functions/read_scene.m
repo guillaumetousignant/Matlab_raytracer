@@ -496,9 +496,9 @@ function read_scene(xml_filename, varargin)
 
     for i = 1:n_cameras
         if n_cameras == 1
-            temp = s.scene.cameras.camera;
+            temp = s.scene.cameras.camera.Attributes;
         else
-            temp = s.scene.cameras.camera{1, i};
+            temp = s.scene.cameras.camera{1, i}.Attributes;
         end
         if isnan(get_value(temp.focal_length))
             cameras{i, 1}.autofocus(ascene, get_value(temp.focus_position));
