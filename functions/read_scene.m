@@ -41,6 +41,28 @@ function read_scene(xml_filename, varargin)
         transform_matrices = {};
     end
 
+    if isfield(s.scene, 'textures')
+        n_textures = size(s.scene.textures.texture, 2);
+        textures = cell(n_textures, 1);
+
+        for i = 1:n_textures
+            if n_textures == 1
+                temp = s.scene.textures.texture.Attributes;
+            else
+                temp = s.scene.textures.texture{1, i}.Attributes;
+            end
+            switch lower(temp.type)
+                case 'texture'
+                    textures{i, 1} = texture(temp.filename);
+                otherwise
+                    warning('read_scene:unknowntextureType', ['Unknown texture type "', temp.type, '", ignoring.']);
+            end
+        end
+    else
+        n_textures = 0;
+        textures = {};
+    end
+
     if isfield(s.scene, 'scatterers')
         n_scatterers = size(s.scene.scatterers.scatterer, 2);
         scatterers = cell(n_scatterers, 1);
@@ -90,9 +112,9 @@ function read_scene(xml_filename, varargin)
             end
             switch lower(temp.type)
                 case 'diffuse_full'
-                    materials{i, 1} = diffuse_full(temp.emission_map, temp.texture, get_value(temp.roughness));
+                    materials{i, 1} = diffuse_full(temp.emission_map, get_texture(temp.texture), get_value(temp.roughness));
                 case 'diffuse_tex'
-                    materials{i, 1} = diffuse_tex(get_colour(temp.emission), temp.texture, get_value(temp.roughness));
+                    materials{i, 1} = diffuse_tex(get_colour(temp.emission), get_texture(temp.texture), get_value(temp.roughness));
                 case 'diffuse'
                     materials{i, 1} = diffuse(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.roughness));
                 case 'fresnelmix_in'
@@ -261,15 +283,15 @@ function read_scene(xml_filename, varargin)
                 case 'skybox_flat'
                     skyboxes{i, 1} = skybox_flat(get_colour(temp.colour));
                 case 'skybox_texture_sun'
-                    skyboxes{i, 1} = skybox_texture_sun(temp.texture, get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
+                    skyboxes{i, 1} = skybox_texture_sun(get_texture(temp.texture), get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
                 case 'skybox_texture_transformation_sun'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
-                    skyboxes{i, 1} = skybox_texture_transformation_sun(temp.texture, transform_matrix, get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
+                    skyboxes{i, 1} = skybox_texture_transformation_sun(get_texture(temp.texture), transform_matrix, get_value(temp.light_position), get_colour(temp.light_colour), get_value(temp.light_radius));
                 case 'skybox_texture_transformation'
                     transform_matrix = get_transform_matrix(temp.transform_matrix);
-                    skyboxes{i, 1} = skybox_texture_transformation(temp.texture, transform_matrix);
+                    skyboxes{i, 1} = skybox_texture_transformation(get_texture(temp.texture), transform_matrix);
                 case 'skybox_texture'
-                    skyboxes{i, 1} = skybox_texture(temp.texture);
+                    skyboxes{i, 1} = skybox_texture(get_texture(temp.texture));
                 otherwise
                     skyboxes{i, 1} = skybox_flat([0.5, 0.5, 0.5]);
                     warning('read_scene:unknownSkyboxType', ['Unknown skybox type "', temp.type, '", ignoring.']);
@@ -822,6 +844,30 @@ function read_scene(xml_filename, varargin)
             if ~index_sk
                 output_skybox = skybox_flat([0.5, 0.5, 0.5]);
                 warning('read_scene:skyboxNotFound', ['Skybox "', input_skybox, '" not found, ignoring.']);
+            end
+        end
+    end
+
+    function output_texture = get_texture(input_texture)
+        [input_texture_num, status_tx] = str2num(input_texture);
+        if status_tx
+            output_texture = textures{input_texture_num};
+        else
+            index_tx = 0;
+            for j10 = 1:size(s.scene.textures.texture, 2)
+                if size(s.scene.textures.texture, 2) == 1
+                    temp_mg = s.scene.textures.texture.Attributes;
+                else
+                    temp_mg = s.scene.textures.texture{1, j10}.Attributes;
+                end
+                if strcmpi(temp_mg.name, input_texture)
+                    output_texture = textures{j10};
+                    index_tx = j10;
+                    break
+                end
+            end
+            if ~index_tx
+                error('read_scene:textureNotFound', ['Texture "', input_texture, '" not found, exiting.']);
             end
         end
     end
