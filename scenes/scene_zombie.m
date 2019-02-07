@@ -1,6 +1,8 @@
 %% Scene
 scene_name = 'zombie';
 scene_struct.scene.Attributes.name = scene_name;
+scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2, light';
+scene_struct.scene.Attributes.mesh_list = 'zombie';
 
 %% Textures
 texture_cell = cell(2, 1);
@@ -159,8 +161,8 @@ skybox_cell{1}.Attributes.light_radius = 0.035;
 scene_struct.scene.skyboxes.skybox = skybox_cell;
 
 %% Image buffers
-res_x = 180;
-res_y = 120;
+res_x = 1800;
+res_y = 1200;
 imgbuffer_cell = cell(2, 1);
 
 imgbuffer_cell{1}.Attributes.name = 'bufferR';
