@@ -48,7 +48,7 @@ methods
         obj.subpix = subpix;
         obj.image = image;
         obj.image_R = image_R;
-        obj.matemedium_listrial = medium_list;
+        obj.medium_list = medium_list;
         obj.skybox = skybox;
         obj.transformation = transform;
         obj.max_bounces = max_bounces;
