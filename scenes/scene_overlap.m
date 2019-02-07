@@ -1,6 +1,7 @@
 %% Scene
 scene_name = 'overlap';
 scene_struct.scene.Attributes.name = scene_name;
+scene_struct.scene.Attributes.primitive_list = [1, 2, 3, 4];
 
 %% Scattering
 scatterer_cell = cell(3, 1);
