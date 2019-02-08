@@ -1,5 +1,6 @@
 %% Scene
 scene_name = 'diffuse';
+scene_struct = struct();
 scene_struct.scene.Attributes.name = scene_name;
 scene_struct.scene.Attributes.primitive_list = 'sphere1, planegrey1, planegrey2';
 

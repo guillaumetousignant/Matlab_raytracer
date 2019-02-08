@@ -1,5 +1,6 @@
 %% Scene
 scene_name = 'acceleration';
+scene_struct = struct();
 scene_struct.scene.Attributes.name = scene_name;
 scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2';
 scene_struct.scene.Attributes.mesh_list = 'cube';

@@ -1,5 +1,6 @@
 %% Scene
 scene_name = 'zombie';
+scene_struct = struct();
 scene_struct.scene.Attributes.name = scene_name;
 scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2, light';
 scene_struct.scene.Attributes.mesh_list = 'zombie';
