@@ -666,7 +666,7 @@ function read_scene(xml_filename, varargin)
                 else
                     temp_tm = s.scene.transform_matrices.transform_matrix{1, j3}.Attributes;
                 end
-                if strcmpi(temp_tm.name, transform)
+                if strcmpi(temp_tm.name, transform_matrix_input)
                     transform_matrix_output = transform_matrices{j3, 1};
                     index_tm = j3;
                     break
