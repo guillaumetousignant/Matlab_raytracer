@@ -19,7 +19,7 @@
       <object material="difgrey" name="planegrey2" normals="NaN" points="-2 4 -0.5&#xA; 2 0 -0.5&#xA; 2 4 -0.5" texture_coordinates="NaN" transform_matrix="NaN" type="triangle"/>
       <object material="airplane_mat" mesh_geometry="airplane_mesh" name="airplane" transform_matrix="NaN" type="mesh">
          <transformations_pre>
-            <transformation_pre type="translate" value="0 4 0.25"/>
+            <transformation_pre type="translate" value="0.2 4 0.25"/>
             <transformation_pre type="uniformscale" value="0.001"/>
             <transformation_pre type="rotatex" value="0"/>
             <transformation_pre type="rotatez" value="3.5343"/>
