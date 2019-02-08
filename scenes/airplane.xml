@@ -19,10 +19,10 @@
       <object material="difgrey" name="planegrey2" normals="NaN" points="-2 4 -0.5&#xA; 2 0 -0.5&#xA; 2 4 -0.5" texture_coordinates="NaN" transform_matrix="NaN" type="triangle"/>
       <object material="airplane_mat" mesh_geometry="airplane_mesh" name="airplane" transform_matrix="NaN" type="mesh">
          <transformations_pre>
-            <transformation_pre type="translate" value="0 2 -0.53"/>
-            <transformation_pre type="uniformscale" value="0.025"/>
-            <transformation_pre type="rotatex" value="1.5708"/>
-            <transformation_pre type="rotatez" value="-0.19635"/>
+            <transformation_pre type="translate" value="0 4 0.25"/>
+            <transformation_pre type="uniformscale" value="0.001"/>
+            <transformation_pre type="rotatex" value="0"/>
+            <transformation_pre type="rotatez" value="3.5343"/>
          </transformations_pre>
       </object>
    </objects>
@@ -39,7 +39,7 @@
       <skybox colour="0.804 0.8825 0.9765" lights="sun" name="day" type="skybox_flat_sun"/>
    </skyboxes>
    <imgbuffers>
-      <imgbuffer name="buffer1" resx="300" resy="200" type="imgbuffer"/>
+      <imgbuffer name="buffer1" resx="180" resy="120" type="imgbuffer"/>
    </imgbuffers>
    <cameras>
       <camera filename="NaN" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" max_bounces="8" medium_list="air; air" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="day" subpix="1 1" transform_matrix="NaN" type="cam" up="0 0 1"/>

@@ -84,13 +84,13 @@ object_cell{3}.Attributes.material = 'airplane_mat'; % can also be name
 object_cell{3}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(4, 1);
 transformation_pre_cell{1}.Attributes.type = 'translate';
-transformation_pre_cell{1}.Attributes.value = [0, 2, -0.53];
+transformation_pre_cell{1}.Attributes.value = [0, 4, 0.25];
 transformation_pre_cell{2}.Attributes.type = 'uniformscale';
-transformation_pre_cell{2}.Attributes.value = 0.025;
+transformation_pre_cell{2}.Attributes.value = 0.001;
 transformation_pre_cell{3}.Attributes.type = 'rotatex';
-transformation_pre_cell{3}.Attributes.value = pi/2;
+transformation_pre_cell{3}.Attributes.value = 0;
 transformation_pre_cell{4}.Attributes.type = 'rotatez';
-transformation_pre_cell{4}.Attributes.value = -pi/16;
+transformation_pre_cell{4}.Attributes.value = pi + pi/8;
 object_cell{3}.transformations_pre.transformation_pre = transformation_pre_cell;
 
 scene_struct.scene.objects.object = object_cell;
@@ -123,8 +123,8 @@ skybox_cell{1}.Attributes.lights = 'sun'; % can be array of indices, or cell arr
 scene_struct.scene.skyboxes.skybox = skybox_cell;
 
 %% Image buffers
-res_x = 300;
-res_y = 200;
+res_x = 180;
+res_y = 120;
 imgbuffer_cell = cell(1, 1);
 
 imgbuffer_cell{1}.Attributes.name = 'buffer1';
