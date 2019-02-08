@@ -45,6 +45,7 @@
 %           % Maybe have NaN for focus length to focus.
 % - Diffuse with spheres has a black circle if epsilon is too small.
 % - read_scene doesn't work with material cells for meshes.
+%           % Add agregate type?
 %
 %% DONE
 %
