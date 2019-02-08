@@ -18,7 +18,7 @@ tic
 % Materials
 difgrey = diffuse(colours.black, colours.grey1, 1);
 red_metal = reflective_fuzz(colours.black, colours.red, 2, 1);
-green_goo = reflective_refractive(colours.black, colours.white, 1.33, 10, scatterer_exp(colours.black, colours.green, 0.05, 0.05, 0.05, 1, 1)); % 0.01 scattering distance is good
+green_goo = reflective_refractive(colours.black, colours.white, 1.2, 10, scatterer_exp(colours.black, colours.green, 0.05, 0.05, 0.025, 1, 1)); % 0.01 scattering distance is good
 coating = reflective(colours.black, colours.white);
 zombiemat = fresnelmix(red_metal, coating, 1.5);
 glass = reflective_refractive(colours.black, colours.white, 1.5, air, nonabsorber());
