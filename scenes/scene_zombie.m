@@ -62,6 +62,8 @@ material_cell{5}.Attributes.roughness = 1;
 
 scene_struct.scene.materials.material = material_cell;
 
+%% Transform matrices
+
 %% Meshes
 mesh_geometry_cell = cell(1, 1);
 
