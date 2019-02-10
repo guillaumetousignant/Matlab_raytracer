@@ -10,9 +10,18 @@ methods
     function obj = texture(file)
         obj = obj@handle();
 
-        imge = imread(file);
-        info = imfinfo(file);
-        obj.img = double(imge) / (2^(info.BitDepth/3) - 1); % should use im2double
+        [~,~,ext] = fileparts(file);
+        switch lower(ext)
+            case {'.tga'; '.vda'; '.icb'; '.vst'; '.targa'}
+                [imge, map] = tga_read_image(file);
+            otherwise
+                [imge, map] = imread(file);
+        end
+        
+        if ~isempty(map)
+            imge = ind2rgb(imge(:, :, 1:3), map);
+        end
+        obj.img = im2double(imge(:, :, 1:3));
 
         obj.sizex = size(imge, 2);
         obj.sizey = size(imge, 1);
