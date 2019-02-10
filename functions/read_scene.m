@@ -103,6 +103,7 @@ function read_scene(xml_filename, varargin)
         materials = cell(n_materials, 1);
         materials_mix_list = cell(n_materials, 2);
         materials_medium_list = cell(n_materials, 1);
+        materials_aggregare_list = cell(n_materials, 1);
 
         for i = 1:n_materials
             if n_materials == 1
@@ -157,6 +158,13 @@ function read_scene(xml_filename, varargin)
                 case 'toon'
                     materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
                     warning('read_scene:toonNotImplemented', 'Toon shader not implemented, ignoring.');
+                case 'aggregate'
+                    materials_list = get_is_in(temp.materials_list);
+                    materials_names = strsplit(temp.materials_names, {',', ';'});
+                    materials_aggregare_list{i, 1} = struct('list', materials_list, 'names', material_names);
+                otherwise
+                    materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
+                    error('read_scene:unknownMaterial', ['Unknown material type "', lower(temp.type), '", ignoring.']);
             end
         end
     else
@@ -164,6 +172,53 @@ function read_scene(xml_filename, varargin)
         materials = {};
         materials_mix_list = {};
         materials_medium_list = {};
+    end
+
+    % Material fixes
+
+    % Materials mix fix
+    for i = 1:n_materials
+        if ~isempty(materials_mix_list{i, 1})
+            materials{i, 1}.material_refracted = materials{materials_mix_list{i, 1}, 1};
+            materials{i, 1}.material_reflected = materials{materials_mix_list{i, 2}, 1};
+        end
+    end
+
+    % Materials medium_list fix
+    for i = 1:n_materials
+        if ~isempty(materials_medium_list{i, 1})
+            medium_list = cell(length(materials_medium_list{i, 1}), 1);
+            for j = 1:length(materials_medium_list{i, 1})
+                medium_list{j, 1} = materials{materials_medium_list{i, 1}(j)};
+            end
+
+            materials{i, 1}.medium_list = medium_list;
+        end
+    end
+
+    % Scatterers medium_list fix
+    for i = 1:n_scatterers
+        if ~isempty(scatterers_medium_list{i, 1})
+            medium_list = cell(length(scatterers_medium_list{i, 1}), 1);
+            for j = 1:length(scatterers_medium_list{i, 1})
+                medium_list{j, 1} = materials{scatterers_medium_list{i, 1}(j)};
+            end
+
+            scatterers{i, 1}.medium_list = medium_list;
+        end
+    end
+
+    % Materials aggregates fix
+    for i = 1:n_materials
+        if ~isempty(materials_aggregare_list{i, 1})
+            materials_struct = struct();
+            materials_names = materials_aggregare_list{i, 1}.names;
+            materials_list = materials_aggregare_list{i, 1}.list;
+            for j = 1:size(materials_list, 2)
+                materials_struct.(strtrim(materials_names{j})) = materials{materials_list(j)};
+            end
+            materials{i, 1} = materials_struct;
+        end
     end
 
     if isfield(s.scene, 'mesh_geometries')
@@ -380,40 +435,6 @@ function read_scene(xml_filename, varargin)
     else
         n_cameras = 0;
         cameras = {};
-    end
-
-
-    %% Fixes
-    % Materials mix fix
-    for i = 1:n_materials
-        if ~isempty(materials_mix_list{i, 1})
-            materials{i, 1}.material_refracted = materials{materials_mix_list{i, 1}, 1};
-            materials{i, 1}.material_reflected = materials{materials_mix_list{i, 2}, 1};
-        end
-    end
-
-    % Materials medium_list fix
-    for i = 1:n_materials
-        if ~isempty(materials_medium_list{i, 1})
-            medium_list = cell(length(materials_medium_list{i, 1}), 1);
-            for j = 1:length(materials_medium_list{i, 1})
-                medium_list{j, 1} = materials{materials_medium_list{i, 1}(j)};
-            end
-
-            materials{i, 1}.medium_list = medium_list;
-        end
-    end
-
-    % Scatterers medium_list fix
-    for i = 1:n_scatterers
-        if ~isempty(scatterers_medium_list{i, 1})
-            medium_list = cell(length(scatterers_medium_list{i, 1}), 1);
-            for j = 1:length(scatterers_medium_list{i, 1})
-                medium_list{j, 1} = materials{scatterers_medium_list{i, 1}(j)};
-            end
-
-            scatterers{i, 1}.medium_list = medium_list;
-        end
     end
 
 
