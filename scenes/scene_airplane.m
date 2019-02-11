@@ -216,8 +216,8 @@ skybox_cell{1}.Attributes.lights = 'sun'; % can be array of indices, or cell arr
 scene_struct.scene.skyboxes.skybox = skybox_cell;
 
 %% Image buffers
-res_x = 180;
-res_y = 120;
+res_x = 1800;
+res_y = 1200;
 imgbuffer_cell = cell(1, 1);
 
 imgbuffer_cell{1}.Attributes.name = 'buffer1';
