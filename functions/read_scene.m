@@ -161,7 +161,9 @@ function read_scene(xml_filename, varargin)
                 case 'aggregate'
                     materials_list = get_is_in(temp.materials_list);
                     materials_names = strsplit(temp.materials_names, {',', ';'});
-                    materials_aggregare_list{i, 1} = struct('list', materials_list, 'names', material_names);
+                    materials_aggregare_list{i, 1} = struct();
+                    materials_aggregare_list{i, 1}.list = materials_list;
+                    materials_aggregare_list{i, 1}.names = materials_names;
                 otherwise
                     materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
                     error('read_scene:unknownMaterial', ['Unknown material type "', lower(temp.type), '", ignoring.']);
