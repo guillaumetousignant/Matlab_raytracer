@@ -1,4 +1,4 @@
-classdef reflective_fuzz < material
+classdef reflective_fuzz_tex < material
 properties
     emission
     texture
@@ -7,7 +7,7 @@ properties
 end
 
 methods
-    function obj = reflective_fuzz(emi, tex, order, diffu)
+    function obj = reflective_fuzz_tex(emi, tex, order, diffu)
         obj = obj@material();
         obj.emission = emi;
         obj.texture = tex;
