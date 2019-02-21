@@ -12,14 +12,8 @@
       <material colour="grey1" emission="black" name="difgrey" roughness="1" type="diffuse"/>
       <material emission="black" name="base1" roughness="1" texture="piper_diffuse" type="diffuse_tex"/>
       <material emission="black" name="base_NONE1" roughness="1" texture="piper_diffuse" type="diffuse_tex"/>
-      <material colour="0.95 0.95 0.95" emission="black" ind="1.5" name="glass" type="reflective_refractive">
-         <priority>10</priority>
-         <scattering_fn>glass_absorber</scattering_fn>
-      </material>
-      <material colour="0.95 0.95 0.95" emission="black" ind="1.5" name="glass_NONE" type="reflective_refractive">
-         <priority>11</priority>
-         <scattering_fn>glass_absorber</scattering_fn>
-      </material>
+      <material colour="0.95 0.95 0.95" emission="black" ind="1.5" name="glass" priority="10" scattering_fn="glass_absorber" type="reflective_refractive"/>
+      <material colour="0.95 0.95 0.95" emission="black" ind="1.5" name="glass_NONE" priority="11" scattering_fn="glass_absorber" type="reflective_refractive"/>
       <material diffusivity="0.04" emission="black" name="internals_alu" order="1" texture="piper_diffuse" type="reflective_fuzz_tex"/>
       <material colour="0.33602 0.33602 0.33602" diffusivity="0.04" emission="black" name="internals_alu_NONE" order="1" type="reflective_fuzz"/>
       <material colour="0.007214 0.007214 0.007214" emission="black" name="internals_b" roughness="1" type="diffuse"/>

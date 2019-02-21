@@ -67,16 +67,16 @@ material_cell{5}.Attributes.type = 'reflective_refractive'; %%% CHECK should als
 material_cell{5}.Attributes.emission = 'black'; % can also be array
 material_cell{5}.Attributes.colour = [0.95, 0.95, 0.95]; % can also be index
 material_cell{5}.Attributes.ind = 1.5;
-material_cell{5}.priority = 10;
-material_cell{5}.scattering_fn = 'glass_absorber';
+material_cell{5}.Attributes.priority = 10;
+material_cell{5}.Attributes.scattering_fn = 'glass_absorber';
 
 material_cell{6}.Attributes.name = 'glass_NONE';
 material_cell{6}.Attributes.type = 'reflective_refractive'; %%% CHECK should also point to diffuse map
 material_cell{6}.Attributes.emission = 'black'; % can also be array
 material_cell{6}.Attributes.colour = [0.95, 0.95, 0.95]; % can also be index
 material_cell{6}.Attributes.ind = 1.5;
-material_cell{6}.priority = 11;
-material_cell{6}.scattering_fn = 'glass_absorber';
+material_cell{6}.Attributes.priority = 11;
+material_cell{6}.Attributes.scattering_fn = 'glass_absorber';
 
 material_cell{7}.Attributes.name = 'internals_alu';
 material_cell{7}.Attributes.type = 'reflective_fuzz_tex';
