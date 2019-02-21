@@ -604,7 +604,7 @@ function read_scene(xml_filename, varargin)
         input_material = material_refracted;
         [input_material_num, status_mat1] = str2num(input_material);
         if status_mat1
-            output_materials{1, 1} = materials{input_material_num};
+            output_materials{1, 1} = input_material_num;
         else
             index_mat1 = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
@@ -614,21 +614,20 @@ function read_scene(xml_filename, varargin)
                     temp_mat1 = s.scene.materials.material{1, j2}.Attributes;
                 end
                 if strcmpi(temp_mat1.name, input_material)
-                    output_materials{1, 1} = materials{j2};
+                    output_materials{1, 1} = j2;
                     index_mat1 = j2;
                     break
                 end
             end
             if ~index_mat1
-                output_materials{1, 1} = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
-                warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
+                error('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
             end
         end
 
         input_material = material_reflected;
         [input_material_num, status_mat2] = str2num(input_material);
         if status_mat2
-            output_materials{1, 2} = materials{input_material_num};
+            output_materials{1, 2} = input_material_num;
         else
             index_mat2 = 0;
             for j2 = 1:size(s.scene.materials.material, 2)
@@ -638,14 +637,13 @@ function read_scene(xml_filename, varargin)
                     temp_mat2 = s.scene.materials.material{1, j2}.Attributes;
                 end
                 if strcmpi(temp_mat2.name, input_material)
-                    output_materials{1, 2} = materials{j2};
+                    output_materials{1, 2} = j2;
                     index_mat2 = j2;
                     break
                 end
             end
             if ~index_mat2
-                output_materials{1, 2} = diffuse([0, 0, 0], [0.5, 0.5, 0.5], 1);
-                warning('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
+                error('read_scene:materialNotFound', ['Material "', input_material, '" not found, ignoring.']);
             end
         end
     end
