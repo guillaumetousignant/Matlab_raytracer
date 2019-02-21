@@ -1,3 +1,7 @@
+close all
+clear all
+clc
+
 %% Scene
 scene_name = 'piper';
 scene_struct = struct();
@@ -22,10 +26,10 @@ scatterer_cell{1}.Attributes.type = 'nonabsorber';
 
 scatterer_cell{2}.Attributes.name = 'glass_absorber';
 scatterer_cell{2}.Attributes.type = 'absorber';
-scatterer_cell{2}.emission = 'black';
-scatterer_cell{2}.colour = 'grey2';
-scatterer_cell{2}.emission_distance = 1000;
-scatterer_cell{2}.absorption_distance = 5;
+scatterer_cell{2}.Attributes.emission = 'black';
+scatterer_cell{2}.Attributes.colour = 'grey2';
+scatterer_cell{2}.Attributes.emission_distance = 1000;
+scatterer_cell{2}.Attributes.absorption_distance = 5;
 
 scene_struct.scene.scatterers.scatterer = scatterer_cell;
 

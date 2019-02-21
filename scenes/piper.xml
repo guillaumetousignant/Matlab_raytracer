@@ -5,12 +5,7 @@
    </textures>
    <scatterers>
       <scatterer name="air_absorber" type="nonabsorber"/>
-      <scatterer name="glass_absorber" type="absorber">
-         <emission>black</emission>
-         <colour>grey2</colour>
-         <emission_distance>1000</emission_distance>
-         <absorption_distance>5</absorption_distance>
-      </scatterer>
+      <scatterer absorption_distance="5" colour="grey2" emission="black" emission_distance="1000" name="glass_absorber" type="absorber"/>
    </scatterers>
    <materials>
       <material colour="white" emission="black" ind="1.001" name="air" priority="0" scattering_fn="air_absorber" type="refractive"/>
