@@ -141,6 +141,8 @@ function read_scene(xml_filename, varargin)
                     materials{i, 1} = randommix([], [], get_value(temp.ratio));
                 case 'reflective_fuzz'
                     materials{i, 1} = reflective_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.order), get_value(temp.diffusivity));
+                case 'reflective_fuzz_tex'
+                    materials{i, 1} = reflective_fuzz_tex(get_colour(temp.emission), get_texture(temp.texture), get_value(temp.order), get_value(temp.diffusivity));
                 case 'reflective_refractive_fuzz'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
                     materials{i, 1} = reflective_refractive_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), get_value(temp.order), get_value(temp.diffusivity), scattering_fn);
