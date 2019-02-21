@@ -24,6 +24,8 @@ methods
 
     function set(obj, image)
         if isa(image, 'imgbuffer')
+            obj.sizex = image.sizex;
+            obj.sizey = image.sizey;
             obj.img = image.img;
             obj.updates = image.updates;
         else
