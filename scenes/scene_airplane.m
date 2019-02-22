@@ -227,8 +227,8 @@ skybox_cell{1}.Attributes.lights = 'sun'; % can be array of indices, or cell arr
 scene_struct.scene.skyboxes.skybox = skybox_cell;
 
 %% Image buffers
-res_x = 1800;
-res_y = 1200;
+res_x = 1920*2;
+res_y = 1080*2;
 imgbuffer_cell = cell(1, 1);
 
 imgbuffer_cell{1}.Attributes.name = 'buffer1';
@@ -246,7 +246,7 @@ fov(1) = fov(2)/aspect_ratio;
 camera_cell = cell(1, 1);
 
 camera_cell{1}.Attributes.name = 'camera1';
-camera_cell{1}.Attributes.type = 'cam';
+camera_cell{1}.Attributes.type = 'cam_aperture';
 camera_cell{1}.Attributes.transform_matrix = NaN;
 camera_cell{1}.Attributes.filename = NaN; % if is empty, use next available with scene name
 upvector = [0, 0, 1];
@@ -257,6 +257,8 @@ camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
 camera_cell{1}.Attributes.medium_list = 'air; air'; % can be index or name
 camera_cell{1}.Attributes.skybox = 'day'; % can be index or name
 camera_cell{1}.Attributes.max_bounces = 8;
+camera_cell{1}.Attributes.focal_length = 3.5;
+camera_cell{1}.Attributes.aperture = 0.005;
 camera_cell{1}.Attributes.gammaind = 1;
 camera_cell{1}.Attributes.rendermode = 'accumulation';
 camera_cell{1}.Attributes.n_iter = inf;
