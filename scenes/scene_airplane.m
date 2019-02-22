@@ -51,7 +51,7 @@ scatterer_cell{1}.Attributes.type = 'nonabsorber';
 scene_struct.scene.scatterers.scatterer = scatterer_cell;
 
 %% Materials
-material_cell = cell(14, 1);
+material_cell = cell(16, 1);
 
 material_cell{1}.Attributes.name = 'air';
 material_cell{1}.Attributes.type = 'refractive';
@@ -91,7 +91,7 @@ material_cell{6}.Attributes.emission = 'black'; % can also be array
 material_cell{6}.Attributes.colour = [0.164706, 0.164706, 0.164706]; % can also be index
 material_cell{6}.Attributes.roughness = 1;
 
-material_cell{7}.Attributes.name = 'a380_01';
+material_cell{7}.Attributes.name = 'a380_011';
 material_cell{7}.Attributes.type = 'diffuse_tex';
 material_cell{7}.Attributes.emission = 'black'; % can also be array
 material_cell{7}.Attributes.texture = 'a380_01'; % can also be index
@@ -135,8 +135,19 @@ material_cell{13}.Attributes.roughness = 1;
 
 material_cell{14}.Attributes.name = 'airplane_mat';
 material_cell{14}.Attributes.type = 'aggregate';
-material_cell{14}.Attributes.materials_names = 'b737_800_2_t; b737_800_2_t0; matte__ffffffff01; Material__57; b737_800_2_t1; matte__ffffffff010; Material__68; black; black0; a380_01; Material__46; black1; a380_010; a380_mw; a380_l_; a380_r; a380_part1; a380_part2; a380_part3; Material__35';
-material_cell{14}.Attributes.materials_list = 'b737_800_2_t; b737_800_2_t; matte__ffffffff01; Material__57; b737_800_2_t; matte__ffffffff01; Material__57; black; black; a380_01; black; black; a380_01; a380_mw; a380_l_; a380_r; a380_part1; a380_part2; a380_part3; black'; % can also be array
+material_cell{14}.Attributes.materials_names = 'b737_800_2_t2SG; b737_800_2_tSG; matte__ffffffff02SG; Material__57; b737_800_2_t1SG; matte__ffffffff01SG; Material__68; blackSG; black2SG; a380_02SG; Material__46; black1SG; a380_01SG; a380_mwSG; a380_l_SG; a380_rSG; a380_part1SG; a380_part2SG; a380_part3SG; Material__35';
+material_cell{14}.Attributes.materials_list = 'a380_01; a380_01; matte__ffffffff01; Material__57; a380_01; matte__ffffffff01; Material__57; black; black; a380_01; black; black; a380_01; a380_01; a380_01; a380_01; a380_01; a380_01; a380_01; black'; % can also be array
+
+material_cell{15}.Attributes.name = 'coating';
+material_cell{15}.Attributes.type = 'reflective';
+material_cell{15}.Attributes.emission = 'black'; % can also be array
+material_cell{15}.Attributes.colour = 'white'; % can also be array
+
+material_cell{16}.Attributes.name = 'a380_01';
+material_cell{16}.Attributes.type = 'fresnelmix';
+material_cell{16}.Attributes.material_refracted = 'a380_011';
+material_cell{16}.Attributes.material_reflected = 'coating';
+material_cell{16}.Attributes.ind = 1.5;
 
 scene_struct.scene.materials.material = material_cell;
 
@@ -147,7 +158,7 @@ mesh_geometry_cell = cell(1, 1);
 
 mesh_geometry_cell{1}.Attributes.name = 'airplane_mesh';
 mesh_geometry_cell{1}.Attributes.type = 'mesh_geometry';
-mesh_geometry_cell{1}.Attributes.filename = '.\assets\A380\A380.obj';
+mesh_geometry_cell{1}.Attributes.filename = '.\assets\A380\A380_test.obj';
 
 scene_struct.scene.mesh_geometries.mesh_geometry = mesh_geometry_cell;
 
@@ -177,9 +188,9 @@ object_cell{3}.Attributes.material = 'airplane_mat'; % can also be name
 object_cell{3}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(4, 1);
 transformation_pre_cell{1}.Attributes.type = 'translate';
-transformation_pre_cell{1}.Attributes.value = [0.2, 4, 0.25];
+transformation_pre_cell{1}.Attributes.value = [0.1, 4, -0.5];
 transformation_pre_cell{2}.Attributes.type = 'uniformscale';
-transformation_pre_cell{2}.Attributes.value = 0.001;
+transformation_pre_cell{2}.Attributes.value = 0.09;
 transformation_pre_cell{3}.Attributes.type = 'rotatex';
 transformation_pre_cell{3}.Attributes.value = 0;
 transformation_pre_cell{4}.Attributes.type = 'rotatez';
