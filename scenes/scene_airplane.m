@@ -136,7 +136,7 @@ material_cell{13}.Attributes.roughness = 1;
 material_cell{14}.Attributes.name = 'airplane_mat';
 material_cell{14}.Attributes.type = 'aggregate';
 material_cell{14}.Attributes.materials_names = 'b737_800_2_t2SG; b737_800_2_tSG; matte__ffffffff02SG; Material__57; b737_800_2_t1SG; matte__ffffffff01SG; Material__68; blackSG; black2SG; a380_02SG; Material__46; black1SG; a380_01SG; a380_mwSG; a380_l_SG; a380_rSG; a380_part1SG; a380_part2SG; a380_part3SG; Material__35';
-material_cell{14}.Attributes.materials_list = 'a380_01; a380_01; matte__ffffffff01; Material__57; a380_01; matte__ffffffff01; Material__57; black; black; a380_01; black; black; a380_01; a380_01; a380_01; a380_01; a380_01; a380_01; a380_01; black'; % can also be array
+material_cell{14}.Attributes.materials_list = 'a380_01;          a380_01;        matte__ffffffff01;   Material__57; a380_01;         matte__ffffffff01;   Material__57; black;   black;    a380_01;   black;        black;    a380_01;   a380_01;   a380_01;   a380_01;  a380_01;      a380_01;      a380_01;      black'; % can also be array
 
 material_cell{15}.Attributes.name = 'coating';
 material_cell{15}.Attributes.type = 'reflective';
