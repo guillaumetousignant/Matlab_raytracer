@@ -41,7 +41,7 @@
          <transformations_pre>
             <transformation_pre type="translate" value="0.1 4 -0.5"/>
             <transformation_pre type="uniformscale" value="0.09"/>
-            <transformation_pre type="rotatex" value="-1.5708"/>
+            <transformation_pre type="rotatex" value="1.5708"/>
             <transformation_pre type="rotatez" value="3.5343"/>
          </transformations_pre>
       </object>
