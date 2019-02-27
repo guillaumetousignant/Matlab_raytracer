@@ -17,7 +17,7 @@ methods
         obj.mask = mask;
         obj.dist = 0;
         obj.medium_list = medium_list;
-        obj.time = [1, 1];
+        obj.time = 1;
     end
 
     function raycast(obj, scene, camera)
