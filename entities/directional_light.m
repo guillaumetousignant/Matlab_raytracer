@@ -14,7 +14,7 @@ methods
         transform_norm = obj.transformation.transformDir;
         obj.direction = transform_norm.multDir([0, 1, 0]); % checkshould use transformation only? (not transformation_norm)
         obj.intensity = intensity;
-        obj.radius = norm(obj.transformation.matrix(1:3, 1:3));
+        obj.radius = norm(obj.transformation.matrix(1:3, 1:3)); %%% CHECK not right
     end
 
     function update(obj)

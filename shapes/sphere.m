@@ -10,7 +10,7 @@ methods
     function obj = sphere(material, transformation)
         obj = obj@shape(material, transformation);
         obj.origin = obj.transformation.multVec([0, 0, 0]);
-        obj.radius = norm(obj.transformation.matrix(1:3, 1:3));
+        obj.radius = norm(obj.transformation.matrix(1:3, 1:3)); %%% CHECK this is wrong
         transform_norm = obj.transformation.transformDir;
         direction = transform_norm.multDir([0, 0, 1]);
         direction2 = transform_norm.multDir([1, 0, 0]);
