@@ -10,11 +10,9 @@ methods
     end
 
     function bounce(obj, uv, hit_obj, aray)
-        epsilon = 0.00000001; % was 0.001
-
         normal = hit_obj.normal(uv, aray);
 
-        aray.colour = normal;
+        aray.colour = normal* 0.5 + 1;
         aray.mask = [0, 0, 0];
     end
 end
