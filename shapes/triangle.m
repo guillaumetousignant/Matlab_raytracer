@@ -12,12 +12,8 @@ methods
         obj = obj@triangle_top(material, transformation);
         obj.points_orig = points;
 
-        % Caching
-        obj.v1v2 = points(2, :) - points(1, :);
-        obj.v1v3 = points(3, :) - points(1, :);
-
         if isempty(normals)
-            nor = cross(obj.v1v2, obj.v1v3);
+            nor = cross(points(2, :) - points(1, :), points(2, :) - points(1, :);
             normalvec = nor/norm(nor);
             obj.normals_orig = [normalvec; normalvec; normalvec];
         else
@@ -38,6 +34,10 @@ methods
         %obj.normals = transform_norm.multDir(obj.normals_orig); % should work
         obj.normals = [ transform_norm.multDir(obj.normals_orig(1, :)); ...
                         transform_norm.multDir(obj.normals_orig(2, :)); transform_norm.multDir(obj.normals_orig(3, :))];        
+    
+        % Caching
+        obj.v1v2 = points(2, :) - points(1, :); %%% CHECK should be calculated again after
+        obj.v1v3 = points(3, :) - points(1, :);
     end
 
     function update(obj)
