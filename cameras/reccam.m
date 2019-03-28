@@ -77,7 +77,7 @@ methods
                         jitter_x = rand;
                         jitter_y = rand;
 
-                        ray_point = pix_point - (k - subpix_y/2 - jitter_y)*subpix_span_y - (l - subpix_x/2 - jitter_x)*subpix_span_x;
+                        ray_point = pix_point - (k - subpix_y/2 - jitter_y)*subpix_span_y - (l - subpix_x/2 - jitter_x)*subpix_span_x; %%% CHECK should be +x?
                         ray_vec = ray_point - origin1;
                         ray_vec = ray_vec/norm(ray_vec);
                         aray = ray(origin1, ray_vec, [0, 0, 0], [1, 1, 1], is_in);
