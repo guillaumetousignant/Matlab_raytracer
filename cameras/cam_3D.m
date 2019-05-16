@@ -80,8 +80,8 @@ methods
         obj.focal_length = obj.focal_length_buffer;
         obj.up = obj.up_buffer;
         
-        obj.camera.focal_length = obj.focal_length;
-        obj.camera_R.focal_length = obj.focal_length;
+        obj.camera.focal_length = obj.focal_length; %%% CHECK this doesn't exist?
+        obj.camera_R.focal_length = obj.focal_length; %%% CHECK this doesn't exist?
         obj.camera.up = obj.up;
         obj.camera_R.up = obj.up;
 
