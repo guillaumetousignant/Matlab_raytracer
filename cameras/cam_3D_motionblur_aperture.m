@@ -12,8 +12,8 @@ properties
     fov
     subpix
     image
-    image_R
-    medium_list % what is the camera in? must be refractive
+    image_R 
+    medium_list % what is the camera in? must be refractive %%% CHECK should be medium_list ?
     skybox
     transformation
     max_bounces
@@ -54,7 +54,7 @@ methods
         obj.subpix = subpix;
         obj.image = image;
         obj.image_R = image_R;
-        obj.medium_list = medium_list;
+        obj.medium_list = medium_list; %%% CHECK is still material in members
         obj.skybox = skybox;
         obj.transformation = transform;
         obj.max_bounces = max_bounces;
@@ -90,7 +90,7 @@ methods
         obj.camera_R.directionlast = obj.camera_R.direction;
     end
 
-    function update(obj)
+    function update(obj) %%% CHECK all the up stuff is missing
         obj.originlast = obj.origin;
         obj.directionlast = obj.direction;
         obj.focal_lengthlast = obj.focal_length;
