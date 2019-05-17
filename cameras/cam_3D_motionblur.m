@@ -12,7 +12,7 @@ properties
     subpix
     image
     image_R
-    material % what is the camera in? must be refractive
+    material % what is the camera in? must be refractive %%% CHECK should be medium_list ?
     skybox
     transformation
     max_bounces
@@ -100,10 +100,10 @@ methods
         obj.focal_length = obj.focal_length_buffer;
         obj.up = obj.up_buffer;
 
-        obj.camera.focal_lengthlast = obj.camera.focal_length;
-        obj.camera_R.focal_lengthlast = obj.camera.focal_length;
-        obj.camera.focal_length = obj.focal_length;
-        obj.camera_R.focal_length = obj.focal_length;      
+        obj.camera.focal_lengthlast = obj.camera.focal_length; %%% CHECK shouldn't exist
+        obj.camera_R.focal_lengthlast = obj.camera.focal_length; %%% CHECK shouldn't exist
+        obj.camera.focal_length = obj.focal_length; %%% CHECK shouldn't exist
+        obj.camera_R.focal_length = obj.focal_length; %%% CHECK shouldn't exist   
         obj.camera.uplast = obj.camera.uplast;
         obj.camera_R.uplast = obj.camera.uplast;
         obj.camera.up = obj.up;
