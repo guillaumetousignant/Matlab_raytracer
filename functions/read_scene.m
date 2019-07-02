@@ -113,7 +113,7 @@ function read_scene(xml_filename, varargin)
             end
             switch lower(temp.type)
                 case 'diffuse_full'
-                    materials{i, 1} = diffuse_full(temp.emission_map, get_texture(temp.texture), get_value(temp.roughness));
+                    materials{i, 1} = diffuse_full(get_texture(temp.emission_map), get_texture(temp.texture), get_value(temp.roughness));
                 case 'diffuse_tex'
                     materials{i, 1} = diffuse_tex(get_colour(temp.emission), get_texture(temp.texture), get_value(temp.roughness));
                 case 'diffuse'
