@@ -103,7 +103,7 @@ function read_scene(xml_filename, varargin)
         materials = cell(n_materials, 1);
         materials_mix_list = cell(n_materials, 2);
         materials_medium_list = cell(n_materials, 1);
-        materials_aggregare_list = cell(n_materials, 1);
+        materials_aggregate_list = cell(n_materials, 1);
 
         for i = 1:n_materials
             if n_materials == 1
@@ -166,9 +166,9 @@ function read_scene(xml_filename, varargin)
                 case 'aggregate'
                     materials_list = get_is_in(temp.materials_list);
                     materials_names = strsplit(temp.materials_names, {',', ';'});
-                    materials_aggregare_list{i, 1} = struct();
-                    materials_aggregare_list{i, 1}.list = materials_list;
-                    materials_aggregare_list{i, 1}.names = materials_names;
+                    materials_aggregate_list{i, 1} = struct();
+                    materials_aggregate_list{i, 1}.list = materials_list;
+                    materials_aggregate_list{i, 1}.names = materials_names;
                 otherwise
                     materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
                     error('read_scene:unknownMaterial', ['Unknown material type "', lower(temp.type), '", ignoring.']);
@@ -217,10 +217,10 @@ function read_scene(xml_filename, varargin)
 
     % Materials aggregates fix
     for i = 1:n_materials
-        if ~isempty(materials_aggregare_list{i, 1})
+        if ~isempty(materials_aggregate_list{i, 1})
             materials_struct = struct();
-            materials_names = materials_aggregare_list{i, 1}.names;
-            materials_list = materials_aggregare_list{i, 1}.list;
+            materials_names = materials_aggregate_list{i, 1}.names;
+            materials_list = materials_aggregate_list{i, 1}.list;
             for j = 1:size(materials_list, 2)
                 materials_struct.(strtrim(materials_names{j})) = materials{materials_list(j)};
             end
