@@ -157,6 +157,9 @@ function read_scene(xml_filename, varargin)
                 case 'refractive'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
                     materials{i, 1} = refractive(get_colour(temp.emission), get_colour(temp.colour), get_colour(temp.ind), get_colour(temp.priority), scattering_fn);
+                case 'transparent'
+                    materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
+                    warning('read_scene:transparentNotImplemented', 'Transparent shader not implemented, ignoring.');
                 case 'toon'
                     materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
                     warning('read_scene:toonNotImplemented', 'Toon shader not implemented, ignoring.');
