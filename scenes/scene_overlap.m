@@ -122,6 +122,7 @@ directional_light_cell = cell(1, 1);
 directional_light_cell{1}.Attributes.name = 'sun';
 directional_light_cell{1}.Attributes.colour = [2.5, 2.5, 2] * 2;
 directional_light_cell{1}.Attributes.transform_matrix = NaN;
+directional_light_cell{1}.Attributes.type = 'directional_light';
 transformation_pre_cell = cell(3, 1);
 transformation_pre_cell{1}.Attributes.type = 'uniformscale';
 transformation_pre_cell{1}.Attributes.value = 0.95;
