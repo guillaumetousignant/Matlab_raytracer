@@ -945,7 +945,7 @@ function apply_transformation(object, transform)
         case 'translate'
             object.transformation.translate(value);
         case 'scaleaxis'
-            object.transformation.aleaxis(value);
+            object.transformation.scaleaxis(value);
         case 'uniformscaleaxis'
             object.transformation.uniformscaleaxis(value);
         case 'scale'
