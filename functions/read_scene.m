@@ -552,11 +552,11 @@ function read_scene(xml_filename, varargin)
             temp = s.scene.cameras.camera{1, i}.Attributes;
         end
         switch lower(temp.rendermode)
-        case 'accumulation'
-            n_iter = get_value(temp.n_iter);
-            cameras{i, 1}.accumulate(ascene, n_iter);
-        otherwise
-            warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', temp.rendermode, '", ignored.']);
+            case 'accumulation'
+                n_iter = get_value(temp.n_iter);
+                cameras{i, 1}.accumulate(ascene, n_iter);
+            otherwise
+                warning('read_scene:unknownCameraMode', ['Unknown camera mode: "', temp.rendermode, '", ignored.']);
         end
     end
 
