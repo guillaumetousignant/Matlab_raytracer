@@ -2,7 +2,7 @@
 scene_name = 'overlap';
 scene_struct = struct();
 scene_struct.scene.Attributes.name = scene_name;
-scene_struct.scene.Attributes.primitive_list = [1, 2, 3, 4];
+scene_struct.scene.Attributes.primitive_list = '1, 2, 3, 4';
 
 %% Scattering
 scatterer_cell = cell(3, 1);
@@ -171,7 +171,7 @@ camera_cell{1}.Attributes.up = [0, 0, 1];
 camera_cell{1}.Attributes.fov = fov;
 camera_cell{1}.Attributes.subpix = [1, 1];
 camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
-camera_cell{1}.Attributes.medium_list = [4, 4]; % can be index or name
+camera_cell{1}.Attributes.medium_list = '4, 4'; % can be index or name
 camera_cell{1}.Attributes.skybox = 1; % can be index or name
 camera_cell{1}.Attributes.max_bounces = 8;
 camera_cell{1}.Attributes.gammaind = 1;

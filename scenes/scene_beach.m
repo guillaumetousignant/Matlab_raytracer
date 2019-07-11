@@ -3,7 +3,7 @@ scene_name = 'beach';
 scene_struct = struct();
 scene_struct.scene.Attributes.name = scene_name;
 %scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2';
-scene_struct.scene.Attributes.mesh_list = 'sand; water';
+scene_struct.scene.Attributes.mesh_list = 'sand, water';
 
 %% Textures
 
@@ -154,7 +154,7 @@ camera_cell{1}.Attributes.up = upvector/norm(upvector);
 camera_cell{1}.Attributes.fov = fov;
 camera_cell{1}.Attributes.subpix = [1, 1];
 camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
-camera_cell{1}.Attributes.medium_list = 'air; air'; % can be index or name
+camera_cell{1}.Attributes.medium_list = 'air, air'; % can be index or name
 camera_cell{1}.Attributes.skybox = 'day'; % can be index or name
 camera_cell{1}.Attributes.max_bounces = 8;
 camera_cell{1}.Attributes.focal_length = 1;

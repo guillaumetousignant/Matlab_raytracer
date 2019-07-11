@@ -117,8 +117,8 @@ material_cell{12}.Attributes.roughness = 0.2;
 
 material_cell{13}.Attributes.name = 'piper_mat';
 material_cell{13}.Attributes.type = 'aggregate';
-material_cell{13}.Attributes.materials_names = 'base; base_NONE; glass; glass_NONE; internals_alu; internals_alu_NONE; internals_b; mirror; prop; tires';
-material_cell{13}.Attributes.materials_list = 'base; base_NONE; glass; glass_NONE; internals_alu; internals_alu_NONE; internals_b; mirror; prop; tires'; % can also be array
+material_cell{13}.Attributes.materials_names = 'base, base_NONE, glass, glass_NONE, internals_alu, internals_alu_NONE, internals_b, mirror, prop, tires';
+material_cell{13}.Attributes.materials_list = 'base, base_NONE, glass, glass_NONE, internals_alu, internals_alu_NONE, internals_b, mirror, prop, tires'; % can also be array
 
 material_cell{14}.Attributes.name = 'coating';
 material_cell{14}.Attributes.type = 'reflective';
@@ -245,7 +245,7 @@ camera_cell{1}.Attributes.up = upvector/norm(upvector);
 camera_cell{1}.Attributes.fov = fov;
 camera_cell{1}.Attributes.subpix = [1, 1];
 camera_cell{1}.Attributes.imgbuffer = 1; % can be index or name
-camera_cell{1}.Attributes.medium_list = 'air; air'; % can be index or name
+camera_cell{1}.Attributes.medium_list = 'air, air'; % can be index or name
 camera_cell{1}.Attributes.skybox = 'day'; % can be index or name
 camera_cell{1}.Attributes.max_bounces = 8;
 camera_cell{1}.Attributes.gammaind = 1;
