@@ -375,7 +375,7 @@ function read_scene(xml_filename, varargin)
                 temp = s.scene.imgbuffers.imgbuffer{1, i}.Attributes;
             end
             switch lower(temp.type)
-                case 'imgbuffer'
+                case {'imgbuffer', 'imgbuffer_opengl'}
                     imgbuffers{i, 1} = imgbuffer(get_value(temp.resx), get_value(temp.resy));
                 otherwise
                     imgbuffers{i, 1} = imgbuffer(300, 200);
