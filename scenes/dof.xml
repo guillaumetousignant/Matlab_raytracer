@@ -3,8 +3,8 @@
    <scatterers>
       <scatterer name="air_absorber" type="nonabsorber"/>
    </scatterers>
-   <materials>
-      <material name="air" priority="0" scattering_fn="air_absorber" type="transparent"/>
+   <materials>      
+      <material colour="white" emission="black" ind="1.001" name="air" priority="0" scattering_fn="air_absorber" type="refractive"/>
       <material colour="grey1" emission="black" name="difgrey" roughness="1" type="diffuse"/>
       <material colour="grey2" emission="black" name="difgrey2" roughness="0.5" type="diffuse"/>
    </materials>
@@ -58,6 +58,6 @@
       <imgbuffer name="buffer1" resx="1800" resy="1200" type="imgbuffer_opengl"/>
    </imgbuffers>
    <cameras>
-      <camera aperture="0.2" filename="NaN" focal_length="3.0414" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" max_bounces="8" medium_list="air, air" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="1" subpix="1 1" transform_matrix="NaN" type="cam_aperture" up="0 0 1"/>
+      <camera aperture="0.05" filename="NaN" focal_length="3.0414" fov="0.93084 1.3963" gammaind="1" imgbuffer="1" max_bounces="8" medium_list="air, air" n_iter="Inf" name="camera1" rendermode="accumulation" skybox="1" subpix="1 1" transform_matrix="NaN" type="cam_aperture" up="0 0 1"/>
    </cameras>
 </scene>
