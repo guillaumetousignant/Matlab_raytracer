@@ -13,7 +13,7 @@ methods
         obj.points_orig = points;
 
         if isempty(normals)
-            nor = cross(points(2, :) - points(1, :), points(2, :) - points(1, :);
+            nor = cross(points(2, :) - points(1, :), points(2, :) - points(1, :));
             normalvec = nor/norm(nor);
             obj.normals_orig = [normalvec; normalvec; normalvec];
         else
