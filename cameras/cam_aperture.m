@@ -54,7 +54,7 @@ methods
                 for k = 1:subpix_y
                     for l = 1:subpix_x
                         rand_theta = rand * 2 * pi;
-                        rand_r = rand * apert;
+                        rand_r = sqrt(rand) * apert;
                         jitter_x = rand;
                         jitter_y = rand;
                         

@@ -77,7 +77,7 @@ methods
                     for l = 1:subpix_x
                         randtime = rand * (time2 - time1) + time1;
                         rand_theta = rand * 2 * pi;
-                        rand_r = rand * apert;
+                        rand_r = sqrt(rand) * apert;
                         jitter_x = rand;
                         jitter_y = rand;
 
