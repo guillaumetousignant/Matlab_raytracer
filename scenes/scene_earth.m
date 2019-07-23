@@ -72,7 +72,7 @@ transformation_pre_cell{end}.Attributes.value = 1;
 object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 transformation_post_cell = cell(0);
 transformation_post_cell{end+1}.Attributes.type = 'rotatez';
-transformation_post_cell{end}.Attributes.value = pi/4;
+transformation_post_cell{end}.Attributes.value = pi/8;
 object_cell{end}.transformations_post.transformation_post = transformation_post_cell;
 
 scene_struct.scene.objects.object = object_cell;

@@ -24,7 +24,7 @@
             <transformation_pre type="uniformscale" value="1"/>
          </transformations_pre>
          <transformations_post>
-            <transformation_post type="rotatez" value="0.7854"/>
+            <transformation_post type="rotatez" value="0.3927"/>
          </transformations_post>
       </object>
    </objects>
