@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene name="earth" primitive_list="ground, earth">
+   <textures>
+      <texture filename=".\assets\earth_2048.png" name="earth_texture" type="texture"/>
+   </textures>
    <scatterers>
       <scatterer name="air_absorber" type="nonabsorber"/>
    </scatterers>

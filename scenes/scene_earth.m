@@ -13,6 +13,8 @@ texture_cell{end+1}.Attributes.name = 'earth_texture';
 texture_cell{end}.Attributes.type = 'texture';
 texture_cell{end}.Attributes.filename = '.\assets\earth_2048.png';
 
+scene_struct.scene.textures.texture = texture_cell;
+
 %% Scattering
 scatterer_cell = cell(0);
 scatterer_cell{end+1}.Attributes.name = 'air_absorber';
