@@ -21,6 +21,14 @@ scatterer_cell = cell(0);
 scatterer_cell{end+1}.Attributes.name = 'air_absorber';
 scatterer_cell{end}.Attributes.type = 'nonabsorber';
 
+scatterer_cell{end+1}.Attributes.name = 'skin_scatterer';
+scatterer_cell{end}.Attributes.type = 'scatterer';
+scatterer_cell{end}.Attributes.emission = 'black';
+scatterer_cell{end}.Attributes.colour = 'watercolour';
+scatterer_cell{end}.Attributes.emission_distance = 0.25;
+scatterer_cell{end}.Attributes.absorption_distance = 0.25;
+scatterer_cell{end}.Attributes.scattering_distance = 0.5;
+
 scene_struct.scene.scatterers.scatterer = scatterer_cell;
 
 %% Materials
@@ -33,62 +41,64 @@ material_cell{end}.Attributes.scattering_fn = 'air_absorber'; % can be index or 
 material_cell{end+1}.Attributes.name = 'difgrey';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = 'grey1'; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'coating';
-material_cell{end}.Attributes.type = 'diffuse';
+material_cell{end}.Attributes.type = 'reflective';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
-material_cell{end}.Attributes.roughness = 1;
+material_cell{end}.Attributes.colour = 'white'; % can also be array
 
 material_cell{end+1}.Attributes.name = 'eyemat1';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = [0.05, 0.05, 0.05]; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'skinmat';
-material_cell{end}.Attributes.type = 'diffuse';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
-material_cell{end}.Attributes.roughness = 1;
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.33;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 2;
+material_cell{end}.Attributes.diffusivity = 0.1;
+material_cell{end}.Attributes.scattering_fn = 'skin_scatterer';
 
 material_cell{end+1}.Attributes.name = 'bonemat';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
-material_cell{end}.Attributes.roughness = 1;
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.roughness = 0.25;
 
 material_cell{end+1}.Attributes.name = 'eyemat';
-material_cell{end}.Attributes.type = 'diffuse';
-material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
-material_cell{end}.Attributes.roughness = 1;
+material_cell{end}.Attributes.type = 'fresnelmix';
+material_cell{end}.Attributes.material_refracted = 'eyemat1'; % can also be array
+material_cell{end}.Attributes.material_reflected = 'coating'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
 
 material_cell{end+1}.Attributes.name = 'lungmat';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = 'pink'; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'intmat';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = 'gemcolor'; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'heartmat';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = 'red'; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'flyermats';
-material_cell{end}.Attributes.type = 'diffuse';
-material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
-material_cell{end}.Attributes.roughness = 1;
+material_cell{end}.Attributes.type = 'aggregate';
+material_cell{end}.Attributes.materials_list = 'skinmat, bonemat, eyemat, lungmat, intmat, heartmat';
+material_cell{end}.Attributes.materials_names = 'blinn1SG, lambert2SG, lambert3SG, lambert4SG, phong1SG, phongE1SG';
 
 scene_struct.scene.materials.material = material_cell;
 
@@ -129,11 +139,11 @@ transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
 transformation_pre_cell{end}.Attributes.value = pi;
 object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-object_cell{4}.Attributes.name = 'flyer';
-object_cell{4}.Attributes.type = 'mesh';
-object_cell{4}.Attributes.mesh_geometry = 'flyer_mesh';
-object_cell{4}.Attributes.material = 'flyermats'; % can also be name
-object_cell{4}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+object_cell{end+1}.Attributes.name = 'flyer';
+object_cell{end}.Attributes.type = 'mesh';
+object_cell{end}.Attributes.mesh_geometry = 'flyer_mesh';
+object_cell{end}.Attributes.material = 'flyermats'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
 transformation_pre_cell = cell(0);
 transformation_pre_cell{end+1}.Attributes.type = 'translate';
 transformation_pre_cell{end}.Attributes.value = [0.85, 0, -1.5];
@@ -145,7 +155,7 @@ transformation_pre_cell{end+1}.Attributes.type = 'rotatez';
 transformation_pre_cell{end}.Attributes.value = pi/8;
 transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
 transformation_pre_cell{end}.Attributes.value = pi;
-object_cell{4}.transformations_pre.transformation_pre = transformation_pre_cell;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
 scene_struct.scene.objects.object = object_cell;
 
