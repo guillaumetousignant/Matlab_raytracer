@@ -209,6 +209,7 @@ camera_cell{end}.Attributes.subpix = [1, 1];
 camera_cell{end}.Attributes.imgbuffer = 'buffer1'; % can be index or name
 camera_cell{end}.Attributes.imgbuffer_L = 'bufferl';
 camera_cell{end}.Attributes.imgbuffer_R = 'bufferr';
+camera_cell{end}.Attributes.eye_dist = 0.065;
 camera_cell{end}.Attributes.medium_list = 'air, air'; % can be index or name
 camera_cell{end}.Attributes.skybox = 'sky'; % can be index or name
 camera_cell{end}.Attributes.max_bounces = 32;
