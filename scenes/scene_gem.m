@@ -143,7 +143,7 @@ fov(1) = fov(2)/aspect_ratio;
 
 camera_cell = cell(0);
 camera_cell{end+1}.Attributes.name = 'camera1';
-camera_cell{end}.Attributes.type = 'cam_aperture_motionblur';
+camera_cell{end}.Attributes.type = 'cam_motionblur_aperture';
 camera_cell{end}.Attributes.transform_matrix = NaN;
 camera_cell{end}.Attributes.filename = NaN; % if is empty, use next available with scene name
 upvector = [0, 0, 1];
@@ -153,7 +153,7 @@ camera_cell{end}.Attributes.subpix = [1, 1];
 camera_cell{end}.Attributes.imgbuffer = 'buffer1'; % can be index or name
 camera_cell{end}.Attributes.medium_list = 'air, air'; % can be index or name
 camera_cell{end}.Attributes.skybox = 'sky'; % can be index or name
-camera_cell{end}.Attributes.max_bounces = 16;
+camera_cell{end}.Attributes.max_bounces = 32;
 camera_cell{end}.Attributes.focal_length = 2;
 camera_cell{end}.Attributes.aperture = 0.025;
 camera_cell{end}.Attributes.gammaind = 1;
