@@ -48,7 +48,7 @@ material_cell{end}.Attributes.scattering_fn = 'air_absorber'; % can be index or 
 material_cell{end+1}.Attributes.name = 'difgrey';
 material_cell{end}.Attributes.type = 'diffuse';
 material_cell{end}.Attributes.emission = 'black'; % can also be array
-material_cell{end}.Attributes.colour = 'grey'; % can also be array
+material_cell{end}.Attributes.colour = 'grey1'; % can also be array
 material_cell{end}.Attributes.roughness = 1;
 
 material_cell{end+1}.Attributes.name = 'diflight';
