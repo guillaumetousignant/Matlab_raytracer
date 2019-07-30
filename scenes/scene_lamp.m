@@ -147,7 +147,6 @@ object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cel
 scene_struct.scene.objects.object = object_cell;
 
 %% Directional lights
-
 directional_light_cell = cell(0);
 
 directional_light_cell{end+1}.Attributes.name = 'moon';
@@ -193,6 +192,7 @@ fov(2) = 80 * pi/180;
 fov(1) = fov(2)/aspect_ratio;
 
 camera_cell = cell(0);
+
 camera_cell{end+1}.Attributes.name = 'camera1';
 camera_cell{end}.Attributes.type = 'cam_aperture';
 camera_cell{end}.Attributes.transform_matrix = NaN;
@@ -202,7 +202,7 @@ camera_cell{end}.Attributes.up = upvector/norm(upvector);
 camera_cell{end}.Attributes.fov = fov;
 camera_cell{end}.Attributes.subpix = [1, 1];
 camera_cell{end}.Attributes.imgbuffer = 'buffer1'; % can be index or name
-camera_cell{end}.Attributes.medium_list = 'air, air'; % can be index or name
+camera_cell{end}.Attributes.medium_list = 'air2, air, air'; % can be index or name
 camera_cell{end}.Attributes.skybox = 'night'; % can be index or name
 camera_cell{end}.Attributes.max_bounces = 32;
 camera_cell{end}.Attributes.focal_length = 2;
