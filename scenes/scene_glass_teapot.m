@@ -24,7 +24,7 @@ scatterer_cell{end+1}.Attributes.name = 'air_absorber';
 scatterer_cell{end}.Attributes.type = 'nonabsorber';
 
 scatterer_cell{end+1}.Attributes.name = 'glass_scatterer';
-scatterer_cell{end}.Attributes.type = 'abrorber';
+scatterer_cell{end}.Attributes.type = 'absorber';
 scatterer_cell{end}.Attributes.emission = 'black';
 scatterer_cell{end}.Attributes.colour = 'white';
 scatterer_cell{end}.Attributes.emission_distance = 10000;
