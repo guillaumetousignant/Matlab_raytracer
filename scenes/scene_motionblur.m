@@ -8,13 +8,6 @@ scene_struct.scene.Attributes.name = scene_name;
 scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2, ball';
 
 %% Textures
-texture_cell = cell(0);
-
-texture_cell{end+1}.Attributes.name = 'background';
-texture_cell{end}.Attributes.type = 'texture';
-texture_cell{end}.Attributes.filename = 'assets\Ocean from horn.jpg';
-
-scene_struct.scene.textures.texture = texture_cell;
 
 %% Scattering
 scatterer_cell = cell(0);
