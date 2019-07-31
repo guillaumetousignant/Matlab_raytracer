@@ -1,93 +1,259 @@
+close all;
+clear all;
+clc;
+
 %% Scene
+scene_name = 'refractions';
+scene_struct.scene.Attributes.name = scene_name;
+scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2, point1, point2, point3, point4, point5';
 
-% Colours
-yellow = [0.98, 1, 0.9];
-purple = [0.98, 0.7, 0.85];
-green = [0.8, 0.95, 0.6];
-white = [1, 1, 1];
-black = [0, 0, 0];
-grey1 = [0.5, 0.5, 0.5];
-grey2 = [0.75, 0.75, 0.75];
-blue = [0.1, 0.4, 0.8];
-turquoise = [0.6, 0.95, 0.8];
-watercolour = [0.6, 0.9, 1];
-red = [0.9568627450980392, 0.2784313725490196, 0.2784313725490196];
-gemcolor = [0 0.9 1];
-orange = [1, 0.6039, 0];
-teal = [0.1529, 0.6549, 0.8471];
+%% Textures
+texture_cell = cell(0);
 
-% General stuff
-neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(black, white, 1.001, struct('ind', 0), nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+texture_cell{end+1}.Attributes.name = 'background';
+texture_cell{end}.Attributes.type = 'texture';
+texture_cell{end}.Attributes.filename = 'assets\Ocean from horn.jpg';
 
+scene_struct.scene.textures.texture = texture_cell;
 
-scenename = 'refractions';
+%% Scattering
+scatterer_cell = cell(0);
 
-fprintf('\nScene name: %s\n', scenename);
-fprintf('\nScene building\n');
-tic
+scatterer_cell{end+1}.Attributes.name = 'air_absorber';
+scatterer_cell{end}.Attributes.type = 'nonabsorber';
 
-% Materials
-difgrey = diffuse(black, grey1, 1);
-glass_fuzz1 = reflective_refractive_fuzz(black, white, 1.5, air, 1, 0, absorber(black, white, 100, 100));
-glass_fuzz2 = reflective_refractive_fuzz(black, white, 1.5, air, 1, 0.001, absorber(black, white, 100, 100));
-glass_fuzz3 = reflective_refractive_fuzz(black, white, 1.5, air, 1, 0.01, absorber(black, white, 100, 100));
-glass_fuzz4 = reflective_refractive_fuzz(black, white, 1.5, air, 1, 0.1, absorber(black, white, 100, 100));
-glass_fuzz5 = reflective_refractive_fuzz(black, white, 1.5, air, 1, 1, absorber(black, white, 100, 100));
+scatterer_cell{end+1}.Attributes.name = 'glass_absorber';
+scatterer_cell{end}.Attributes.type = 'absorber';
+scatterer_cell{end}.Attributes.emission = 'black';
+scatterer_cell{end}.Attributes.colour = 'teal';
+scatterer_cell{end}.Attributes.emission_distance = 100;
+scatterer_cell{end}.Attributes.absorption_distance = 100;
 
-% Objects  
+scene_struct.scene.scatterers.scatterer = scatterer_cell;
+
+%% Materials
+material_cell = cell(0);
+
+material_cell{end+1}.Attributes.name = 'air';
+material_cell{end}.Attributes.type = 'transparent';
+material_cell{end}.Attributes.priority = 0;
+material_cell{end}.Attributes.scattering_fn = 'air_absorber'; % can be index or name
+
+material_cell{end+1}.Attributes.name = 'difgrey';
+material_cell{end}.Attributes.type = 'diffuse';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'grey1'; % can also be array
+material_cell{end}.Attributes.roughness = 1;
+
+material_cell{end+1}.Attributes.name = 'glass_fuzz1';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 1;
+material_cell{end}.Attributes.diffusivity = 0.0;
+material_cell{end}.Attributes.scattering_fn = 'glass_absorber';
+
+material_cell{end+1}.Attributes.name = 'glass_fuzz2';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 1;
+material_cell{end}.Attributes.diffusivity = 0.001;
+material_cell{end}.Attributes.scattering_fn = 'glass_absorber';
+
+material_cell{end+1}.Attributes.name = 'glass_fuzz3';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 1;
+material_cell{end}.Attributes.diffusivity = 0.01;
+material_cell{end}.Attributes.scattering_fn = 'glass_absorber';
+
+material_cell{end+1}.Attributes.name = 'glass_fuzz4';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 1;
+material_cell{end}.Attributes.diffusivity = 0.1;
+material_cell{end}.Attributes.scattering_fn = 'glass_absorber';
+
+material_cell{end+1}.Attributes.name = 'glass_fuzz5';
+material_cell{end}.Attributes.type = 'reflective_refractive_fuzz';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.5;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.order = 1;
+material_cell{end}.Attributes.diffusivity = 1;
+material_cell{end}.Attributes.scattering_fn = 'glass_absorber';
+
+scene_struct.scene.materials.material = material_cell;
+
+%% Transform matrices
+
+%% Meshes
+
+%% Objects
 angles = -30:15:30;
-point1 = sphere(glass_fuzz1, transformmatrix());
-point2 = sphere(glass_fuzz2, transformmatrix());
-point3 = sphere(glass_fuzz3, transformmatrix());
-point4 = sphere(glass_fuzz4, transformmatrix());
-point5 = sphere(glass_fuzz5, transformmatrix());
 
-point1.transformation.uniformscale(0.2);
-point2.transformation.uniformscale(0.2);
-point3.transformation.uniformscale(0.2);
-point4.transformation.uniformscale(0.2);
-point5.transformation.uniformscale(0.2);
+object_cell = cell(0);
 
-point1.transformation.translate([2 * sind(angles(1)), 2 * cosd(angles(1)), 0]);
-point2.transformation.translate([2 * sind(angles(2)), 2 * cosd(angles(2)), 0]);
-point3.transformation.translate([2 * sind(angles(3)), 2 * cosd(angles(3)), 0]);
-point4.transformation.translate([2 * sind(angles(4)), 2 * cosd(angles(4)), 0]);
-point5.transformation.translate([2 * sind(angles(5)), 2 * cosd(angles(5)), 0]);
+object_cell{end+1}.Attributes.name = 'point1';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'glass_fuzz1'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [2 * sind(angles(1)), 2 * cosd(angles(1)), 0];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-point1.transformation.rotatezaxis(pi);
-point2.transformation.rotatezaxis(pi);
-point3.transformation.rotatezaxis(pi);
-point4.transformation.rotatezaxis(pi);
-point5.transformation.rotatezaxis(pi);
+object_cell{end+1}.Attributes.name = 'point2';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'glass_fuzz2'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [2 * sind(angles(2)), 2 * cosd(angles(2)), 0];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-planegrey1 = triangle(difgrey, [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5], [], [], transformmatrix());
-planegrey2 = triangle(difgrey, [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5], [], [], transformmatrix());
+object_cell{end+1}.Attributes.name = 'point3';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'glass_fuzz3'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [2 * sind(angles(3)), 2 * cosd(angles(3)), 0];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-planegrey2.transformation.rotatezaxis(pi);
-planegrey1.transformation.rotatezaxis(pi);
+object_cell{end+1}.Attributes.name = 'point4';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'glass_fuzz4'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [2 * sind(angles(4)), 2 * cosd(angles(4)), 0];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-ascene = scene(planegrey1, planegrey2, point1, point2, point3, point4, point5);
+object_cell{end+1}.Attributes.name = 'point5';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'glass_fuzz5'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [2 * sind(angles(5)), 2 * cosd(angles(5)), 0];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-toc
+object_cell{end+1}.Attributes.name = 'planegrey1';
+object_cell{end}.Attributes.type = 'triangle';
+object_cell{end}.Attributes.material = 'difgrey'; % can also be name
+object_cell{end}.Attributes.points = [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5];
+object_cell{end}.Attributes.normals = NaN;
+object_cell{end}.Attributes.texture_coordinates = NaN;
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-fprintf('\nScene updating\n');
-tic
-ascene.update;
-toc
+object_cell{end+1}.Attributes.name = 'planegrey2';
+object_cell{end}.Attributes.type = 'triangle';
+object_cell{end}.Attributes.material = 'difgrey'; % can also be name
+object_cell{end}.Attributes.points = [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5];
+object_cell{end}.Attributes.normals = NaN;
+object_cell{end}.Attributes.texture_coordinates = NaN;
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-fprintf('\nAcceleration structure building\n');
-tic
-ascene.buildacc;
-toc
+scene_struct.scene.objects.object = object_cell;
 
-%save scene.mat ascene
+%% Directional lights
+
+%% Skyboxes
+skybox_cell = cell(0);
+skybox_cell{end+1}.Attributes.name = 'sky';
+skybox_cell{end}.Attributes.type = 'skybox_texture_sun';
+skybox_cell{end}.Attributes.light_position = [0.6209296, 1-0.2292542];
+skybox_cell{end}.Attributes.texture = 'background';
+skybox_cell{end}.Attributes.light_colour = [0.996, 0.941, 0.918] * 1.586010 * 8;
+skybox_cell{end}.Attributes.light_radius = 0.035;
+
+scene_struct.scene.skyboxes.skybox = skybox_cell;
+
+%% Image buffers
+res_x = 1800;
+res_y = 1200;
+imgbuffer_cell = cell(0);
+
+imgbuffer_cell{end+1}.Attributes.name = 'buffer1';
+imgbuffer_cell{end}.Attributes.type = 'imgbuffer_opengl';
+imgbuffer_cell{end}.Attributes.resx = res_x;
+imgbuffer_cell{end}.Attributes.resy = res_y;
+
+scene_struct.scene.imgbuffers.imgbuffer = imgbuffer_cell;
 
 %% Camera
+aspect_ratio = res_x/res_y;
+fov(2) = 80 * pi/180;
+fov(1) = fov(2)/aspect_ratio;
 
-%camera.transformation.rotatez(-pi/6);
-%camera.transformation.translate([-1, -2, 0]);
-%camera.transformation.rotatex(-pi/8);
+camera_cell = cell(0);
+camera_cell{end+1}.Attributes.name = 'camera1';
+camera_cell{end}.Attributes.type = 'cam_aperture';
+camera_cell{end}.Attributes.transform_matrix = NaN;
+camera_cell{end}.Attributes.filename = NaN; % if is empty, use next available with scene name
+upvector = [0, 0, 1];
+camera_cell{end}.Attributes.up = upvector/norm(upvector);
+camera_cell{end}.Attributes.fov = fov;
+camera_cell{end}.Attributes.subpix = [1, 1];
+camera_cell{end}.Attributes.imgbuffer = 'buffer1'; % can be index or name
+camera_cell{end}.Attributes.medium_list = 'air, air'; % can be index or name
+camera_cell{end}.Attributes.skybox = 'sky'; % can be index or name
+camera_cell{end}.Attributes.max_bounces = 8;
+camera_cell{end}.Attributes.focal_length = 2;
+camera_cell{end}.Attributes.aperture = 0.005;
+camera_cell{end}.Attributes.time = [0, 1];
+camera_cell{end}.Attributes.gammaind = 1;
+camera_cell{end}.Attributes.rendermode = 'accumulation';
+camera_cell{end}.Attributes.n_iter = inf;
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [0, 0, 0];
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = pi;
+camera_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-camera.update;
-camera.update; % second time to kill blur
+scene_struct.scene.cameras.camera = camera_cell;
+
+%% Output
+struct2xml(scene_struct, ['.', filesep, 'scenes', filesep, scene_name, '.xml']);
