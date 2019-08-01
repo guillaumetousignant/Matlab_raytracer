@@ -30,7 +30,7 @@ scatterer_cell{end}.Attributes.emission = 'black';
 scatterer_cell{end}.Attributes.colour = 'green';
 scatterer_cell{end}.Attributes.emission_distance = 0.5;
 scatterer_cell{end}.Attributes.absorption_distance = 0.5;
-scatterer_cell{end}.Attributes.scattering_distance = 0.01;
+scatterer_cell{end}.Attributes.scattering_distance = 0.05;
 
 scene_struct.scene.scatterers.scatterer = scatterer_cell;
 
