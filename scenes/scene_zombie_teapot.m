@@ -1,70 +1,213 @@
 %% Scene
+scene_name = 'zombie teapot';
+scene_struct = struct();
+scene_struct.scene.Attributes.name = scene_name;
+scene_struct.scene.Attributes.primitive_list = 'planegrey1, planegrey2, light';
+scene_struct.scene.Attributes.mesh_list = 'zombie';
 
-% Colours
-load colours_mat colours
+%% Textures
+texture_cell = cell(0);
 
-% General stuff
-neutralmatrix = transformmatrix(); % Should never be changed, used for triangles
-air = refractive(colours.black, colours.white, 1.001, 0, nonabsorber()); %%% CHECK generate_scene is 10x slower when putting [] as is_in, this is a workaround
+texture_cell{end+1}.Attributes.name = 'zombie_texture';
+texture_cell{end}.Attributes.type = 'texture';
+texture_cell{end}.Attributes.filename = '.\assets\Zombie beast_texture5.jpg';
 
+scene_struct.scene.textures.texture = texture_cell;
 
-scenename = 'zombie';
-filename = next_filename(['.', filesep, 'images', filesep, scenename, '.png']);
+%% Scattering
+scatterer_cell = cell(0);
 
-fprintf('\nScene name: %s\n', scenename);
-fprintf('\nScene building\n');
-tic
+scatterer_cell{end+1}.Attributes.name = 'air_absorber';
+scatterer_cell{end}.Attributes.type = 'nonabsorber';
 
-% Materials
-difgrey = diffuse(colours.black, colours.grey1, 1);
-red_metal = reflective_fuzz(colours.black, colours.red, 2, 1);
-green_goo = reflective_refractive(colours.black, colours.white, 1.2, 10, scatterer_exp(colours.black, colours.green, 0.05, 0.05, 0.025, 1, 1)); % 0.01 scattering distance is good
-coating = reflective(colours.black, colours.white);
-zombiemat = fresnelmix(red_metal, coating, 1.5);
-glass = reflective_refractive(colours.black, colours.white, 1.5, air, nonabsorber());
-diflight = diffuse(colours.white * 8, colours.white, 1);
+scatterer_cell{end+1}.Attributes.name = 'zombie_scatterer';
+scatterer_cell{end}.Attributes.type = 'scatterer_exp';
+scatterer_cell{end}.Attributes.emission = 'black';
+scatterer_cell{end}.Attributes.colour = 'green';
+scatterer_cell{end}.Attributes.emission_distance = 0.05;
+scatterer_cell{end}.Attributes.absorption_distance = 0.05;
+scatterer_cell{end}.Attributes.scattering_distance = 0.025;
+scatterer_cell{end}.Attributes.order = 1;
+scatterer_cell{end}.Attributes.scattering_angle = 1;
 
-% Objects
-planegrey3 = triangle(difgrey, [-2, 4, -0.5; -2, 0, -0.5; 2, 0, -0.5], [], [], neutralmatrix);
-planegrey4 = triangle(difgrey, [-2, 4, -0.5; 2, 0, -0.5; 2, 4, -0.5], [], [], neutralmatrix);
+scene_struct.scene.scatterers.scatterer = scatterer_cell;
 
-light = sphere(diflight, transformmatrix());
-light.transformation.uniformscale(0.25);
-light.transformation.translate([0, 2, 0.5]);
+%% Materials
+material_cell = cell(0);
 
-zombie = mesh(mesh_geometry('.\assets\Zombie_Beast4_test.obj'), green_goo, transformmatrix());
-zombie.transformation.rotatex(pi/2);
-zombie.transformation.rotatez(-pi/16);
-zombie.transformation.uniformscale(0.025);
-zombie.transformation.translate([0, 1.5, -0.53]);
+material_cell{end+1}.Attributes.name = 'air';
+material_cell{end}.Attributes.type = 'refractive';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.001;
+material_cell{end}.Attributes.priority = 0;
+material_cell{end}.Attributes.scattering_fn = 'air_absorber'; % can be index or name
 
-zombie.update;
+material_cell{end+1}.Attributes.name = 'difgrey';
+material_cell{end}.Attributes.type = 'diffuse';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'grey1'; % can also be array
+material_cell{end}.Attributes.roughness = 1;
 
-ascene = scene(planegrey3, planegrey4, light);
-ascene.addmesh(zombie);
+material_cell{end+1}.Attributes.name = 'diflight';
+material_cell{end}.Attributes.type = 'diffuse';
+material_cell{end}.Attributes.emission = [8, 8, 8]; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.roughness = 0;
 
-toc
+material_cell{end+1}.Attributes.name = 'goo';
+material_cell{end}.Attributes.type = 'reflective_refractive';
+material_cell{end}.Attributes.emission = 'black'; % can also be array
+material_cell{end}.Attributes.colour = 'white'; % can also be array
+material_cell{end}.Attributes.ind = 1.2;
+material_cell{end}.Attributes.priority = 10;
+material_cell{end}.Attributes.scattering_fn = 'zombie_scatterer';
 
-fprintf('\nScene updating\n');
-tic
-ascene.update;
-toc
+scene_struct.scene.materials.material = material_cell;
 
-fprintf('\nAcceleration structure building\n');
-tic
-ascene.buildacc;
-toc
+%% Transform matrices
 
-%save scene.mat ascene
+%% Meshes
+mesh_geometry_cell = cell(0);
+
+mesh_geometry_cell{end+1}.Attributes.name = 'zombie_mesh';
+mesh_geometry_cell{end}.Attributes.type = 'mesh_geometry';
+mesh_geometry_cell{end}.Attributes.filename = 'assets\Zombie_Beast4_test.obj';
+
+scene_struct.scene.mesh_geometries.mesh_geometry = mesh_geometry_cell;
+
+%% Objects
+object_cell = cell(0);
+
+object_cell{end+1}.Attributes.name = 'planegrey1';
+object_cell{end}.Attributes.type = 'triangle';
+object_cell{end}.Attributes.material = 'difgrey'; % can also be name
+object_cell{end}.Attributes.points = [-2, 2, -0.5; -2, -2, -0.5; 2, -2, -0.5];
+object_cell{end}.Attributes.normals = NaN;
+object_cell{end}.Attributes.texture_coordinates = NaN;
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = 0;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+object_cell{end+1}.Attributes.name = 'planegrey2';
+object_cell{end}.Attributes.type = 'triangle';
+object_cell{end}.Attributes.material = 'difgrey'; % can also be name
+object_cell{end}.Attributes.points = [-2, 2, -0.5; 2, -2, -0.5; 2, 2, -0.5];
+object_cell{end}.Attributes.normals = NaN;
+object_cell{end}.Attributes.texture_coordinates = NaN;
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = 0;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+object_cell{end+1}.Attributes.name = 'light';
+object_cell{end}.Attributes.type = 'sphere';
+object_cell{end}.Attributes.material = 'diflight'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [0, 0.5, 0.5];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.25;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = 0;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+object_cell{end+1}.Attributes.name = 'zombie';
+object_cell{end}.Attributes.type = 'mesh';
+object_cell{end}.Attributes.mesh_geometry = 'zombie_mesh';
+object_cell{end}.Attributes.material = 'goo'; % can also be name
+object_cell{end}.Attributes.transform_matrix = NaN; % if not empty, search for right matrix, if empty, create.
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [0, 0, -0.53];
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.025;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatex';
+transformation_pre_cell{end}.Attributes.value = pi/2;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatez';
+transformation_pre_cell{end}.Attributes.value = -pi/16;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = 0;
+object_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+scene_struct.scene.objects.object = object_cell;
+
+%% Directional lights
+directional_light_cell = cell(0);
+
+directional_light_cell{end+1}.Attributes.name = 'moon';
+directional_light_cell{end}.Attributes.colour = [0.9, 0.9, 1] * 5;
+directional_light_cell{end}.Attributes.transform_matrix = NaN;
+directional_light_cell{end}.Attributes.type = 'directional_light';
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'uniformscale';
+transformation_pre_cell{end}.Attributes.value = 0.92;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatez';
+transformation_pre_cell{end}.Attributes.value = -pi/4 + pi;
+transformation_pre_cell{end+1}.Attributes.type = 'rotatex';
+transformation_pre_cell{end}.Attributes.value = pi/4;
+directional_light_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
+
+scene_struct.scene.directional_lights.directional_light = directional_light_cell;
+
+%% Skyboxes
+skybox_cell = cell(0);
+
+skybox_cell{end+1}.Attributes.name = 'night';
+skybox_cell{end}.Attributes.type = 'skybox_flat_sun';
+skybox_cell{end}.Attributes.colour = [0.05, 0.05, 0.05];
+skybox_cell{end}.Attributes.lights = 'moon'; % can be array of indices, or cell array of names. Maybe should be another struct?
+
+scene_struct.scene.skyboxes.skybox = skybox_cell;
+
+%% Image buffers
+res_x = 1800;
+res_y = 1200;
+imgbuffer_cell = cell(0);
+
+imgbuffer_cell{end+1}.Attributes.name = 'buffer1';
+imgbuffer_cell{end}.Attributes.type = 'imgbuffer_opengl';
+imgbuffer_cell{end}.Attributes.resx = res_x;
+imgbuffer_cell{end}.Attributes.resy = res_y;
+
+scene_struct.scene.imgbuffers.imgbuffer = imgbuffer_cell;
 
 %% Camera
-camera = generate_camera([1800, 1200], 'bg', 'night', 'subpix', 1, 'type', 'aperture', 'focallength', 1.5, 'maxbounces', 32, 'material', {air, air}, 'file', filename); 
+aspect_ratio = res_x/res_y;
+fov(2) = 80 * pi/180;
+fov(1) = fov(2)/aspect_ratio;
 
-%camera.transformation.rotatez(-pi/6);
-%camera.transformation.translate([-1, -2, 0]);
-%camera.transformation.rotatex(-pi/8);
+camera_cell = cell(0);
 
-camera.update;
-camera.update; % second time to kill blur
+camera_cell{end+1}.Attributes.name = 'camera1';
+camera_cell{end}.Attributes.type = 'cam_aperture';
+camera_cell{end}.Attributes.transform_matrix = NaN;
+camera_cell{end}.Attributes.filename = NaN; % if is empty, use next available with scene name
+camera_cell{end}.Attributes.up = [0, 0, 1];
+camera_cell{end}.Attributes.fov = fov;
+camera_cell{end}.Attributes.subpix = [1, 1];
+camera_cell{end}.Attributes.imgbuffer = 1; % can be index or name
+camera_cell{end}.Attributes.medium_list = 'air, air'; % can be index array, or names with ;
+camera_cell{end}.Attributes.skybox = 'night'; % can be index or name
+camera_cell{end}.Attributes.max_bounces = 32;
+camera_cell{end}.Attributes.focal_length = 1.5;
+camera_cell{end}.Attributes.focus_position = [0.5, 0.5];
+camera_cell{end}.Attributes.aperture = 0.005;
+camera_cell{end}.Attributes.gammaind = 1;
+camera_cell{end}.Attributes.rendermode = 'accumulation';
+camera_cell{end}.Attributes.n_iter = inf;
+transformation_pre_cell = cell(0);
+transformation_pre_cell{end+1}.Attributes.type = 'translate';
+transformation_pre_cell{end}.Attributes.value = [0, -1.5, 0];
+transformation_pre_cell{end+1}.Attributes.type = 'rotatezaxis';
+transformation_pre_cell{end}.Attributes.value = 0;
+camera_cell{end}.transformations_pre.transformation_pre = transformation_pre_cell;
 
-camera.accumulate(ascene);
+scene_struct.scene.cameras.camera = camera_cell;
+
+%% Output
+struct2xml(scene_struct, ['.', filesep, 'scenes', filesep, scene_name, '.xml']);
