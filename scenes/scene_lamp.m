@@ -59,7 +59,7 @@ material_cell{end}.Attributes.colour = 'white'; % can also be array
 
 material_cell{end+1}.Attributes.name = 'metal';
 material_cell{end}.Attributes.type = 'fresnelmix';
-material_cell{end}.Attributes.material_refracted = 'metal'; % can also be array
+material_cell{end}.Attributes.material_refracted = 'metal1'; % can also be array
 material_cell{end}.Attributes.material_reflected = 'coating'; % can also be array
 material_cell{end}.Attributes.ind = 1.5;
 

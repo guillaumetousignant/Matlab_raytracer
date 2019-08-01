@@ -127,13 +127,13 @@ material_cell{14}.Attributes.colour = 'white'; % can also be array
 
 material_cell{15}.Attributes.name = 'base';
 material_cell{15}.Attributes.type = 'fresnelmix';
-material_cell{15}.Attributes.material_refracted = 'base';
+material_cell{15}.Attributes.material_refracted = 'base1';
 material_cell{15}.Attributes.material_reflected = 'coating';
 material_cell{15}.Attributes.ind = 1.5;
 
 material_cell{16}.Attributes.name = 'base_NONE';
 material_cell{16}.Attributes.type = 'fresnelmix';
-material_cell{16}.Attributes.material_refracted = 'base_NONE';
+material_cell{16}.Attributes.material_refracted = 'base_NONE1';
 material_cell{16}.Attributes.material_reflected = 'coating';
 material_cell{16}.Attributes.ind = 1.5;
 
