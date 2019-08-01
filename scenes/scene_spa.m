@@ -88,7 +88,7 @@ material_cell{end}.Attributes.ind = 1.1;
 material_cell{end+1}.Attributes.name = 'spa_mats';
 material_cell{end}.Attributes.type = 'aggregate';
 material_cell{end}.Attributes.materials_list = 'light1_mat, light2_mat, metal, tile_mat, wood_mat';
-material_cell{end}.Attributes.materials_names = 'lambert4SG, lambert5SG, blinn2SG, blinn1SG, lambert3SGv';
+material_cell{end}.Attributes.materials_names = 'lambert4SG, lambert5SG, blinn2SG, blinn1SG, lambert3SG';
 
 scene_struct.scene.materials.material = material_cell;
 
