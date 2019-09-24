@@ -153,13 +153,13 @@ function read_scene(xml_filename, varargin)
                     materials{i, 1} = reflective(get_colour(temp.emission), get_colour(temp.colour));
                 case 'refractive_fuzz'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
-                    materials{i, 1} = refractive_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_colour(temp.ind), get_colour(temp.priority), get_value(temp.ind), get_value(temp.diffusivity), scattering_fn);
+                    materials{i, 1} = refractive_fuzz(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), get_value(temp.ind), get_value(temp.diffusivity), scattering_fn);
                 case 'refractive'
                     scattering_fn = get_scattering_fn(temp.scattering_fn);
-                    materials{i, 1} = refractive(get_colour(temp.emission), get_colour(temp.colour), get_colour(temp.ind), get_colour(temp.priority), scattering_fn);
+                    materials{i, 1} = refractive(get_colour(temp.emission), get_colour(temp.colour), get_value(temp.ind), get_value(temp.priority), scattering_fn);
                 case 'transparent'
-                    materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
-                    warning('read_scene:transparentNotImplemented', 'Transparent shader not implemented, ignoring.');
+                    scattering_fn = get_scattering_fn(temp.scattering_fn);
+                    materials{i, 1} = transparent(get_value(temp.priority), scattering_fn);
                 case 'toon'
                     materials{i, 1} = diffuse([0, 0, 0], [0.5 0.5 0.5], 1);
                     warning('read_scene:toonNotImplemented', 'Toon shader not implemented, ignoring.');
